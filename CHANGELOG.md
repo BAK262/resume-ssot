@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.2 (2026-08-22)
+
+- README preview links point to GitHub Pages rendered HTML; add `.nojekyll` for stable static hosting
+
 ## 2.5.1 (2026-08-22)
 
 - Expand fictional example resume to full industry-reserve depth (education, skills, projects, publications, other)

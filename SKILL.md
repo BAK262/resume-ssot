@@ -1,6 +1,6 @@
 ---
 name: resume-ssot
-version: "2.5.1"
+version: "2.5.2"
 description: >-
   Tailor resumes to job descriptions (JD); maintain a career archive; export HTML, PDF, and ATS plain text.
   改简历、按 JD 定制、投递版、实习简历、产业/学术简历。用户贴 JD 或旧 CV 即可。
@@ -12,7 +12,7 @@ license: MIT
 
 # resume-ssot（Agent 入口）
 
-**人类用户** → [README.md](README.md) · 示例 [fixtures/example-resume.html](fixtures/example-resume.html)
+**人类用户** → [README.md](README.md) · 示例 [在线预览](https://bak262.github.io/resume-ssot/fixtures/example-resume.html)
 
 **Agent 安装** → [agent/INSTALL.md](agent/INSTALL.md)
 

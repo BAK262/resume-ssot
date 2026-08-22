@@ -6,7 +6,7 @@
 **不是 ChatGPT 写一次就忘** — 用对话维护**经历档案**，从真实项目/实习取材，按 JD 压缩出一页投递版（HTML / PDF / 网申文本）。  
 复制下面的话粘贴到 Cursor、Claude Code 或 Codex 即可。
 
-**在线示例：** [example-resume.html](https://bak262.github.io/resume-ssot/fixtures/example-resume.html)（虚构人物「林小航」，与任何真实个人无关）
+**在线预览：** [在浏览器中查看示例简历](https://bak262.github.io/resume-ssot/fixtures/example-resume.html)（虚构人物「林小航」，与任何真实个人无关）
 
 ---
 
@@ -54,7 +54,7 @@ npx skills add BAK262/resume-ssot --agent cursor -g -y
 
 ## 示例
 
-浏览器打开 [fixtures/example-resume.html](fixtures/example-resume.html) 或 [在线预览](https://bak262.github.io/resume-ssot/fixtures/example-resume.html)。
+点击 **[在线预览](https://bak262.github.io/resume-ssot/fixtures/example-resume.html)** 在浏览器中查看排版效果（GitHub Pages）。源码见 [`fixtures/example-resume.html`](https://github.com/BAK262/resume-ssot/blob/main/fixtures/example-resume.html)（仓库内为 HTML 源码视图）。
 
 完全虚构的博士产业储备简历：双学历、三段技能、四个重点项目、发表与其他区块，bullet 含量化指标与边界说明。用于展示本 skill 的产出形态，**不对应任何真实个人**。
 
