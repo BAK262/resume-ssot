@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.1 (2026-08-22)
+
+- README header: replace shield badges with plain preview and install links
+
 ## 2.6.0 (2026-08-22)
 
 - Rewrite README as beginner-friendly human entry: lifecycle flow, deliverables table, install verify step

@@ -1,8 +1,6 @@
 # 聊出来的经历，按岗位出一页简历
 
-[![skills.sh](https://skills.sh/b/BAK262/resume-ssot)](https://skills.sh/BAK262/resume-ssot)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![test](https://github.com/BAK262/resume-ssot/actions/workflows/test.yml/badge.svg)](https://github.com/BAK262/resume-ssot/actions/workflows/test.yml)
+[看示例排版](https://bak262.github.io/resume-ssot/fixtures/example-resume.html) · [安装](#安装只需一次) · Cursor / Claude Code / Codex
 
 **在 Cursor、Claude Code 或 Codex 里做简历，不用每次从零讲起。** 像聊天一样补齐教育、实习和项目，AI 先把内容记在**经历素材库**里（保存在你的文件夹，不用自己打开那些文件）。之后每投一家公司，粘贴**岗位说明**（招聘页面上的职位介绍与要求），从真实经历里挑重点，生成**只占一页**的简历，并导出 **HTML · PDF · 可复制到招聘网站的纯文本**。
 
