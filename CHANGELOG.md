@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.6.0 (2026-08-22)
+
+- Rewrite README as beginner-friendly human entry: lifecycle flow, deliverables table, install verify step
+- Support Cursor, Claude Code, and Codex; replace job-posting jargon with plain Chinese
+
 ## 2.5.2 (2026-08-22)
 
 - README preview links point to GitHub Pages rendered HTML; add `.nojekyll` for stable static hosting
