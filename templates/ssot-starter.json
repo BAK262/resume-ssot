@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "schema_version": "2.1.0",
+    "version": "0.1.0",
+    "updated_at": "",
+    "owner": "{{NAME_ZH}} / {{NAME_EN}}",
+    "locale": "zh-CN",
+    "purpose": "全量事实知识库；不含 JD 选材与包装话术",
+    "schema": {
+      "layers": [
+        "person",
+        "engagements",
+        "outputs",
+        "metrics",
+        "constraints",
+        "term_registry",
+        "sources_index",
+        "conflicts",
+        "provenance",
+        "change_log"
+      ],
+      "term_registry_fields": [
+        "term",
+        "full_name_zh",
+        "full_name_en",
+        "plain_zh",
+        "disclosure",
+        "external_plain_zh",
+        "story_relevance",
+        "aliases",
+        "canonical_id"
+      ]
+    }
+  },
+  "person": {
+    "name": { "zh": "{{NAME_ZH}}", "en": "{{NAME_EN}}" },
+    "contacts": [],
+    "education": [],
+    "availability": {
+      "defense_expected": null,
+      "start_window": null,
+      "confidence": "claimed"
+    }
+  },
+  "engagements": [],
+  "outputs": [],
+  "metrics": [],
+  "constraints": [],
+  "term_registry": [],
+  "sources_index": {},
+  "conflicts": [],
+  "provenance": {
+    "init": "ssot-starter.json",
+    "notes": "Replace placeholders; agent init per agent/workflows/init.md"
+  },
+  "change_log": []
+}

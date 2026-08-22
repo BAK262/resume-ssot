@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{NAME_ZH}} - 简历（产业·储备）</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+:root { --text: #111827; --line: #d1d5db; --base: 14.5px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 8mm 12mm; }
+body {
+    font-family: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+    color: var(--text); font-size: var(--base); line-height: 1.4;
+    width: 100%;
+}
+.header { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.header-photo img {
+    width: 76px; height: 98px; object-fit: cover; object-position: center 18%;
+    border: 1px solid var(--line);
+}
+.header-content { flex: 1; min-width: 0; }
+h1 { font-size: 1.42em; font-weight: 700; letter-spacing: 0.04em; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.name-en { font-weight: 500; font-size: 0.62em; opacity: 0.7; margin-left: 8px; }
+.interest { margin: 4px 0 5px; opacity: 0.82; font-size: 0.94em; line-height: 1.38; }
+.contact-info { display: flex; flex-direction: column; gap: 2px; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 4px 1.25em; }
+.contact-links > * { white-space: nowrap; }
+a { color: inherit; text-decoration: underline; }
+.section { margin-bottom: 7px; }
+h2 { font-size: 1.05em; font-weight: 600; margin-bottom: 2px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.subh { font-weight: 600; font-size: 0.92em; margin: 3px 0 1px; opacity: 0.85; }
+.item { margin-bottom: 5px; }
+.line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.date { opacity: 0.7; font-size: 0.86em; white-space: nowrap; }
+ul, .pubs { padding-left: 18px; }
+li { margin: 1px 0; }
+.highlight { font-weight: 600; }
+.skills { font-size: 0.94em; margin: 1px 0; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@media screen {
+    body { max-width: 186mm; margin: 16px auto; padding: 0 2px; }
+}
+    </style>
+</head>
+<body>
+    <header class="header">
+        <!-- Photo (CN market only): uncomment block below; Global/外企默认无照片 -->
+        <!--
+        <div class="header-photo">
+            <img src="photo.jpg" alt="{{NAME_ZH}}">
+        </div>
+        -->
+        <div class="header-content">
+            <h1>{{NAME_ZH}} <span class="name-en">{{NAME_EN}}</span></h1>
+            <p class="interest">{{TAGLINE_LINE1}} · {{TAGLINE_LINE2}} · {{TAGLINE_LINE3}}</p>
+            <div class="contact-info">
+                <div class="contact-affil">{{AFFILIATION}}</div>
+                <div class="contact-links">
+                    <span>{{PHONE}}</span>
+                    <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+                    <!-- Optional links (omit line if empty) -->
+                    <a href="{{GITHUB_URL}}">GitHub</a>
+                    <a href="{{PORTFOLIO_URL}}">作品集</a>
+                    <a href="{{LINKEDIN_URL}}">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <h2>教育</h2>
+        <div class="line"><span><strong>{{SCHOOL}}</strong>　{{UNIT}}　{{DEGREE}}</span><span class="date">{{DATE_RANGE}}</span></div>
+    </section>
+
+    <section class="section">
+        <h2>技能</h2>
+        <p class="skills">{{SKILLS_LINE_1}}</p>
+        <p class="skills">{{SKILLS_LINE_2}}</p>
+        <p class="skills">{{SKILLS_LINE_3}}</p>
+    </section>
+
+    <section class="section">
+        <h2>工作经历</h2>
+        <!-- kind: internship | fulltime | parttime -->
+        <div class="item">
+            <div class="line"><span><strong>{{WORK_TITLE}}</strong>　{{WORK_ORG}}</span><span class="date">{{WORK_DATES}}</span></div>
+            <ul>
+                <li>{{WORK_BULLET_1}}</li>
+                <li>{{WORK_BULLET_2}}</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>项目</h2>
+        <div class="item">
+            <div class="line"><span><strong>{{PROJECT_TITLE}}</strong>　{{PROJECT_SUBTITLE}}</span><span class="date">{{PROJECT_DATES}}</span></div>
+            <ul>
+                <li>{{PROJECT_BULLET_1}}</li>
+                <li>{{PROJECT_BULLET_2}}</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>发表</h2>
+        <!-- JD 版可整节压缩或并入「其他」 -->
+        <ol class="pubs">
+            <li>{{PUBLICATION_1}}</li>
+        </ol>
+    </section>
+
+    <section class="section">
+        <h2>其他</h2>
+        <ul>
+            <li>{{OTHER_1}}</li>
+        </ul>
+    </section>
+</body>
+</html>

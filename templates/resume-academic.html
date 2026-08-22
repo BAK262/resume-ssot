@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{NAME_ZH}} - 简历（学术·储备）</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+:root { --text: #111827; --line: #d1d5db; --base: 14.5px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 10mm 12mm; }
+body {
+    font-family: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+    color: var(--text); font-size: var(--base); line-height: 1.42;
+    width: 100%;
+}
+.header { margin-bottom: 10px; }
+h1 { font-size: 1.42em; font-weight: 700; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.name-en { font-weight: 500; font-size: 0.62em; opacity: 0.7; margin-left: 8px; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 4px 1.25em; margin-top: 4px; }
+a { color: inherit; text-decoration: underline; }
+.section { margin-bottom: 8px; }
+h2 { font-size: 1.05em; font-weight: 600; margin-bottom: 3px; border-bottom: 1px solid var(--line); }
+.line { display: flex; justify-content: space-between; gap: 10px; }
+.date { opacity: 0.7; font-size: 0.86em; white-space: nowrap; }
+ul, .pubs { padding-left: 18px; }
+li { margin: 2px 0; }
+.highlight { font-weight: 600; }
+@media screen { body { max-width: 186mm; margin: 16px auto; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>{{NAME_ZH}} <span class="name-en">{{NAME_EN}}</span></h1>
+        <div class="contact-links">
+            <span>{{AFFILIATION}}</span>
+            <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+            <a href="{{GITHUB_URL}}">GitHub</a>
+            <a href="{{PORTFOLIO_URL}}">作品集</a>
+            <a href="{{ORCID_URL}}">ORCID</a>
+        </div>
+    </header>
+
+    <section class="section">
+        <h2>教育</h2>
+        <div class="line"><span>{{EDUCATION_LINE}}</span><span class="date">{{DATE_RANGE}}</span></div>
+    </section>
+
+    <section class="section">
+        <h2>研究兴趣</h2>
+        <p>{{RESEARCH_INTERESTS}}</p>
+    </section>
+
+    <section class="section">
+        <h2>发表</h2>
+        <ol class="pubs">
+            <li>{{PUBLICATION_1}}</li>
+        </ol>
+    </section>
+
+    <section class="section">
+        <h2>项目与报告</h2>
+        <ul>
+            <li>{{PROJECT_OR_TALK_1}}</li>
+        </ul>
+    </section>
+
+    <section class="section">
+        <h2>荣誉与服务</h2>
+        <ul>
+            <li>{{HONOR_OR_SERVICE_1}}</li>
+        </ul>
+    </section>
+</body>
+</html>

@@ -1,0 +1,159 @@
+from __future__ import annotations
+
+import argparse
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+
+def _run(cmd: list[str], *, cwd: Path | None = None) -> None:
+    proc = subprocess.run(
+        cmd,
+        cwd=str(cwd) if cwd else None,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"Command failed ({proc.returncode}): {cmd}\n\n{proc.stdout}")
+
+
+def _find_chrome() -> Path | None:
+    candidates: list[Path] = []
+    if sys.platform == "darwin":
+        candidates.extend(
+            [
+                Path("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"),
+                Path.home()
+                / "Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+            ]
+        )
+    elif os.name == "nt":
+        program_files = os.environ.get("ProgramFiles")
+        if program_files:
+            candidates.append(
+                Path(program_files) / "Google/Chrome/Application/chrome.exe"
+            )
+        program_files_x86 = os.environ.get("ProgramFiles(x86)")
+        if program_files_x86:
+            candidates.append(
+                Path(program_files_x86) / "Google/Chrome/Application/chrome.exe"
+            )
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+
+    for name in (
+        "google-chrome",
+        "google-chrome-stable",
+        "chrome",
+        "chrome.exe",
+        "chromium",
+        "chromium-browser",
+    ):
+        found = shutil.which(name)
+        if found:
+            return Path(found)
+    return None
+
+
+def _paper_css(paper: str) -> str:
+    size = "A4" if paper.upper() == "A4" else "Letter"
+    return (
+        "<style>\n"
+        "  @page { size: " + size + "; }\n"
+        "  html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }\n"
+        "</style>\n"
+    )
+
+
+def _ensure_html_has_page_size(html_path: Path, paper: str) -> Path:
+    content = html_path.read_text(encoding="utf-8", errors="replace")
+    lower = content.lower()
+
+    if "@page" in lower:
+        return html_path
+
+    css = _paper_css(paper).replace("; }\n", "; margin: 0; }\n", 1)
+    injected = content
+    head_idx = lower.find("<head")
+    if head_idx != -1:
+        head_close = lower.find("</head>", head_idx)
+        if head_close != -1:
+            injected = content[:head_close] + css + content[head_close:]
+        else:
+            injected = css + content
+    else:
+        injected = css + content
+
+    tmp = Path(tempfile.mkdtemp(prefix="resume_ssot_html_"))
+    out = tmp / html_path.name
+    out.write_text(injected, encoding="utf-8")
+    return out
+
+
+def _html_to_pdf(in_path: Path, out_pdf: Path, paper: str, chrome_path: Path | None) -> None:
+    chrome = chrome_path or _find_chrome()
+    if not chrome or not chrome.exists():
+        raise RuntimeError(
+            "Chrome not found. Install Google Chrome, put its executable on PATH, "
+            "or pass its path with --chrome."
+        )
+
+    in_path = _ensure_html_has_page_size(in_path, paper)
+    out_pdf.parent.mkdir(parents=True, exist_ok=True)
+
+    file_url = in_path.resolve().as_uri()
+    cmd = [
+        str(chrome),
+        "--headless=new",
+        "--disable-gpu",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-extensions",
+        f"--print-to-pdf={out_pdf.resolve()}",
+        "--no-pdf-header-footer",
+        "--print-to-pdf-no-header",
+        file_url,
+    ]
+    _run(cmd)
+
+
+def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description="Compile HTML resume to PDF (resume-ssot).")
+    parser.add_argument("--in", dest="in_path", required=True, help="Input .html/.htm")
+    parser.add_argument("--out", dest="out_pdf", required=True, help="Output PDF path")
+    parser.add_argument("--paper", choices=["A4", "Letter"], default="A4")
+    parser.add_argument(
+        "--chrome",
+        dest="chrome",
+        default="",
+        help="Optional explicit path to the Google Chrome executable",
+    )
+    args = parser.parse_args(argv)
+
+    in_path = Path(args.in_path).expanduser().resolve()
+    out_pdf = Path(args.out_pdf).expanduser().resolve()
+    if not in_path.exists():
+        raise FileNotFoundError(str(in_path))
+    if in_path.suffix.lower() not in (".html", ".htm"):
+        raise ValueError("Input must be .html or .htm")
+
+    chrome_path = Path(args.chrome) if args.chrome else None
+    _html_to_pdf(in_path, out_pdf, args.paper, chrome_path)
+    print(str(out_pdf))
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main(sys.argv[1:]))
+    except Exception as exc:
+        print(f"[resume-ssot render_pdf.py] ERROR: {exc}", file=sys.stderr)
+        raise

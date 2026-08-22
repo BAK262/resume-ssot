@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "schema_version": "2.1.0",
+    "version": "0.3.0",
+    "updated_at": "2026-01-20",
+    "owner": "林小航 / Xiaohang Lin",
+    "locale": "zh-CN",
+    "purpose": "示例经历库（虚构人物）"
+  },
+  "person": {
+    "name": { "zh": "林小航", "en": "Xiaohang Lin" },
+    "contacts": [
+      { "type": "email", "value": "xiaohang.lin@example.edu" },
+      { "type": "phone", "value": "+86 139-0000-0000" }
+    ],
+    "education": [
+      {
+        "degree": "学士",
+        "school": "示例理工大学",
+        "major": "计算机科学与技术",
+        "dates": { "start": "2021-09", "end": "2025-06" },
+        "gpa": "3.7/4.0"
+      }
+    ],
+    "availability": {
+      "start_window": "2025-07",
+      "confidence": "claimed"
+    }
+  },
+  "engagements": [
+    {
+      "id": "eng-campuslib",
+      "kind": "course_project",
+      "title": "CampusLib API",
+      "org": "示例理工大学 课程设计",
+      "dates": { "start": "2024-03", "end": "2024-06" },
+      "activities": [
+        "设计 REST API 与数据库 schema",
+        "Docker Compose 部署与压测"
+      ],
+      "tools": ["Go", "PostgreSQL", "Docker"],
+      "role_and_boundary": "组长；负责后端与部署，前端由队友实现",
+      "results": [
+        {
+          "text": "12 个 API 端点；压测 200 并发稳定",
+          "confidence": "verified",
+          "canon": "课程报告",
+          "source_ids": ["src-report"]
+        }
+      ]
+    },
+    {
+      "id": "eng-intern-be",
+      "kind": "internship",
+      "title": "后端开发实习生",
+      "org": "示例云科技有限公司",
+      "dates": { "start": "2024-07", "end": "2024-12" },
+      "activities": [
+        "订单服务拆分与集成测试",
+        "支付回调链路维护"
+      ],
+      "tools": ["Go", "PostgreSQL", "Redis"],
+      "role_and_boundary": "实习生；在 mentor 指导下改生产代码，不单独 on-call",
+      "results": [
+        {
+          "text": "核心接口 P99 420ms→180ms（内部压测）",
+          "confidence": "claimed",
+          "canon": "oral"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "pub-course",
+      "type": "publication",
+      "citation": "Lin, X. (2024). CampusLib API design report. Example University.",
+      "role": "课程报告",
+      "status": "published"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "met-latency-p99",
+      "name": "订单接口 P99 延迟",
+      "values": [
+        { "value": "180ms", "canon": "内部压测报告", "confidence": "claimed", "source_ids": ["src-report"] }
+      ]
+    }
+  ],
+  "constraints": [
+    {
+      "id": "cst-001",
+      "statement": "CampusLib 为课程团队项目，简历不写「独立开发全栈」",
+      "false_if_claimed": ["独立开发", "全栈负责人"]
+    }
+  ],
+  "term_registry": [
+    {
+      "id": "term-internal-code",
+      "term": "PROJ-2024-001",
+      "full_name_zh": "校内项目编号",
+      "plain_zh": "仅内部使用的项目编号",
+      "disclosure": "internal",
+      "external_plain_zh": ""
+    },
+    {
+      "id": "term-p99",
+      "term": "P99",
+      "full_name_zh": "第 99 百分位延迟",
+      "plain_zh": "99% 请求的响应时间上限",
+      "disclosure": "essential",
+      "external_plain_zh": "P99 延迟"
+    }
+  ],
+  "sources_index": {
+    "src-cv": { "path": "fixtures/example-resume.html", "note": "示例 HTML" },
+    "src-report": { "path": "fixtures/example-ssot.json", "note": "示例数据" }
+  },
+  "conflicts": [],
+  "provenance": { "init": "fixtures/example-ssot.json", "notes": "Demo only" },
+  "change_log": [
+    { "date": "2026-01-20", "summary": "init example fixture" }
+  ]
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>林小航 - 简历示例</title>
+    <style>
+:root { --text: #111827; --line: #d1d5db; --base: 14.5px; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 8mm 12mm; }
+body {
+    font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    color: var(--text); font-size: var(--base); line-height: 1.4;
+    width: 100%;
+}
+.header { margin-bottom: 10px; }
+h1 { font-size: 1.42em; font-weight: 700; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.name-en { font-weight: 500; font-size: 0.62em; opacity: 0.7; margin-left: 8px; }
+.interest { margin: 4px 0 5px; opacity: 0.82; font-size: 0.94em; line-height: 1.38; }
+.contact-info { display: flex; flex-direction: column; gap: 2px; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 4px 1.25em; }
+a { color: inherit; text-decoration: underline; }
+.section { margin-bottom: 7px; }
+h2 { font-size: 1.05em; font-weight: 600; margin-bottom: 2px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.item { margin-bottom: 5px; }
+.line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.date { opacity: 0.7; font-size: 0.86em; white-space: nowrap; }
+ul { padding-left: 18px; }
+li { margin: 1px 0; }
+.highlight { font-weight: 600; }
+.skills { font-size: 0.94em; margin: 1px 0; }
+@media screen { body { max-width: 186mm; margin: 16px auto; padding: 0 2px; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>林小航 <span class="name-en">Xiaohang Lin</span></h1>
+        <p class="interest">后端开发 · 分布式系统 · 开发者工具</p>
+        <div class="contact-info">
+            <div>示例理工大学 · 计算机科学 · 2025 届本科</div>
+            <div class="contact-links">
+                <span>139-0000-0000</span>
+                <a href="mailto:xiaohang.lin@example.edu">xiaohang.lin@example.edu</a>
+                <a href="https://github.com/example-dev" target="_blank">github.com/example-dev</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <h2>教育</h2>
+        <div class="line"><span><strong>示例理工大学</strong>　计算机科学与技术　学士（GPA 3.7/4.0）</span><span class="date">2021.09 – 2025.06</span></div>
+    </section>
+
+    <section class="section">
+        <h2>技能</h2>
+        <p class="skills">语言与框架：Go · Python · TypeScript；Gin · FastAPI · React（基础）</p>
+        <p class="skills">基础设施：Linux · Docker · PostgreSQL · Redis · GitHub Actions</p>
+        <p class="skills">实践：REST API 设计 · 单元/集成测试 · 日志与监控（Prometheus 基础）· 技术文档</p>
+    </section>
+
+    <section class="section">
+        <h2>工作经历</h2>
+        <div class="item">
+            <div class="line"><span><strong>后端开发实习生</strong>　示例云科技有限公司</span><span class="date">2024.07 – 2024.12</span></div>
+            <ul>
+                <li>参与订单服务重构：将单体模块拆为 3 个微服务，核心接口 P99 延迟从 <span class="highlight">420 ms 降至 180 ms</span>（内部压测，N≈5000 QPS）。</li>
+                <li>编写 40+ 集成测试用例，覆盖支付回调与库存扣减；上线后相关故障工单 <span class="highlight">减少约 30%</span>（团队口径）。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>项目</h2>
+        <div class="item">
+            <div class="line"><span><strong>CampusLib API</strong>　校内图书检索与预约后端（课程设计）</span><span class="date">2024.03 – 2024.06</span></div>
+            <ul>
+                <li>Go + PostgreSQL 实现 REST API 12 个端点；JWT 鉴权；Docker Compose 一键部署。</li>
+                <li>压测下支持 <span class="highlight">200 并发</span> 稳定响应；开源至 GitHub（<span class="highlight">★ 120+</span>，虚构数据）。</li>
+            </ul>
+        </div>
+        <div class="item">
+            <div class="line"><span><strong>config-lint</strong>　配置文件静态检查 CLI（个人开源）</span><span class="date">2023.09 – 至今</span></div>
+            <ul>
+                <li>Python 实现 YAML/JSON 规则检查；插件化规则加载；CI 友好 exit code。</li>
+                <li>PyPI 累计下载 <span class="highlight">2k+</span>；被 2 个示例大学课程仓库引用为依赖。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>其他</h2>
+        <ul>
+            <li>示例黑客松二等奖（2024）：团队负责 API 网关与限流模块</li>
+            <li>英语 CET-6（520）；可阅读英文技术文档</li>
+        </ul>
+    </section>
+</body>
+</html>

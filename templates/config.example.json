@@ -1,0 +1,8 @@
+{
+  "locale": "zh-CN",
+  "track_default": "industry",
+  "final_resume": "resumes/industry_base.html",
+  "photo": false,
+  "market": "cn",
+  "scan_roots": []
+}

@@ -1,0 +1,3 @@
+# Optional dependencies for PDF preview (HTML→PDF only needs Google Chrome)
+pymupdf>=1.24.0
+pypdf>=4.0.0

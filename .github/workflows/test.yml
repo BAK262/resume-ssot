@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run smoke tests
+        run: python tests/test_scripts.py
+
+      - name: Validate example SSOT
+        run: python scripts/validate_ssot.py fixtures/example-ssot.json
+
+      - name: Export plain text from example HTML
+        run: |
+          python scripts/export_plain.py \
+            --from-html fixtures/example-resume.html \
+            --in fixtures/example-ssot.json \
+            --out fixtures/_test_ci.txt
