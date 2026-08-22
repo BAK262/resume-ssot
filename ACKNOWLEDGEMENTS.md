@@ -1,6 +1,6 @@
 # Acknowledgements
 
-**resume-ssot** is an independent project by [Ming Li (BAK262)](https://github.com/BAK262).
+**resume-ssot** is an independent project by [BAK262](https://github.com/BAK262).
 It is **not** affiliated with, endorsed by, or maintained by the authors of the projects below.
 
 This kit **incorporates ideas and workflows** from earlier resume-related Agent Skills used during development, and **reimplements** them into a single SSOT-first package. It is **not** a direct fork of any one upstream repository.

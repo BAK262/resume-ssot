@@ -37,7 +37,7 @@ def test_export_from_html() -> None:
     )
     assert r.returncode == 0, r.stdout + r.stderr
     text = out.read_text(encoding="utf-8")
-    assert "工作经历" in text
+    assert "项目" in text
     assert "不负责后端" not in text
     assert "PROJ-2024-001" not in text
     out.unlink(missing_ok=True)

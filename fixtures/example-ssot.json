@@ -1,8 +1,8 @@
 {
   "meta": {
     "schema_version": "2.1.0",
-    "version": "0.3.0",
-    "updated_at": "2026-01-20",
+    "version": "0.4.0",
+    "updated_at": "2026-01-22",
     "owner": "林小航 / Xiaohang Lin",
     "locale": "zh-CN",
     "purpose": "示例经历库（虚构人物）"
@@ -11,115 +11,232 @@
     "name": { "zh": "林小航", "en": "Xiaohang Lin" },
     "contacts": [
       { "type": "email", "value": "xiaohang.lin@example.edu" },
-      { "type": "phone", "value": "+86 139-0000-0000" }
+      { "type": "phone", "value": "+86 139-0000-0000" },
+      { "type": "github", "value": "https://github.com/example-dev" },
+      { "type": "orcid", "value": "0000-0000-0000-0001" }
     ],
     "education": [
       {
-        "degree": "学士",
-        "school": "示例理工大学",
-        "major": "计算机科学与技术",
-        "dates": { "start": "2021-09", "end": "2025-06" },
-        "gpa": "3.7/4.0"
+        "degree": "直博",
+        "school": "示例理工大学 计算机学院",
+        "major": "计算机科学",
+        "dates": { "start": "2020-09", "end": null },
+        "note": "预计 2027-06 答辩；2027 夏/秋可入职"
+      },
+      {
+        "degree": "工学学士",
+        "school": "示例理工大学 软件学院",
+        "major": "软件工程",
+        "dates": { "start": "2016-09", "end": "2020-06" },
+        "thesis": "校园网边缘节点异常流量检测"
       }
     ],
+    "research_interests": "分布式系统与平台工程 · 高可用后端 · 开源基础设施",
     "availability": {
-      "start_window": "2025-07",
+      "start_window": "2027-07",
       "confidence": "claimed"
     }
   },
   "engagements": [
     {
-      "id": "eng-campuslib",
-      "kind": "course_project",
-      "title": "CampusLib API",
-      "org": "示例理工大学 课程设计",
-      "dates": { "start": "2024-03", "end": "2024-06" },
+      "id": "eng-iot-grant",
+      "kind": "grant_delivery",
+      "title": "城市物联网数据汇聚与实时告警平台",
+      "org": "省部级重点研发计划子课题",
+      "dates": { "start": "2024-07", "end": "2026-06" },
       "activities": [
-        "设计 REST API 与数据库 schema",
-        "Docker Compose 部署与压测"
+        "对照实验设计（批量回放 vs 实时流）",
+        "采集 Agent 与网关联调",
+        "离线验收包封装与第三方测评组织"
       ],
-      "tools": ["Go", "PostgreSQL", "Docker"],
-      "role_and_boundary": "组长；负责后端与部署，前端由队友实现",
+      "tools": ["Go", "Kafka", "Kubernetes", "Prometheus", "OpenTelemetry"],
+      "role_and_boundary": "三人后端组技术总负责；兼委托方对接；不写「独立承担全栈」",
       "results": [
         {
-          "text": "12 个 API 端点；压测 200 并发稳定",
+          "text": "融合规则引擎准确率 94.2%；128 节点联调；时钟同步第三方复核均值 9.6 ms",
           "confidence": "verified",
-          "canon": "课程报告",
-          "source_ids": ["src-report"]
+          "canon": "结题验收报告",
+          "source_ids": ["src-acceptance"]
         }
       ]
     },
     {
-      "id": "eng-intern-be",
-      "kind": "internship",
-      "title": "后端开发实习生",
-      "org": "示例云科技有限公司",
-      "dates": { "start": "2024-07", "end": "2024-12" },
+      "id": "eng-openmesh",
+      "kind": "phd_core",
+      "title": "OpenMesh",
+      "org": "博士课题主仓库（独立于子课题）",
+      "dates": { "start": "2023-12", "end": null },
       "activities": [
-        "订单服务拆分与集成测试",
-        "支付回调链路维护"
+        "Go 控制面 + etcd 配置版本与审计",
+        "47 试点节点接入与运维培训",
+        "Zenodo / GitHub 开源发布"
       ],
-      "tools": ["Go", "PostgreSQL", "Redis"],
-      "role_and_boundary": "实习生；在 mentor 指导下改生产代码，不单独 on-call",
+      "tools": ["Go", "etcd", "gRPC", "Docker"],
+      "role_and_boundary": "第一作者；负责架构、实现与数据采集",
       "results": [
         {
-          "text": "核心接口 P99 420ms→180ms（内部压测）",
+          "text": "HTTP/gRPC 双协议下发；配置 diff 与灰度批次可审计",
+          "confidence": "verified",
+          "canon": "开源仓库 README",
+          "source_ids": ["src-openmesh"]
+        }
+      ]
+    },
+    {
+      "id": "eng-llm-cost",
+      "kind": "collaboration",
+      "title": "大模型推理服务成本优化",
+      "org": "示例理工大学 × 示例 AI Lab",
+      "dates": { "start": "2021-11", "end": "2024-11" },
+      "activities": [
+        "线上 A/B 实验设计",
+        "动态批大小与队列优先级策略",
+        "压测、成本建模与论文共笔"
+      ],
+      "tools": ["Python", "vLLM", "Prometheus", "Kubernetes"],
+      "role_and_boundary": "发起跨组合作；模型侧由合作方实现；本人负责实验与统计",
+      "results": [
+        {
+          "text": "同等 SLA 下 GPU 小时成本下降 38%",
+          "confidence": "verified",
+          "canon": "Example Systems Letters 2024",
+          "source_ids": ["src-pub-1"]
+        }
+      ]
+    },
+    {
+      "id": "eng-undergrad-iot",
+      "kind": "undergrad_grant",
+      "title": "校园网异常流量检测",
+      "org": "校级本科生科研资助",
+      "dates": { "start": "2018-11", "end": "2020-03" },
+      "activities": [
+        "12 维流量特征抽取守护进程",
+        "CentOS 6 兼容部署与网管培训",
+        "校内对照采集"
+      ],
+      "tools": ["Python", "Scapy", "MATLAB"],
+      "role_and_boundary": "项目负责人；主持 8 万元资助",
+      "results": [
+        {
+          "text": "异常会话召回约 72%；软件著作权 2019SR0000001",
           "confidence": "claimed",
-          "canon": "oral"
+          "canon": "结题报告"
         }
       ]
     }
   ],
   "outputs": [
     {
-      "id": "pub-course",
+      "id": "pub-1",
       "type": "publication",
-      "citation": "Lin, X. (2024). CampusLib API design report. Example University.",
-      "role": "课程报告",
+      "citation": "Lin, X., Chen, Y., Wang, H., et al. (2024). Batch-aware scheduling causally reduces LLM inference cost under fixed SLA. Example Systems Letters, 8(2), 45–52.",
+      "role": "共同一作",
       "status": "published"
+    },
+    {
+      "id": "pub-2",
+      "type": "publication",
+      "citation": "Lin, X., Zhao, L., Chen, S., & Example, A. (2023). Edge gateway config drift detection in multi-tenant IoT deployments. IEEE ICNSC, 112–118.",
+      "role": "第一作者",
+      "status": "published"
+    },
+    {
+      "id": "pub-3",
+      "type": "publication",
+      "citation": "Example, B., Example, C., Lin, X., & Chen, S. (2025). Utilizing eBPF probes for zero-instrument latency profiling. Example Journal of Systems, 12(3), 301–315.",
+      "role": "参与作者",
+      "status": "published"
+    },
+    {
+      "id": "pub-4",
+      "type": "publication",
+      "citation": "Lin, X., et al. OpenMesh: A reproducible toolkit for edge configuration sync and staged rollout. IEEE Transactions on Network and Service Management.",
+      "role": "第一作者",
+      "status": "submitted"
+    },
+    {
+      "id": "pub-5",
+      "type": "publication",
+      "citation": "Lin, X.#, Example, G.#, Chen, S., & Example, H. Hierarchical alerting under partial observability in city-scale IoT.",
+      "role": "共一第二",
+      "status": "working_paper"
+    },
+    {
+      "id": "honor-sw",
+      "type": "honor",
+      "citation": "软件著作权 2019SR0000001（校园网异常流量检测系统）",
+      "status": "granted"
+    },
+    {
+      "id": "svc-ta",
+      "type": "teaching",
+      "citation": "助教：《分布式系统原理》（2022 秋–2023 秋）；《云计算工程实践》（2022 春）",
+      "status": "completed"
     }
   ],
   "metrics": [
     {
-      "id": "met-latency-p99",
-      "name": "订单接口 P99 延迟",
+      "id": "met-alert-acc",
+      "name": "融合规则引擎准确率",
       "values": [
-        { "value": "180ms", "canon": "内部压测报告", "confidence": "claimed", "source_ids": ["src-report"] }
+        { "value": "94.2%", "canon": "结题验收", "confidence": "verified", "source_ids": ["src-acceptance"] }
+      ]
+    },
+    {
+      "id": "met-clock-sync",
+      "name": "多设备时钟同步偏差",
+      "values": [
+        { "value": "9.6 ms", "canon": "第三方测评", "confidence": "verified", "source_ids": ["src-acceptance"] }
+      ]
+    },
+    {
+      "id": "met-gpu-cost",
+      "name": "GPU 小时成本降幅",
+      "values": [
+        { "value": "38%", "canon": "Example Systems Letters 2024", "confidence": "verified", "source_ids": ["src-pub-1"] }
       ]
     }
   ],
   "constraints": [
     {
       "id": "cst-001",
-      "statement": "CampusLib 为课程团队项目，简历不写「独立开发全栈」",
+      "statement": "IoT 子课题为团队交付，简历不写「独立承担全栈」",
       "false_if_claimed": ["独立开发", "全栈负责人"]
+    },
+    {
+      "id": "cst-002",
+      "statement": "LLM 合作项目中模型侧实现由合作方完成，本人负责实验设计与统计分析",
+      "false_if_claimed": ["独立完成模型训练", "主导算法实现"]
     }
   ],
   "term_registry": [
     {
       "id": "term-internal-code",
       "term": "PROJ-2024-001",
-      "full_name_zh": "校内项目编号",
-      "plain_zh": "仅内部使用的项目编号",
+      "full_name_zh": "课题内部编号",
+      "plain_zh": "仅内部使用的课题编号",
       "disclosure": "internal",
       "external_plain_zh": ""
     },
     {
-      "id": "term-p99",
-      "term": "P99",
-      "full_name_zh": "第 99 百分位延迟",
-      "plain_zh": "99% 请求的响应时间上限",
+      "id": "term-sla",
+      "term": "SLA",
+      "full_name_zh": "服务等级协议",
+      "plain_zh": "延迟与可用性承诺指标",
       "disclosure": "essential",
-      "external_plain_zh": "P99 延迟"
+      "external_plain_zh": "SLA"
     }
   ],
   "sources_index": {
     "src-cv": { "path": "fixtures/example-resume.html", "note": "示例 HTML" },
-    "src-report": { "path": "fixtures/example-ssot.json", "note": "示例数据" }
+    "src-acceptance": { "path": "fixtures/example-ssot.json", "note": "虚构验收数据" },
+    "src-openmesh": { "path": "https://github.com/example-dev/openmesh", "note": "虚构仓库" },
+    "src-pub-1": { "path": "fixtures/example-ssot.json", "note": "虚构发表" }
   },
   "conflicts": [],
-  "provenance": { "init": "fixtures/example-ssot.json", "notes": "Demo only" },
+  "provenance": { "init": "fixtures/example-ssot.json", "notes": "Demo only — all entities fictional" },
   "change_log": [
-    { "date": "2026-01-20", "summary": "init example fixture" }
+    { "date": "2026-01-22", "summary": "Expand example to industry-reserve depth" }
   ]
 }

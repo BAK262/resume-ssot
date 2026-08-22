@@ -1,6 +1,6 @@
 ---
 name: resume-ssot
-version: "2.5.0"
+version: "2.5.1"
 description: >-
   Tailor resumes to job descriptions (JD); maintain a career archive; export HTML, PDF, and ATS plain text.
   改简历、按 JD 定制、投递版、实习简历、产业/学术简历。用户贴 JD 或旧 CV 即可。

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.5.1 (2026-08-22)
+
+- Expand fictional example resume to full industry-reserve depth (education, skills, projects, publications, other)
+- Match example-ssot.json to the HTML fixture
+- Copyright and acknowledgements under BAK262
+
 ## 2.5.0 (2026-08-22)
 
 Public release of **resume-ssot**: SSOT-first Agent Skill for career archives and JD-tailored resumes (HTML / PDF / plain text).

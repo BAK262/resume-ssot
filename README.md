@@ -56,7 +56,7 @@ npx skills add BAK262/resume-ssot --agent cursor -g -y
 
 浏览器打开 [fixtures/example-resume.html](fixtures/example-resume.html) 或 [在线预览](https://bak262.github.io/resume-ssot/fixtures/example-resume.html)。
 
-完全虚构的本科后端方向储备简历：实习量化、课程项目、开源 CLI、一页排版。用于展示本 skill 的产出形态，**不对应任何真实个人**。
+完全虚构的博士产业储备简历：双学历、三段技能、四个重点项目、发表与其他区块，bullet 含量化指标与边界说明。用于展示本 skill 的产出形态，**不对应任何真实个人**。
 
 ---
 
