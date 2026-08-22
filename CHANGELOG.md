@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.6.3 (2026-08-22)
+
+- README.en.md: full accurate translation of README.md
+- Remove QUICKSTART.md (content lives in README)
+
 ## 2.6.2 (2026-08-22)
 
 - README badges: MIT License, GitHub stars, language switch (README.en.md)
