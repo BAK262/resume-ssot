@@ -1,6 +1,8 @@
 # 聊出来的经历，按岗位出一页简历
 
-[看示例排版](https://bak262.github.io/resume-ssot/fixtures/example-resume.html) · [安装](#安装只需一次) · Cursor / Claude Code / Codex
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/BAK262/resume-ssot?style=flat&logo=github&label=stars&color=181717)](https://github.com/BAK262/resume-ssot/stargazers)
+[![English](https://img.shields.io/badge/lang-English-555?style=flat)](README.en.md)
 
 **在 Cursor、Claude Code 或 Codex 里做简历，不用每次从零讲起。** 像聊天一样补齐教育、实习和项目，AI 先把内容记在**经历素材库**里（保存在你的文件夹，不用自己打开那些文件）。之后每投一家公司，粘贴**岗位说明**（招聘页面上的职位介绍与要求），从真实经历里挑重点，生成**只占一页**的简历，并导出 **HTML · PDF · 可复制到招聘网站的纯文本**。
 
@@ -138,34 +140,6 @@ Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
 **要读仓库里其他文件吗？** 不用。`agent/`、`scripts/` 是给 AI 读的。
 
 **装不上怎么办？** 见 [agent/INSTALL.md](agent/INSTALL.md)。手动安装路径：Cursor `~/.cursor/skills/resume-ssot/` · Claude Code `~/.claude/skills/resume-ssot/` · Codex `~/.codex/skills/resume-ssot/`（以各产品文档为准）。
-
-</details>
-
-<details>
-<summary><strong>English — Install &amp; use</strong></summary>
-
-**Install**
-
-```text
-Install https://github.com/BAK262/resume-ssot into my global skills directory.
-I use: Cursor (or Claude Code / Codex — pick one).
-Tell me if it succeeded; if not, follow agent/INSTALL.md in the repo.
-```
-
-**Start from scratch**
-
-```text
-Help me build a resume. Workspace: D:\career\. No existing files. Target: backend intern role.
-Ask me about education, internships, and projects. Build a career archive first, then a base HTML resume.
-Ask before inventing any numbers.
-```
-
-**Tailor to a job posting**
-
-```text
-Workspace: D:\career\. Base resume: D:\career\base.html. Job posting: [paste full description and requirements].
-One-page tailored HTML + PDF + plain text.
-```
 
 </details>
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.2 (2026-08-22)
+
+- README badges: MIT License, GitHub stars, language switch (README.en.md)
+
 ## 2.6.1 (2026-08-22)
 
 - README header: replace shield badges with plain preview and install links
