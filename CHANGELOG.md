@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.10.1 (2026-08-27)
+
+- Job-match step 3: audit for **interview-screen fit** (LLM reads JD requirements + user standards), not keyword/story relevance; no rigid drop checklist
+
 ## 2.10.0 (2026-08-27)
 
 - Privacy: real layout reference lives in the career workspace (e.g. `_private/`), not the skill package; public golden is `fixtures/example-*` only

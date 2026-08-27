@@ -1,6 +1,6 @@
 ---
 name: resume-ssot
-version: "2.10.0"
+version: "2.10.1"
 description: >-
   Career archive + JD-tailored resumes (HTML/PDF/plain); official job match; application tracker;
   positioning / HR pitch baked into resume rules; interview predict-grill-review.
