@@ -1,10 +1,10 @@
-# 聊出来的经历，按岗位出一页简历
+﻿# 聊出来的经历，按岗位出一页简历
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/BAK262/resume-ssot?style=flat&logo=github&label=stars&color=181717)](https://github.com/BAK262/resume-ssot/stargazers)
 [![English](https://img.shields.io/badge/lang-English-555?style=flat)](README.en.md)
 
-**在 Cursor、Claude Code 或 Codex 里做简历，不用每次从零讲起。** 像聊天一样补齐教育、实习和项目，AI 先把内容记在**经历素材库**里（保存在你的文件夹，不用自己打开那些文件）。之后每投一家公司，粘贴**岗位说明**（招聘页面上的职位介绍与要求），从真实经历里挑重点，生成**只占一页**的简历，并导出 **HTML · PDF · 可复制到招聘网站的纯文本**。
+**在 Cursor、Claude Code 或 Codex 里做简历，不用每次从零讲起。** 像聊天一样补齐教育、实习和项目，AI 先把内容记在**经历档案**里（保存在你的文件夹，不用自己打开那些文件）。之后每投一家公司，粘贴**岗位说明**（招聘页面上的职位介绍与要求），从真实经历里挑重点，生成**只占一页**的简历，并导出 **HTML · PDF · 可复制到招聘网站的纯文本**。
 
 > **经历存事实 → 通用版是底稿 → 投递版按岗位裁剪。** 换公司不丢经历，数字说不清就先问，**不替你编。**
 
@@ -32,13 +32,13 @@
 
 | 文件 | 用途 |
 |------|------|
-| 经历素材库 | AI 在后台维护的事实记录，换岗位不用重讲 |
+| 经历档案 | AI 在后台维护的事实记录，换岗位不用重讲 |
 | 通用版 HTML | 不针对某一公司的基础简历 |
 | 投递版 HTML | 针对某一岗位压缩后的一页排版 |
 | 同名 PDF | 邮件附件 |
 | 同名 `.txt` | 复制到招聘网站表单 |
 
-说「**改简历 / 做投递版 / 更新经历**」即可，**不必记包名**。
+说「**改简历 / 做投递版 / 更新经历 / 搜可投岗位 / 记投递进度 / 写开场白 / 模拟面试**」即可，**不必记包名**。
 
 ---
 
@@ -49,7 +49,7 @@
 ```text
 帮我把 https://github.com/BAK262/resume-ssot 安装到全局 skills 目录。
 我用的工具是：Cursor（也可改成 Claude Code 或 Codex）
-装完告诉我是否成功；若失败，按仓库里的 agent/INSTALL.md 逐步执行。
+装完告诉我是否成功；失败则按下方路径表手动放入完整文件夹后重试。
 ```
 
 **或者 · 一行命令（Cursor）**
@@ -58,7 +58,13 @@
 npx skills add BAK262/resume-ssot --agent cursor -g -y
 ```
 
-Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
+**手动安装路径（整夹复制，须含 SKILL.md）**
+
+| 工具 | 路径 |
+|------|------|
+| Cursor | `~/.cursor/skills/resume-ssot/`（Windows：`%USERPROFILE%\.cursor\skills\resume-ssot\`） |
+| Claude Code | `~/.claude/skills/resume-ssot/` 或项目内 `.claude/skills/resume-ssot/` |
+| Codex | `~/.codex/skills/resume-ssot/` 或 `~/.agents/skills/resume-ssot/` |
 
 **装好后，用这句话自测：**
 
@@ -66,8 +72,6 @@ Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
 帮我做简历。工作区：D:\career\（请改成你的文件夹）。
 测试一下 resume-ssot 是否安装成功；成功的话告诉我接下来怎么从零开始。
 ```
-
-装不上 → [agent/INSTALL.md](agent/INSTALL.md)
 
 ---
 
@@ -80,7 +84,7 @@ Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
 ```text
 帮我做简历。工作区：D:\career\。
 我没有现成简历，目标岗位是后端开发实习。你问我答，慢慢聊我的教育、实习和项目。
-先建立经历素材库，再生成通用版 HTML 保存到工作区。数字不确定的先问我，不要编造。
+先建立经历档案，再生成通用版 HTML 保存到工作区。数字不确定的先问我，不要编造。
 ```
 
 ### B · 已有通用版，要投某一岗位（日常最常用）
@@ -92,11 +96,42 @@ Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
 请做一页投递版，文件名用公司简称；对齐岗位说明里的关键词；尽量导出 PDF 和纯文本。
 ```
 
-### C · 经历有更新，同步素材库和通用版
+### C · 经历有更新，同步经历档案和通用版
 
 ```text
 工作区：D:\career\。我新增了三个月实习，细节如下：[粘贴或口述]。
-请更新经历素材库，并同步改通用版 HTML 的工作经历部分。
+请更新经历档案，并同步改通用版 HTML 的工作经历部分。
+```
+
+### D · 按经历搜官网可投岗位（可投岗位表）
+
+```text
+工作区：D:\career\。请根据我的经历档案，去各公司招聘官网检索适配岗位。
+硬过滤：[城市，例如北京]；入职窗口：[例如 2027 夏/秋]。
+只收录官网能打开的岗位详情；写进可投岗位表。选定后再做投递版简历。
+```
+
+### E · 更新投递进度
+
+```text
+工作区：D:\career\。把下面进展记进投递进度表：
+公司：【】岗位：【】状态：【已投递/一面/…】证据：【邮件或截图要点】
+若已有投递版简历，从可投岗位表移出对应条目。
+```
+
+### F · 岗位定位 / 要点 / HR 开场白（可先不出文件）
+
+```text
+工作区：D:\career\。目标岗位：【】。
+请根据经历档案给岗位定位，改写 2–4 条要点，并给 Boss/微信短开场白（约 120 字）。
+数字不确定的标出来，不要编造。若接着做投递版，直接用这些要点。
+```
+
+### G · 面试预测或追问
+
+```text
+工作区：D:\career\。投递版：【路径或岗位名】。JD：【粘贴或省略】。
+请预测高概率面试题；或进入追问模式，一次只问一个问题，把简历主张问透。
 ```
 
 ---
@@ -105,11 +140,14 @@ Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
 
 | 文件 | 检查什么 |
 |------|----------|
-| 投递版 HTML | 浏览器打开，确认一页、无错字 |
+| 投递版 HTML | 浏览器打开，确认一页、无错字；强数字能讲清口径 |
 | 同名 `.txt` | 复制到招聘网站表单 |
 | 同名 `.pdf` | 作附件（没有则 HTML → 打印 → 另存 PDF） |
+| 可投岗位表 | 链接能打开官网 JD；可用「删除」隐藏候选（定稿/投递由 AI 自动移入进度表） |
+| 投递进度表 | 状态与证据一致；与可投表不重复同一岗；AI 写入后刷新/重开可见 |
+| 面试准备 | 对本稿高风险主张口头答过一轮追问 |
 
-对话里若出现「经历档案」「ssot.json」等文件名 — **忽略即可**，AI 维护，不用打开。
+对话里若出现内部文件名 — **忽略即可**，经历档案由 AI 维护，不用打开。
 
 ---
 
@@ -117,7 +155,7 @@ Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
 
 | | ChatGPT 直接写 | 本工具 |
 |--|----------------|--------|
-| 经历 | 每次从零讲 | **经历素材库**持久保存，换岗位不丢事实 |
+| 经历 | 每次从零讲 | **经历档案**持久保存，换岗位不丢事实 |
 | 输出 | 一段文字 | **HTML + PDF + 纯文本**，控制在一页 |
 | 诚信 | 易编造数字 | 不确定就说「大约」，**不替你编** |
 | 复杂背景 | 难维护多段实习/项目 | 会记**边界说明**，方便和面试对齐 |
@@ -131,15 +169,15 @@ Claude Code、Codex 的安装路径见 [agent/INSTALL.md](agent/INSTALL.md)。
 
 **数字记不清？** 说「大约」或「不确定」，AI 不会替你编造。
 
-**要装 Python 吗？** 不必须。PDF 可用浏览器打印；有 Python 时 AI 可能自动导出。
+**要装 Python 吗？** 校验经历档案、自动导出 PDF 需要 Python；没有则用浏览器打开 HTML → 打印 → 另存 PDF。
 
 **网申要 Word？** 用 `.txt`，Word 打开后另存为 `.docx`。
 
 **要照片吗？** 默认不要。国内少数岗位需要时告诉 AI 即可。
 
-**要读仓库里其他文件吗？** 不用。`agent/`、`scripts/` 是给 AI 读的。
+**要读仓库里其他文件吗？** 不用。给 AI 用的说明在安装目录里，你只需复制本页话术。
 
-**装不上怎么办？** 见 [agent/INSTALL.md](agent/INSTALL.md)。手动安装路径：Cursor `~/.cursor/skills/resume-ssot/` · Claude Code `~/.claude/skills/resume-ssot/` · Codex `~/.codex/skills/resume-ssot/`（以各产品文档为准）。
+**装不上怎么办？** 按上文「手动安装路径」把完整仓库文件夹放进去（须含 `SKILL.md`），再跑自测话术。
 
 </details>
 

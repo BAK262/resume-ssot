@@ -10,7 +10,7 @@ This kit **incorporates ideas and workflows** from earlier resume-related Agent 
 | Source | What influenced this project | Status |
 |--------|------------------------------|--------|
 | [**resume-master**](https://github.com/wangyafu/resume-skills/tree/main/skills/resume-master) (in [wangyafu/resume-skills](https://github.com/wangyafu/resume-skills)) | HTML-first resume delivery, resume writing norms, Chrome headless PDF pipeline | Workflows merged; PDF scripts adapted (see below) |
-| [**ASu Resume Skills**](https://github.com/Claycui828/ASu-resume-skills) | JD-oriented tailoring, evidence-aware scope/role framing, audit-minded resume review | Concepts merged into `agent/rules/` and HR self-check |
+| [**ASu Resume Skills**](https://github.com/Claycui828/ASu-resume-skills) | JD tailoring, evidence/scope, tracker, packaging, interview grill | Essence in `workflows/resume`+`rules`, `offer`, `interview`, claim-ledger |
 
 ## Adapted code
 

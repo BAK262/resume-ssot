@@ -79,7 +79,7 @@
 
 ## 硬规则
 
-**禁止写入 SSOT**：JD bullet、skills 聚合、投递状态、包装话术。
+**禁止写入 SSOT**：JD bullet、skills 聚合、投递状态、包装话术、可投岗位表条目。
 
 JD 只存在于：HTML 文件、对话选材表、可选 `config.json`。
 

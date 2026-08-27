@@ -1,8 +1,17 @@
-{
+﻿{
   "locale": "zh-CN",
   "track_default": "industry",
   "final_resume": "resumes/industry_base.html",
   "photo": false,
   "market": "cn",
-  "scan_roots": []
+  "scan_roots": [],
+  "job_match": {
+    "board": "offers/job-match-industry.html",
+    "scratch": "offers/_scratch",
+    "hard_filters": {
+      "cities": [],
+      "start_window": "",
+      "notes": "空则从经历档案推断，搜前与用户确认"
+    }
+  }
 }

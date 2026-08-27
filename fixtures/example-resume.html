@@ -60,9 +60,9 @@ h1 { page-break-after: avoid; }
 
     <section class="section">
         <h2>技能</h2>
-        <p class="skills">系统与后端：Go · Rust · gRPC · Kafka · Kubernetes · 服务网格（Istio 基础）· 微服务拆分、限流与熔断治理；Linux 生产环境部署与现场联调。</p>
-        <p class="skills">数据与可靠性：PostgreSQL · Redis · ClickHouse · OpenTelemetry 分布式追踪 · 混沌工程（Litmus）· 性能 profiling（pprof · flamegraph）· 容量规划与压测脚本。</p>
-        <p class="skills">工程与交付：GitHub Actions / Argo CD 流水线 · Prometheus + Grafana 可观测性栈 · 委托方与第三方测评对接 · 离线验收包封装 · Git / GitHub / Zenodo 开源发布。</p>
+        <p class="skills">系统与后端：Go · gRPC · Kafka · Kubernetes · Linux 联调与部署。</p>
+        <p class="skills">数据与可观测：PostgreSQL · Redis · Prometheus / Grafana · OpenTelemetry。</p>
+        <p class="skills">工程交付：GitHub Actions · 委托方/测评对接 · 离线验收包 · GitHub / Zenodo 开源发布。</p>
     </section>
 
     <section class="section">
@@ -70,28 +70,28 @@ h1 { page-break-after: avoid; }
         <div class="item">
             <div class="line"><span><strong>省部级重点研发计划子课题</strong>　城市物联网数据汇聚与实时告警平台</span><span class="date">2024.07 – 2026.06</span></div>
             <ul>
-                <li>面向城域边缘节点上报场景：负责对照实验设计（批量回放 vs 实时流）、核心告警规则集筛选、采集 Agent 与网关联调；三人后端组<span class="highlight">技术总负责</span>兼委托方对接，统筹单节点 / 集群级指标整合与离线验收包封装；结题材料与第三方测评组织。</li>
-                <li>结题验收：六类设备告警，30 s 窗 / 10 s 步长，跨站点识别。融合规则引擎准确率 <span class="highlight">94.2%</span>（单节点日志 89.1%，仅心跳 ≈41%）；10% 链路丢包后融合 90.6%。完整联调样本 128 节点；多设备时钟同步第三方复核均值 <span class="highlight">9.6 ms</span>。交付离线验收包（实时大屏演示另述）。</li>
+                <li>面向城域边缘节点上报：负责对照实验设计、核心告警规则筛选、采集 Agent 与网关联调；三人后端组<span class="highlight">技术总负责</span>兼委托方对接，统筹验收材料与第三方测评。</li>
+                <li>结题验收：六类设备告警，跨站点识别。融合规则引擎准确率 <span class="highlight">94.2%</span>（结题口径）；完成多站点联调与离线验收包交付，时钟同步由第三方复核通过。</li>
             </ul>
         </div>
         <div class="item">
             <div class="line"><span><strong>OpenMesh</strong>　开源边缘网关配置同步与灰度发布工具（博士课题主仓库，独立于上述子课题）</span><span class="date">2023.12 – 至今</span></div>
             <ul>
-                <li>三环境（开发 / 预发 / 生产）配置漂移检测与一键回滚范式。从零搭建 Go 控制面 + etcd 存储（配置版本 + 审计日志 + 节点心跳）；完成 47 个试点节点全量接入与现场运维培训。</li>
+                <li>三环境配置漂移检测与一键回滚。搭建 Go 控制面 + etcd（配置版本、审计日志、节点心跳）；完成试点节点接入与现场运维培训。</li>
                 <li>支持 HTTP/gRPC 双协议下发；配置 diff 与灰度批次可审计。数据与代码已开源（<a href="https://doi.org/10.5281/zenodo.00000001" target="_blank">Zenodo</a> · <a href="https://github.com/example-dev/openmesh" target="_blank">GitHub</a>）。工具论文第一作者投稿 <em>IEEE Transactions on Network and Service Management</em>。</li>
             </ul>
         </div>
         <div class="item">
             <div class="line"><span><strong>大模型推理服务成本优化</strong>（示例理工 × 示例 AI Lab 跨组合作）</span><span class="date">2021.11 – 2024.11</span></div>
             <ul>
-                <li>发起跨组合作：设计线上 A/B 实验评估 batch 调度与 KV-cache 复用；提出动态批大小与队列优先级策略；合作方在 vLLM 分支上完成推理侧实现，本人完成全部压测、成本建模与初稿共笔。</li>
-                <li><span class="highlight">共同一作 · 示例系统顶会短文</span>（2024）。同等 SLA 下 GPU 小时成本下降 38%，与离线 trace 预测一致。</li>
+                <li>发起跨组合作：设计线上 A/B 评估 batch 调度与 KV-cache 复用；提出动态批大小与队列优先级策略；合作方在 vLLM 分支完成推理侧实现，本人完成压测、成本建模与初稿共笔。</li>
+                <li><span class="highlight">共同一作 · 示例系统顶会短文</span>（2024）。在同等 SLA 约束下验证 GPU 成本下降，结果与离线 trace 预测方向一致。</li>
             </ul>
         </div>
         <div class="item">
             <div class="line"><span><strong>校园网异常流量检测</strong>（本科科创 · 行为日志分析系统）</span><span class="date">2018.11 – 2020.03</span></div>
             <ul>
-                <li>主持校级本科生科研资助（8 万元）：Python / Scapy 实现 12 维流量特征抽取，打包为独立采集守护进程；两校区机房 CentOS 6 兼容部署、网管培训代采 + 校内对照（176 + 92）；异常会话召回约 72%。获软件著作权（2019SR0000001，虚构编号）。</li>
+                <li>主持校级本科生科研资助：Python / Scapy 实现流量特征抽取守护进程；两校区机房兼容部署与网管培训代采；校内对照采集后完成异常会话检测原型。获软件著作权（虚构编号）。</li>
             </ul>
         </div>
     </section>

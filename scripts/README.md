@@ -6,7 +6,7 @@
 
 | 组件 | 必需？ | 说明 |
 |------|--------|------|
-| Python | 是 | 3.10+ |
+| Python | 校验 / 自动 PDF / plain 导出时 | 3.10+；无 Python 时用户可浏览器打印 HTML→PDF |
 | Google Chrome | PDF 时 | headless 渲染 HTML → PDF |
 | `pypdf` / `pymupdf` | 否 | 预览 PNG 与页数统计；`pip install -r scripts/requirements-pdf.txt` |
 

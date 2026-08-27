@@ -38,7 +38,7 @@
 | Matching PDF | Email attachment |
 | Matching `.txt` | Paste into online application forms |
 
-Say **“update my resume / make an application version / update my experience”**—**no need to remember the package name**.
+Say **“update my resume / make an application version / update my experience / search open roles / log application progress”**—**no need to remember the package name**.
 
 ---
 
@@ -49,7 +49,7 @@ Say **“update my resume / make an application version / update my experience�
 ```text
 Install https://github.com/BAK262/resume-ssot into my global skills directory.
 I use: Cursor (change to Claude Code or Codex if needed)
-Tell me if it succeeded; if not, follow agent/INSTALL.md in the repo step by step.
+Tell me if it succeeded; on failure, place the full folder using the path table below and retry.
 ```
 
 **Or · one-line command (Cursor)**
@@ -58,7 +58,13 @@ Tell me if it succeeded; if not, follow agent/INSTALL.md in the repo step by ste
 npx skills add BAK262/resume-ssot --agent cursor -g -y
 ```
 
-Install paths for Claude Code and Codex: [agent/INSTALL.md](agent/INSTALL.md).
+**Manual install paths (copy the whole folder; must include SKILL.md)**
+
+| Tool | Path |
+|------|------|
+| Cursor | `~/.cursor/skills/resume-ssot/` (Windows: `%USERPROFILE%\.cursor\skills\resume-ssot\`) |
+| Claude Code | `~/.claude/skills/resume-ssot/` or project `.claude/skills/resume-ssot/` |
+| Codex | `~/.codex/skills/resume-ssot/` or `~/.agents/skills/resume-ssot/` |
 
 **After install, self-test with:**
 
@@ -66,8 +72,6 @@ Install paths for Claude Code and Codex: [agent/INSTALL.md](agent/INSTALL.md).
 Help me build a resume. Workspace: D:\career\ (change to your folder).
 Test whether resume-ssot is installed; if yes, tell me how to start from scratch.
 ```
-
-Install issues → [agent/INSTALL.md](agent/INSTALL.md)
 
 ---
 
@@ -99,17 +103,51 @@ Workspace: D:\career\. I added a 3-month internship; details: [paste or describe
 Update the career archive and sync the work experience section in base HTML.
 ```
 
+### D · Search official open roles (job board)
+
+```text
+Workspace: D:\career\. Using my career archive, search each company’s official careers site for matching roles.
+Hard filters: [city, e.g. Beijing]; start window: [e.g. Summer/Fall 2027].
+Only keep roles with openable official JD pages; write them into the open-roles board. Then make a tailored resume for the ones I pick.
+```
+
+### E · Update application tracker
+
+```text
+Workspace: D:\career\. Log this progress into the application tracker:
+Company: [] Role: [] Status: [applied / interview / …] Evidence: [email or screenshot notes]
+If a tailored resume already exists, remove the matching row from the open-roles board.
+```
+
+### F · Positioning / bullets / HR pitch (chat-first OK)
+
+```text
+Workspace: D:\career\. Target role: [].
+Using the career archive, propose positioning, rewrite 2–4 bullets, and a short Boss/WeChat pitch (~120 chars/words).
+Flag uncertain numbers; do not invent them. If we make a tailored resume next, reuse these bullets.
+```
+
+### G · Interview predict or grill
+
+```text
+Workspace: D:\career\. Tailored resume: [path or role]. JD: [paste or skip].
+Predict likely interview questions; or grill mode—one question at a time—to pressure-test resume claims.
+```
+
 ---
 
 ## After your first success, check these
 
 | File | What to verify |
 |------|----------------|
-| Tailored HTML | Open in browser; one page, no typos |
+| Tailored HTML | Open in browser; one page, no typos; you can explain strong metrics |
 | Matching `.txt` | Paste into application forms |
 | Matching `.pdf` | Use as attachment (or HTML → Print → Save as PDF) |
+| Open-roles board | Official JD links; browser **Delete** hides a candidate (AI moves roles to tracker when a tailored resume is finalized / applied) |
+| Application tracker | Status matches evidence; no duplicate of open-roles rows; refresh/reopen after AI writes |
+| Interview prep | Oral round on high-risk claims in this version |
 
-If the chat mentions filenames like “career archive” or `ssot.json`—**ignore them**; the AI maintains them, you don’t need to open them.
+If the chat mentions internal filenames—**ignore them**; the career archive is maintained by the AI.
 
 ---
 
@@ -131,15 +169,15 @@ If the chat mentions filenames like “career archive” or `ssot.json`—**igno
 
 **Numbers fuzzy?** Say “roughly” or “not sure”; the AI won’t fabricate.
 
-**Need Python?** Not required. PDF works via browser print; with Python the AI may auto-export.
+**Need Python?** Needed for archive validation and auto PDF export; without it, open HTML → Print → Save as PDF.
 
 **Application wants Word?** Use `.txt`, open in Word, Save As `.docx`.
 
 **Need a photo?** Default is no. Tell the AI if a specific posting requires one.
 
-**Read other files in the repo?** No. `agent/` and `scripts/` are for the AI.
+**Read other files in the repo?** No. Copy prompts from this page; install-folder docs are for the AI.
 
-**Install failed?** See [agent/INSTALL.md](agent/INSTALL.md). Manual paths: Cursor `~/.cursor/skills/resume-ssot/` · Claude Code `~/.claude/skills/resume-ssot/` · Codex `~/.codex/skills/resume-ssot/` (confirm with each product’s docs).
+**Install failed?** Use the manual path table above (full folder with `SKILL.md`), then rerun the self-test prompt.
 
 </details>
 

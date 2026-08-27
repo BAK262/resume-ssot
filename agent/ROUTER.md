@@ -2,6 +2,11 @@
 
 > 设计立场 → [DESIGN.md](DESIGN.md)
 
+## 最小日路径
+
+空仓 / 首次 → 聊经历（walkthrough）→ **通用版 HTML**。  
+有通用版 + JD → 投递版。搜可投 / 进度表 / 面试 / 开场 → **按需**再开对应流程。
+
 ## 三条 invariant
 
 1. 事实只进 `ssot.json`；JD 包装只进 HTML  
@@ -16,6 +21,10 @@ flowchart LR
   B --> C[通用版 HTML]
   C --> D[投递版 HTML]
   D --> E[PDF + plain.txt]
+  B --> F[可投岗位表]
+  F --> D
+  D --> G[投递进度表]
+  F --> G
 ```
 
 ## 工作区（磁盘布局，不对用户报文件名）
@@ -30,10 +39,14 @@ flowchart LR
 │   ├── academic_base.html
 │   ├── academic_<jd-slug>.html
 │   └── academic_<jd-slug>.txt
+├── offers/                          # 可选：求职漏斗
+│   ├── job-match-industry.html      # 可投岗位表（官网实搜+审计）
+│   ├── application-tracker.html     # 投递进度表
+│   └── _scratch/                    # 临时检索；勿对用户堆路径
 └── config.json   # 可选，templates/config.example.json
 ```
 
-对用户称：**经历档案 / 通用版 / 投递版 / 网申文本**。
+对用户称：**经历档案 / 通用版 / 投递版 / 网申文本 / 可投岗位表 / 投递进度表 / 面试准备**。
 
 ## 智能默认
 
@@ -43,12 +56,26 @@ flowchart LR
 | 给了旧简历路径 | scan → 若要 JD 则直接 jd（lazy base） |
 | 只口述 | walkthrough，3 轮，第 1 轮后出草稿 |
 | 新缩写 ≤5 | 内联翻译，跳过 audit-terms |
-| 投递版交付 | HTML + 尝试 PDF + `export_plain.py --from-html` |
+| 投递版交付 | HTML + 尝试 PDF + `export_plain.py --from-html`；短审计 + 必答追问；有 offers/ 则联动进度表 |
 | 只改一句 | [workflows/patch.md](workflows/patch.md)：改 HTML → 最小 ssot 回写 → validate |
 | 学术版简历 | `academic` 轨 + `templates/resume-academic.html` |
+| 搜可投岗位 / 刷新岗位表 | [workflows/job-match.md](workflows/job-match.md)：脑暴 → 本轮 3–5 家官网实搜 → 审计入库 |
+| 无岗位表 | 从 `templates/job-match-board.html` 复制到 `offers/` |
+| 更新投递 / Offer / 进度表 | [workflows/offer.md](workflows/offer.md) |
+| 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/` |
+| 岗位定位 / 要点改写 / HR 开场（不要文件） | [workflows/resume.md](workflows/resume.md) Mode · pitch + [rules/resume.md](rules/resume.md) |
+| 面试预测 / 追问 / 掌握度 | [workflows/interview.md](workflows/interview.md) |
 | 用户焦虑 | [README.md](../README.md) FAQ；≤3 问/轮 |
 
 **禁止**：要求用户读 agent 文档；一次丢 >3 路径；对用户说 workflow/schema 名、SSOT、audit、subagent。
+
+## 何时读 references（默认不读）
+
+| 条件 | 读 |
+|------|-----|
+| 商业分析 / 经营分析 / WFM / 增长类经历 | [references/business-analysis-evidence.md](references/business-analysis-evidence.md) |
+| 跨会话强主张 / 多岗版本共用基线 | [references/claim-evidence-ledger.md](references/claim-evidence-ledger.md) |
+| 用户要邮箱巡检进度 | [references/email-monitoring.md](references/email-monitoring.md) |
 
 ## 模式路由
 
@@ -56,16 +83,20 @@ flowchart LR
 |------|------|
 | 新建 | [workflows/init.md](workflows/init.md) + [schema/ssot.md](schema/ssot.md) |
 | 改事实 | [workflows/maintain.md](workflows/maintain.md) + [rules/core.md](rules/core.md) |
-| 出简历 | [workflows/resume.md](workflows/resume.md) + [rules/resume.md](rules/resume.md) |
+| 出简历 / 定位开场 / 要点包装 | [workflows/resume.md](workflows/resume.md) + [rules/resume.md](rules/resume.md) |
 | 轻量编辑 | [workflows/patch.md](workflows/patch.md) + [rules/resume.md](rules/resume.md) |
+| 搜可投岗位 | [workflows/job-match.md](workflows/job-match.md) |
+| 投递进度 / Offer | [workflows/offer.md](workflows/offer.md) |
+| 面试准备 | [workflows/interview.md](workflows/interview.md) |
 | 从 GitHub 安装 | [INSTALL.md](INSTALL.md) |
 | PDF / ATS | [scripts/README.md](../scripts/README.md) |
 
 ## 输出
 
 - 自然语言短报；选材表用人话  
-- jd 版：[HR 自检](rules/resume.md#hr-自检)  
-- 示例：[fixtures/example-ssot.json](../fixtures/example-ssot.json)
+- jd 版：[HR 自检](rules/resume.md#hr-自检) + 短审计 + 必答追问 2–3  
+- 排版/叙事对照（公开虚构）：[fixtures/example-ssot.json](../fixtures/example-ssot.json) + [example-resume.html](../fixtures/example-resume.html)
+- 作者本机私人定稿对照放在**求职工作区**私有目录（如 `_private/`）；**包内不引用、不索取上传**
 
 ## 校验命令
 

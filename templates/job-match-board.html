@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>可投岗位表</title>
+  <style>
+    :root {
+      --blue: #2f5597;
+      --blue-dark: #203f79;
+      --blue-soft: #edf3fc;
+      --ink: #172033;
+      --muted: #718096;
+      --line: #e5eaf1;
+      --white: #fff;
+      --shadow: 0 12px 32px rgba(41, 66, 105, .10);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      color: var(--ink);
+      background: linear-gradient(135deg, #eef3f9 0%, #f7f9fc 52%, #eef2f7 100%);
+      font-family: "Microsoft YaHei", "微软雅黑", "Noto Sans CJK SC", Arial, sans-serif;
+    }
+    a { color: var(--blue); font-weight: 700; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    select { font: inherit; }
+    .app { width: min(1220px, calc(100% - 36px)); margin: 0 auto; padding: 34px 0 48px; }
+    .eyebrow { margin: 0 0 7px; color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .12em; }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 42px); line-height: 1.15; letter-spacing: -.04em; }
+    .hero { padding: 8px 4px 24px; }
+    .hero p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .stat {
+      padding: 18px 20px; background: rgba(255,255,255,.9); border: 1px solid var(--line);
+      border-radius: 16px; box-shadow: 0 5px 18px rgba(41, 66, 105, .05);
+    }
+    .stat-label { color: var(--muted); font-size: 13px; }
+    .stat-value { margin-top: 7px; color: var(--blue-dark); font-size: 28px; font-weight: 800; }
+    .stat.success .stat-value { color: #16734d; }
+    .stat.warning .stat-value { color: #885b08; }
+    .callouts { display: grid; gap: 10px; margin-bottom: 18px; }
+    .callout { padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    .callout strong { display: block; margin-bottom: 4px; }
+    .callout.info { background: #eef5ff; border-color: #c9dbf4; }
+    .panel { background: rgba(255,255,255,.96); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+    .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 19px 22px; border-bottom: 1px solid var(--line); }
+    .panel-title { margin: 0; font-size: 18px; }
+
+    .panel-hint { color: var(--muted); font-size: 12px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 22px; background: #fbfcfe; border-bottom: 1px solid var(--line); }
+    .field { position: relative; min-width: 150px; flex: 1 1 160px; }
+    .field.search { flex: 2 1 260px; }
+    .field input, .field select {
+      width: 100%; height: 40px; padding: 0 12px;
+      border: 1px solid #d6deea; border-radius: 9px; outline: 0; color: var(--ink); background: #fff;
+    }
+    .field input:focus, .field select:focus {
+      border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,85,151,.12);
+    }
+    button, input, select { font: inherit; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 850px; }
+    th, td { padding: 15px 17px; border-bottom: 1px solid #edf0f5; text-align: left; vertical-align: top; }
+    th { color: #667085; background: #fff; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    td { color: #263247; font-size: 14px; line-height: 1.55; }
+    tbody tr.urgent { background: #fffaf0; }
+    tbody tr.open { background: #f7fbff; }
+    .company { min-width: 120px; color: #172b4d; font-weight: 800; }
+    .why { min-width: 220px; max-width: 420px; color: #4d5a6d; }
+    .status {
+      display: inline-flex; align-items: center; min-height: 27px; padding: 2px 10px; border-radius: 99px;
+      font-size: 12px; font-weight: 700; white-space: nowrap;
+    }
+    .fit-exact { color: #16734d; background: #ddf8eb; }
+    .fit-strong { color: #285c9f; background: #eaf2ff; }
+    .fit-stretch { color: #6c49a8; background: #f1eaff; }
+    .prio { color: #885b08; margin-left: 6px; }
+    .order { margin-top: 18px; padding: 18px 20px; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+    .order h2 { margin: 0 0 10px; font-size: 16px; }
+    .order ol { margin: 0; padding-left: 18px; }
+    .order li { margin: 6px 0; font-size: 14px; line-height: 1.55; }
+    .order .next { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
+    .footer { padding: 14px 4px 0; color: #8a95a6; font-size: 12px; }
+
+    .row-actions { display: flex; flex-wrap: wrap; gap: 6px; white-space: nowrap; }
+    .icon-button {
+      padding: 6px 8px; border: 1px solid #d8e0eb; border-radius: 7px;
+      color: var(--blue); background: #fff; font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    .icon-button:hover { background: var(--blue-soft); }
+    .icon-button.delete { color: #b42318; }
+    .board-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .board-toolbar .hint { color: var(--muted); font-size: 12px; }
+    .button {
+      display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px;
+      border: 1px solid #d9e1ee; border-radius: 9px; background: #fff; color: var(--blue);
+      font-size: 13px; font-weight: 700; cursor: pointer;
+    }
+    .button:hover { background: var(--blue-soft); }
+    @media (max-width: 760px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <p class="eyebrow">JOB BOARD · 2026-08-27</p>
+      <h1>可投岗位表</h1>
+      <p>工作地含北京 · 2027 夏/秋可入职 · 仅列官网可打开的 JD。定稿投递版后由助手移入投递进度表。</p>
+    </header>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-label">当前列表</div><div class="stat-value" id="statTotal">0</div></div>
+      <div class="stat success"><div class="stat-label">硬匹配</div><div class="stat-value" id="statExact">0</div></div>
+      <div class="stat warning"><div class="stat-label">优先</div><div class="stat-value" id="statUrgent">0</div></div>
+      <div class="stat"><div class="stat-label">地点</div><div class="stat-value">北京</div></div>
+    </div>
+
+    <div class="callouts">
+      <div class="callout info">
+        <strong>用法</strong>
+        官网实搜入库的候选岗。浏览器「删除」仅本机隐藏；生成投递版并定稿后，助手会写入投递进度表并从本表移除。
+      </div>
+    </div>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">岗位清单</h2>
+          <span class="panel-hint" id="resultHint">显示 0 条</span>
+        </div>
+        <div class="board-toolbar">
+          <a class="button" href="application-tracker.html">投递进度表</a>
+          <button class="button" id="exportDismissedButton" type="button">导出已隐藏</button>
+          <button class="button" id="clearDismissedButton" type="button">恢复已隐藏</button>
+          <span class="hint" id="dismissedHint"></span>
+        </div>
+      </div>
+      <div class="filters">
+        <div class="field search"><input id="searchInput" type="search" placeholder="搜索公司、岗位、城市或匹配理由…"></div>
+        <div class="field"><select id="companyFilter" aria-label="按公司筛选"><option value="">全部公司</option></select></div>
+        <div class="field"><select id="trackFilter" aria-label="筛选方向"></select></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>公司</th>
+              <th>岗位</th>
+              <th>城市</th>
+              <th>匹配</th>
+              <th>为何适合</th>
+              <th>投递</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="jobBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <p class="footer">来源：各公司招聘官网实搜 + 人-岗适配。仅北京可核验 JD。更新 2026-08-27。</p>
+  </div>
+
+  <script>
+    const TRACKS = [
+      { value: "all", label: "全部方向" },
+      { value: "product", label: "产品 / 策略" },
+      { value: "algo", label: "算法 / 研究" },
+      { value: "data", label: "数据 / 评测" },
+      { value: "design", label: "用研 / 体验" },
+      { value: "other", label: "其他" },
+    ];
+    const FIT_LABEL = { exact: "硬匹配", strong: "强匹配", stretch: "进取" };
+    const STATUS_LABEL = { urgent: "优先", open: "可投" };
+    // Agent replaces this array on each audited refresh.
+    const JOBS = [];
+
+
+
+
+    const DISMISS_KEY = "resume-ssot-job-match-dismissed-v1";
+
+    function loadDismissed() {
+      try {
+        const raw = localStorage.getItem(DISMISS_KEY);
+        const value = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(value) ? value : []);
+      } catch {
+        return new Set();
+      }
+    }
+    function saveDismissed(set) {
+      localStorage.setItem(DISMISS_KEY, JSON.stringify([...set]));
+    }
+    let dismissed = loadDismissed();
+
+    function activeJobs() {
+      return JOBS.filter((job) => !dismissed.has(job.id));
+    }
+    function updateDismissedHint() {
+      const el = document.getElementById("dismissedHint");
+      if (el) el.textContent = dismissed.size ? `已隐藏 ${dismissed.size} 条` : "";
+    }
+    function dismissJob(id) {
+      dismissed.add(id);
+      saveDismissed(dismissed);
+      render();
+    }
+
+    const trackFilter = document.getElementById("trackFilter");
+    const companyFilter = document.getElementById("companyFilter");
+    const searchInput = document.getElementById("searchInput");
+    TRACKS.forEach((track) => {
+      const option = document.createElement("option");
+      option.value = track.value;
+      option.textContent = track.label;
+      trackFilter.appendChild(option);
+    });
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+    function populateCompanyFilter(jobs) {
+      const prev = companyFilter.value;
+      const companies = [...new Set(jobs.map((job) => job.company).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "zh-CN"));
+      companyFilter.innerHTML = '<option value="">全部公司</option>' +
+        companies.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
+      if (companies.includes(prev)) companyFilter.value = prev;
+    }
+    function visibleJobs() {
+      const track = trackFilter.value;
+      const company = companyFilter.value;
+      const query = (searchInput.value || "").trim().toLowerCase();
+      return activeJobs().filter((job) => {
+        if (track !== "all" && job.track !== track) return false;
+        if (company && job.company !== company) return false;
+        if (!query) return true;
+        const haystack = [job.company, job.role, job.city, job.why, FIT_LABEL[job.fit], STATUS_LABEL[job.status]]
+          .join(" ").toLowerCase();
+        return haystack.includes(query);
+      });
+    }
+
+    function render() {
+      populateCompanyFilter(activeJobs());
+      const visible = visibleJobs();
+      document.getElementById("statTotal").textContent = String(visible.length);
+      document.getElementById("statExact").textContent = String(visible.filter((j) => j.fit === "exact").length);
+      document.getElementById("statUrgent").textContent = String(visible.filter((j) => j.status === "urgent").length);
+      const hint = document.getElementById("resultHint");
+      if (hint) hint.textContent = `显示 ${visible.length} 条`;
+      updateDismissedHint();
+      document.getElementById("jobBody").innerHTML = visible.map((job) => `
+        <tr class="${job.status}" data-id="${escapeHtml(job.id)}">
+          <td class="company">${escapeHtml(job.company)}</td>
+          <td>${escapeHtml(job.role)}</td>
+          <td>${escapeHtml(job.city)}</td>
+          <td>
+            <span class="status fit-${escapeHtml(job.fit)}">${FIT_LABEL[job.fit] || job.fit}</span>
+            <span class="prio">${STATUS_LABEL[job.status] || job.status}</span>
+          </td>
+          <td class="why">${escapeHtml(job.why)}</td>
+          <td><a href="${escapeHtml(job.href)}" target="_blank" rel="noopener">${escapeHtml(job.hrefLabel || "JD")}</a></td>
+          <td class="row-actions">
+            <button class="icon-button delete" type="button" data-dismiss="${escapeHtml(job.id)}">删除</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    trackFilter.addEventListener("change", render);
+    companyFilter.addEventListener("change", render);
+    searchInput.addEventListener("input", render);
+    document.getElementById("jobBody").addEventListener("click", (event) => {
+      const dismiss = event.target.closest("[data-dismiss]");
+      if (!dismiss) return;
+      const job = JOBS.find((item) => item.id === dismiss.dataset.dismiss);
+      const label = job ? `${job.company} · ${job.role}` : "该岗位";
+      if (confirm(`从可投列表删除「${label}」？仅隐藏，可点「恢复已隐藏」。`)) dismissJob(dismiss.dataset.dismiss);
+    });
+    const exportBtn = document.getElementById("exportDismissedButton");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify({
+          exported_at: new Date().toISOString(),
+          dismissed_ids: [...dismissed],
+        }, null, 2)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "job-match-dismissed.json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    }
+    const clearBtn = document.getElementById("clearDismissedButton");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        if (!dismissed.size) return;
+        if (!confirm(`恢复 ${dismissed.size} 条已隐藏岗位？`)) return;
+        dismissed = new Set();
+        saveDismissed(dismissed);
+        render();
+      });
+    }
+    render();
+  </script>
+</body>
+</html>

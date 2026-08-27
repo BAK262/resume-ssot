@@ -15,6 +15,14 @@ resumes/
 *.pdf
 preview/
 
+# Private industry reference (real CV — NEVER commit / NEVER publish / NEVER GitHub Pages)
+# Keep ignore if someone drops local copies under fixtures/ by mistake
+fixtures/reference-industry-resume.html
+fixtures/reference-ssot.json
+fixtures/reference-photo.jpg
+fixtures/reference-*
+fixtures/REFERENCE.private.md
+
 # Editor / env
 .env
 .env.*

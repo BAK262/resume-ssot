@@ -5,7 +5,7 @@
     "updated_at": "2026-01-22",
     "owner": "林小航 / Xiaohang Lin",
     "locale": "zh-CN",
-    "purpose": "示例经历库（虚构人物）"
+    "purpose": "示例经历档案（虚构人物）"
   },
   "person": {
     "name": { "zh": "林小航", "en": "Xiaohang Lin" },
@@ -53,7 +53,7 @@
       "role_and_boundary": "三人后端组技术总负责；兼委托方对接；不写「独立承担全栈」",
       "results": [
         {
-          "text": "融合规则引擎准确率 94.2%；128 节点联调；时钟同步第三方复核均值 9.6 ms",
+          "text": "融合规则引擎准确率 94.2%（结题验收）；多站点联调与离线验收包交付；时钟同步第三方复核通过",
           "confidence": "verified",
           "canon": "结题验收报告",
           "source_ids": ["src-acceptance"]
@@ -68,7 +68,7 @@
       "dates": { "start": "2023-12", "end": null },
       "activities": [
         "Go 控制面 + etcd 配置版本与审计",
-        "47 试点节点接入与运维培训",
+        "试点节点接入与运维培训",
         "Zenodo / GitHub 开源发布"
       ],
       "tools": ["Go", "etcd", "gRPC", "Docker"],
@@ -97,7 +97,7 @@
       "role_and_boundary": "发起跨组合作；模型侧由合作方实现；本人负责实验与统计",
       "results": [
         {
-          "text": "同等 SLA 下 GPU 小时成本下降 38%",
+          "text": "同等 SLA 下验证 GPU 成本下降，与离线 trace 预测方向一致（详见发表）",
           "confidence": "verified",
           "canon": "Example Systems Letters 2024",
           "source_ids": ["src-pub-1"]
@@ -119,7 +119,7 @@
       "role_and_boundary": "项目负责人；主持 8 万元资助",
       "results": [
         {
-          "text": "异常会话召回约 72%；软件著作权 2019SR0000001",
+          "text": "校内对照采集后完成异常会话检测原型；软件著作权已登记",
           "confidence": "claimed",
           "canon": "结题报告"
         }
@@ -184,17 +184,10 @@
       ]
     },
     {
-      "id": "met-clock-sync",
-      "name": "多设备时钟同步偏差",
-      "values": [
-        { "value": "9.6 ms", "canon": "第三方测评", "confidence": "verified", "source_ids": ["src-acceptance"] }
-      ]
-    },
-    {
       "id": "met-gpu-cost",
-      "name": "GPU 小时成本降幅",
+      "name": "GPU 成本优化（发表口径）",
       "values": [
-        { "value": "38%", "canon": "Example Systems Letters 2024", "confidence": "verified", "source_ids": ["src-pub-1"] }
+        { "value": "下降方向与离线 trace 一致", "canon": "Example Systems Letters 2024", "confidence": "verified", "source_ids": ["src-pub-1"] }
       ]
     }
   ],
@@ -237,6 +230,7 @@
   "conflicts": [],
   "provenance": { "init": "fixtures/example-ssot.json", "notes": "Demo only — all entities fictional" },
   "change_log": [
+    { "date": "2026-08-27", "summary": "Demo resume: lower metric density; keep one verified highlight" },
     { "date": "2026-01-22", "summary": "Expand example to industry-reserve depth" }
   ]
 }
