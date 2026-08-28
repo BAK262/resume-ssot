@@ -1,0 +1,52 @@
+{
+  "updated_at": "2026-01-01T00:00:00+08:00",
+  "schema_version": "1.0.0",
+  "owner": "示例候选人",
+  "sources": ["ssot.json", "application-tracker.html", "resumes/*"],
+  "identity_one_liner": "一句话：学科传统 + 能力柱 + 人机场景交付口径",
+  "academic_lineage": {
+    "program": "",
+    "advisor": "",
+    "thesis_working_title": "",
+    "discipline_labels": []
+  },
+  "pillar_layers": {
+    "physio_psych_computing_bci": { "label": "", "summary": "", "anchors": [] },
+    "affective_computing": { "label": "", "summary": "", "anchors": [] },
+    "human_cognition_eval": { "label": "", "summary": "", "anchors": [] },
+    "application_scenes": { "label": "", "summary": "", "scenes": [] }
+  },
+  "skill_strengths": {
+    "core": [{ "id": "", "label": "", "evidence": "" }],
+    "supporting": [{ "id": "", "label": "", "evidence": "" }]
+  },
+  "skill_boundaries": [],
+  "job_preferences": {
+    "hard_filters": { "cities": [], "start_window": "", "notes": "" },
+    "want": {
+      "essence": "",
+      "role_shapes_priority": [],
+      "jd_responsibility_signals": []
+    },
+    "avoid": {
+      "essence": "",
+      "jd_red_flags": [],
+      "note_on_algorithm_titles": ""
+    }
+  },
+  "audit_axes": [
+    { "id": "", "label": "", "weight": "high" }
+  ],
+  "applied_behavior_summary": {
+    "updated_from": "",
+    "core_lane": { "label": "", "examples": [] },
+    "bridge_lane": { "label": "", "examples": [], "note": "" }
+  },
+  "role_directions": [{ "id": "", "label": "", "why": "" }],
+  "keywords": {
+    "zh": [],
+    "en": [],
+    "negative_zh": [],
+    "negative_en": []
+  }
+}

@@ -16,6 +16,7 @@
 | 临时目录 | `offers/_scratch/`（自动建）                                                   |
 | 硬过滤  | 读 `config.json` → `job_match.hard_filters`；无则从经历档案地点/入职窗口推断，**先确认再搜**     |
 | 投递进度 | `offers/application-tracker.html`（无则从模板复制；见 [offer.md](offer.md)）         |
+| 求职画像 | `offers/candidate-profile.json`（无则先走 [candidate-profile.md](candidate-profile.md)） |
 
 
 **禁止**：第三方聚合/新闻「听说有岗」写入正式表；无 JD 详情链；跳过步骤 2 直接改 HTML；把包装话术写回经历档案。
@@ -25,13 +26,20 @@
 
 
 
-## 三步流水线（每次刷新都走）
+## 流水线（每次刷新都走）
 
+### 0 · 求职画像（默认，扩岗前必跑）
 
+走 [candidate-profile.md](candidate-profile.md)：读经历档案 + 投递进度 + 已投投递版简历 → 更新 `offers/candidate-profile.json`。
+
+- **扩面 / 刷新岗位表前默认执行**；若 `candidate-profile.json` 的 `updated_at` 早于本轮投递进度或档案 `meta.updated_at`，必须刷新。
+- 用户明确说「画像不用更新」时可跳过，须在审计日志记一句。
 
 ### 1 · 关键词脑暴（1 agent）
 
-读 `ssot.json`（person / engagements / outputs / metrics / constraints）+ 可选投递进度。
+读 `offers/candidate-profile.json` + `ssot.json`（person / engagements / outputs / metrics / constraints）+ 可选投递进度。
+
+画像中的 `role_directions`、`keywords`（含 negative）、`job_preferences`、`audit_axes` **优先继承**到 brief；`ssot_summary` 可压缩自画像 `identity_one_liner` 与能力柱。
 
 写 `offers/_scratch/search-brief.json`：
 
@@ -100,10 +108,13 @@
 
 **标准从哪来（LLM 理解，不背死规则表）**
 
+- **`offers/candidate-profile.json`**（技能强项、边界、want/avoid、audit_axes、已投行为）
 - 经历档案里的专业、届别、履历边界（有什么 / 没有什么）
 - `config.job_match` 与 brief 硬过滤
 - 用户本会话明确说过的偏好与否决（例：不要实习、只要能进面的岗、某类岗可留作了解）
 - 投递进度里已投同类岗所暗示的标准（已投 ≠ 自动再收；用来校准「什么叫对口」）
+
+审计轴默认用画像 `audit_axes`（生理情感信号、人类认知评测、数据闭环 vs 训练 infra），**非**「PM vs 算法」二元。
 标准未说清且会影响大面积取舍时：**先问一句再大批入库**，勿用默认「相关即可」灌表。
 
 **怎么审（原则，非 checklist）**

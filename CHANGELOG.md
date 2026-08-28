@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.2 (2026-08-28)
+
+- New workflow `candidate-profile.md`: skills/job preferences from SSOT + applied jobs → `offers/candidate-profile.json`
+- Job-match step 0: refresh candidate profile before expand/search (default)
+- Audit axes from profile (physio-affective / human eval / data loop vs train infra)
+
 ## 2.10.1 (2026-08-27)
 
 - Job-match step 3: audit for **interview-screen fit** (LLM reads JD requirements + user standards), not keyword/story relevance; no rigid drop checklist

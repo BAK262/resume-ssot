@@ -1,6 +1,6 @@
 ---
 name: resume-ssot
-version: "2.10.1"
+version: "2.10.2"
 description: >-
   Career archive + JD-tailored resumes (HTML/PDF/plain); official job match; application tracker;
   positioning / HR pitch baked into resume rules; interview predict-grill-review.
@@ -33,6 +33,7 @@ license: MIT
 | .txt                       | 网申粘贴文本             |
 | job-match-industry.html    | 可投岗位表              |
 | application-tracker.html   | 投递进度表              |
+| candidate-profile.json     | 求职画像（技能/偏好）   |
 
 
 ## 快速路由
@@ -47,7 +48,8 @@ license: MIT
 | 维护事实                | [agent/workflows/maintain.md](agent/workflows/maintain.md) |
 | 写简历 / 定位开场 / 要点包装 | [agent/workflows/resume.md](agent/workflows/resume.md) + [agent/rules/resume.md](agent/rules/resume.md) |
 | 轻量编辑               | [agent/workflows/patch.md](agent/workflows/patch.md)       |
-| 搜可投岗位 / 刷新岗位表     | [agent/workflows/job-match.md](agent/workflows/job-match.md) |
+| 总结技能 / 求职偏好 / 优势赛道 | [agent/workflows/candidate-profile.md](agent/workflows/candidate-profile.md) |
+| 搜可投岗位 / 刷新岗位表     | [agent/workflows/candidate-profile.md](agent/workflows/candidate-profile.md) + [agent/workflows/job-match.md](agent/workflows/job-match.md) |
 | 投递进度 / Offer         | [agent/workflows/offer.md](agent/workflows/offer.md)       |
 | 面试预测 / 追问 / 复盘     | [agent/workflows/interview.md](agent/workflows/interview.md) |
 

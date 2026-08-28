@@ -42,6 +42,7 @@ flowchart LR
 ├── offers/                          # 可选：求职漏斗
 │   ├── job-match-industry.html      # 可投岗位表（官网实搜+审计）
 │   ├── application-tracker.html     # 投递进度表
+│   ├── candidate-profile.json       # 求职画像（技能/偏好；扩岗前默认更新）
 │   └── _scratch/                    # 临时检索；勿对用户堆路径
 └── config.json   # 可选，templates/config.example.json
 ```
@@ -59,7 +60,8 @@ flowchart LR
 | 投递版交付 | HTML + 尝试 PDF + `export_plain.py --from-html`；短审计 + 必答追问；有 offers/ 则联动进度表 |
 | 只改一句 | [workflows/patch.md](workflows/patch.md)：改 HTML → 最小 ssot 回写 → validate |
 | 学术版简历 | `academic` 轨 + `templates/resume-academic.html` |
-| 搜可投岗位 / 刷新岗位表 | [workflows/job-match.md](workflows/job-match.md)：脑暴 → 本轮 3–5 家官网实搜 → 审计入库 |
+| 搜可投岗位 / 刷新岗位表 | [workflows/candidate-profile.md](workflows/candidate-profile.md)（步骤 0 默认刷新）→ [workflows/job-match.md](workflows/job-match.md)：脑暴 → 官网实搜 → 审计入库 |
+| 总结技能/求职偏好 / 适合投什么 | [workflows/candidate-profile.md](workflows/candidate-profile.md) |
 | 无岗位表 | 从 `templates/job-match-board.html` 复制到 `offers/` |
 | 更新投递 / Offer / 进度表 | [workflows/offer.md](workflows/offer.md) |
 | 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/` |
@@ -85,7 +87,8 @@ flowchart LR
 | 改事实 | [workflows/maintain.md](workflows/maintain.md) + [rules/core.md](rules/core.md) |
 | 出简历 / 定位开场 / 要点包装 | [workflows/resume.md](workflows/resume.md) + [rules/resume.md](rules/resume.md) |
 | 轻量编辑 | [workflows/patch.md](workflows/patch.md) + [rules/resume.md](rules/resume.md) |
-| 搜可投岗位 | [workflows/job-match.md](workflows/job-match.md) |
+| 总结技能/求职偏好 | [workflows/candidate-profile.md](workflows/candidate-profile.md) |
+| 搜可投岗位 | [workflows/candidate-profile.md](workflows/candidate-profile.md) + [workflows/job-match.md](workflows/job-match.md) |
 | 投递进度 / Offer | [workflows/offer.md](workflows/offer.md) |
 | 面试准备 | [workflows/interview.md](workflows/interview.md) |
 | 从 GitHub 安装 | [INSTALL.md](INSTALL.md) |
