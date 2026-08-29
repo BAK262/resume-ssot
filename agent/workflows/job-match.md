@@ -17,10 +17,12 @@
 | 硬过滤  | 读 `config.json` → `job_match.hard_filters`；无则从经历档案地点/入职窗口推断，**先确认再搜**     |
 | 投递进度 | `offers/application-tracker.html`（无则从模板复制；见 [offer.md](offer.md)）         |
 | 求职画像 | `offers/candidate-profile.json`（无则先走 [candidate-profile.md](candidate-profile.md)） |
+| 搜岗总账 | `offers/_scratch/search-ledger.json`（字段：`slug`/`name`/`last_searched_at`/`last_result`/`watch?`；无则步骤 1 前用 `match-*` 建空架） |
 
 
 **禁止**：第三方聚合/新闻「听说有岗」写入正式表；无 JD 详情链；跳过步骤 2 直接改 HTML；把包装话术写回经历档案。
 **已在进度表的岗**（已生成投递版 / 已投递）**不得**再进 `JOBS`；审计时按公司+岗位或 `jdUrl` 排除。
+**已在搜岗总账且无复查理由的公司**（同 `slug`）**不得**再派实搜；复查仅当 `watch` 到期、用户点名、或校招窗口明显新开。
 
 ---
 
@@ -37,9 +39,11 @@
 
 ### 1 · 关键词脑暴（1 agent）
 
-读 `offers/candidate-profile.json` + `ssot.json`（person / engagements / outputs / metrics / constraints）+ 可选投递进度。
+读 `offers/candidate-profile.json` + `ssot.json`（person / engagements / outputs / metrics / constraints）+ 可选投递进度 + **`offers/_scratch/search-ledger.json`**。
 
 画像中的 `role_directions`、`keywords`（含 negative）、`job_preferences`、`audit_axes` **优先继承**到 brief；`ssot_summary` 可压缩自画像 `identity_one_liner` 与能力柱。
+
+**去重**：`priority: 1` 的 `slug` 不得与总账已有条目重复，除非该条有 `watch` 且本轮明确复查、或用户点名重搜。brief `notes` 写一句「已排除总账 N 家 / 本轮复查 M 家」。
 
 写 `offers/_scratch/search-brief.json`：
 
@@ -97,6 +101,8 @@
 
 并行：只跑本轮 `priority: 1`（3–5 家）；用户要扩面再开 2/3。
 
+每企 `match-<slug>.json` 落盘后，**立刻**更新总账对应该 `slug`：`last_searched_at`、`last_result`（`hit`|`miss`）；窗口未开写可选 `watch`（一句）。细节只留 match 文件。
+
 ### 3 · 审计入库（1 agent）
 
 再读经历档案 + 全部 `match-*.json`（+ 可选投递进度）+ **本会话/配置里用户已说清的求职标准**。
@@ -132,7 +138,8 @@
 - **覆盖更新**正式表的 `JOBS` 数组；保留页面结构 / TRACKS / 渲染逻辑
 - `href` = JD 详情 URL（禁止只写门户首页）
 - `why` 点名经历档案锚点，1–2 句（过筛成立后的匹配理由，不是硬圆话术）
-- 写 `offers/_scratch/audit-log.json`：`stats` + `kept[]` + `dropped_sample[]`
+- 写 `offers/_scratch/audit-log.json`（或带 round 后缀的 `audit-log-*.json`）：`stats` + `kept[]` + `dropped_sample[]`
+- **同步总账**：本轮 `slug` 的 `last_result`；对口但窗口未开写/刷新 `watch`
 
 JOBS 字段：`{ id, company, role, city, track, fit, status, why, href, hrefLabel }`
 `fit`: `exact` | `strong` | `stretch` · `status`: `urgent` | `open`

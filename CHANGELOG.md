@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.11.0 (2026-08-30)
+
+- Job-match: `offers/_scratch/search-ledger.json` for company dedup (slug / last_searched_at / last_result / watch?)
+- Brainstorm must skip ledger slugs unless watch or user re-search; match + audit must update ledger
+
 ## 2.10.2 (2026-08-28)
 
 - New workflow `candidate-profile.md`: skills/job preferences from SSOT + applied jobs → `offers/candidate-profile.json`
