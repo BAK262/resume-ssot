@@ -63,6 +63,7 @@ flowchart LR
 | 搜可投岗位 / 刷新岗位表 | [workflows/candidate-profile.md](workflows/candidate-profile.md)（步骤 0 默认刷新）→ [workflows/job-match.md](workflows/job-match.md)：脑暴 → 官网实搜 → 审计入库 |
 | 总结技能/求职偏好 / 适合投什么 | [workflows/candidate-profile.md](workflows/candidate-profile.md) |
 | 无岗位表 | 从 `templates/job-match-board.html` 复制到 `offers/` |
+| 同步可投表 / 发来 job-match-state.json | [workflows/job-match.md](workflows/job-match.md)「Agent 同步可投表」 |
 | 更新投递 / Offer / 进度表 | [workflows/offer.md](workflows/offer.md) |
 | 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/` |
 | 岗位定位 / 要点改写 / HR 开场（不要文件） | [workflows/resume.md](workflows/resume.md) Mode · pitch + [rules/resume.md](rules/resume.md) |

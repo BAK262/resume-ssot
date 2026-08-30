@@ -141,13 +141,37 @@
 - 写 `offers/_scratch/audit-log.json`（或带 round 后缀的 `audit-log-*.json`）：`stats` + `kept[]` + `dropped_sample[]`
 - **同步总账**：本轮 `slug` 的 `last_result`；对口但窗口未开写/刷新 `watch`
 
-JOBS 字段：`{ id, company, role, city, track, fit, status, why, href, hrefLabel }`
-`fit`: `exact` | `strong` | `stretch` · `status`: `urgent` | `open`
-（`fit` 表示过筛之后的贴合度，不是「关键词相似度」。）
+JOBS 字段：`{ id, company, role, city, track, category, fit, status, why, href, hrefLabel }`
 
-保留看板 UI：操作列「删除」、工具条「投递进度表 / 导出已隐藏 / 恢复已隐藏」。
-浏览器删除只写 `localStorage`（`resume-ssot-job-match-dismissed-v1`）；Agent 永久删改 `JOBS`。用户导出的 `job-match-dismissed.json` 可在下次审计时并入剔除。
-用户若要求「实习/探索条仅了解、不进主投清单」等，按会话标准执行（可同表标注，或分栏——以用户当轮说法为准）。
+| 字段 | 值 | 说明 |
+|------|-----|------|
+| `category` | `pending` \| `ready` \| `backup` \| `archived` | 投递决策类（见下） |
+| `fit` | `exact` \| `strong` \| `stretch` | 过筛后贴合度，非关键词相似度 |
+| `status` | `urgent` \| `open` | 排序用优先标记；表格内仅 `urgent` 显示「优先」 |
+
+**入库默认 `category`（写进 HTML 种子）**
+
+- 校招/正式岗且过筛 → `pending`（待人工确认）
+- 标题含实习 / 了解 / 探索 / 科研·了解 → `archived`
+- 用户当轮明确要求「这条待投」→ `ready`；「同司名额已满」→ `backup`
+
+看板 v3：顶栏按类别计数；表格含类别下拉 + 删除；`fit`/`status` 不参与列展示，仅排序。
+
+**浏览器状态（本机，不写 HTML）**
+
+- 键：`resume-ssot-job-match-state-v3` → `{ deleted: string[], categories: { [id]: category } }`
+- 旧键 `…-dismissed-v1` / `…-state-v1` / `…-state-v2` 首次打开自动迁入 v3
+- 「删除」= 本机永久隐藏；刷新/审计前须同步到 HTML（见下）
+- 工具条「导出操作记录」→ `job-match-state.json`（`exported_at` + `deleted_ids` + `categories`）
+
+**Agent 同步可投表**（用户说「同步可投表」或发来 `job-match-state.json`）
+
+1. 从 `JOBS` **删除** `deleted_ids` 中全部 id（磁盘真相，非仅隐藏）
+2. 对存活条目：若 `categories[id]` 与 HTML 种子默认不同，写回 `job.category`；与默认相同则省略该字段
+3. 保留页面结构 / TRACKS / 渲染逻辑；勿改用户未导出的 unrelated 条目
+4. 短报：删 N 条 · 改类 M 条 · 请刷新浏览器
+
+审计刷新 `JOBS` 时：合并用户已导出过的 `deleted_ids`（若有），排除进度表已有岗；**勿**把浏览器临时改类覆盖未同步的磁盘种子——用户未同步则按 HTML 内 `category` 为准。
 
 ---
 

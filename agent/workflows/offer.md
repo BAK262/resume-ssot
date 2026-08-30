@@ -13,7 +13,7 @@
 |----|------|
 | 进度表 | `offers/application-tracker.html`（无则从 `templates/application-tracker.html` 复制） |
 | 可投表 | `offers/job-match-industry.html`（可选，有则联动） |
-| 存储键 | 浏览器 `localStorage`：`resume-ssot-application-tracker-v1`（进度；旧键 `offer-skills-application-tracker-v1` 首次打开自动迁入）；可投表删除用 `resume-ssot-job-match-dismissed-v1` |
+| 存储键 | 进度表 `resume-ssot-application-tracker-v1`（旧键 `offer-skills-application-tracker-v1` 自动迁入）；可投表 `resume-ssot-job-match-state-v3`（`deleted` + `categories`；旧 dismissed/state 键自动迁入） |
 
 **合并规则（磁盘种子 ↔ 浏览器）**：加载时 `mergeRecords(loaded, seed)`——同键（公司+岗位）比 `updatedAt`，**较新者胜**。Agent 写 `initialRecords` 时必须带 **ISO `updatedAt`（写盘时刻）**，否则旧浏览器缓存会盖住新种子。
 
@@ -53,7 +53,7 @@
 2. **可投表**：从 `JOBS` **删除**对应条目（勿仅改文案留岗）。
 3. 短报：已写入进度 · 可投表已移除 · 下一步 · **「请刷新或重新打开进度表，即可看到刚写入的条目。」**
 
-可投表浏览器「删除」= 仅本机隐藏候选，**不**写入进度表。刷新可投表审计时须排除进度表已有岗。
+可投表浏览器「删除」= 本机永久隐藏（写入 state-v3），**不**写入进度表；用户导出或说「同步可投表」后 Agent 才从 HTML `JOBS` 移除。刷新可投表审计时须排除进度表已有岗及已同步删除的 id。
 
 ---
 

@@ -35,8 +35,9 @@
       padding: 18px 20px; background: rgba(255,255,255,.9); border: 1px solid var(--line);
       border-radius: 16px; box-shadow: 0 5px 18px rgba(41, 66, 105, .05);
     }
-    .stat-label { color: var(--muted); font-size: 13px; }
-    .stat-value { margin-top: 7px; color: var(--blue-dark); font-size: 28px; font-weight: 800; }
+    .stat-label { color: var(--muted); font-size: 13px; font-weight: 700; }
+    .stat-hint { margin-top: 4px; color: #8a95a6; font-size: 11px; line-height: 1.45; min-height: 2.9em; }
+    .stat-value { margin-top: 10px; color: var(--blue-dark); font-size: 28px; font-weight: 800; }
     .stat.success .stat-value { color: #16734d; }
     .stat.warning .stat-value { color: #885b08; }
     .callouts { display: grid; gap: 10px; margin-bottom: 18px; }
@@ -46,7 +47,6 @@
     .panel { background: rgba(255,255,255,.96); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
     .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 19px 22px; border-bottom: 1px solid var(--line); }
     .panel-title { margin: 0; font-size: 18px; }
-
     .panel-hint { color: var(--muted); font-size: 12px; }
     .filters { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 22px; background: #fbfcfe; border-bottom: 1px solid var(--line); }
     .field { position: relative; min-width: 150px; flex: 1 1 160px; }
@@ -68,21 +68,7 @@
     tbody tr.open { background: #f7fbff; }
     .company { min-width: 120px; color: #172b4d; font-weight: 800; }
     .why { min-width: 220px; max-width: 420px; color: #4d5a6d; }
-    .status {
-      display: inline-flex; align-items: center; min-height: 27px; padding: 2px 10px; border-radius: 99px;
-      font-size: 12px; font-weight: 700; white-space: nowrap;
-    }
-    .fit-exact { color: #16734d; background: #ddf8eb; }
-    .fit-strong { color: #285c9f; background: #eaf2ff; }
-    .fit-stretch { color: #6c49a8; background: #f1eaff; }
-    .prio { color: #885b08; margin-left: 6px; }
-    .order { margin-top: 18px; padding: 18px 20px; background: #fff; border: 1px solid var(--line); border-radius: 16px; }
-    .order h2 { margin: 0 0 10px; font-size: 16px; }
-    .order ol { margin: 0; padding-left: 18px; }
-    .order li { margin: 6px 0; font-size: 14px; line-height: 1.55; }
-    .order .next { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
     .footer { padding: 14px 4px 0; color: #8a95a6; font-size: 12px; }
-
     .row-actions { display: flex; flex-wrap: wrap; gap: 6px; white-space: nowrap; }
     .icon-button {
       padding: 6px 8px; border: 1px solid #d8e0eb; border-radius: 7px;
@@ -90,8 +76,17 @@
     }
     .icon-button:hover { background: var(--blue-soft); }
     .icon-button.delete { color: #b42318; }
+    .category-select {
+      min-width: 88px; height: 32px; padding: 0 8px;
+      border: 1px solid #d8e0eb; border-radius: 7px; color: var(--ink); background: #fff;
+      font-size: 12px; font-weight: 700;
+    }
+    tbody tr.cat-pending { background: #fffbf0; }
+    tbody tr.cat-ready { background: #f7fbff; }
+    tbody tr.cat-backup { background: #f8f6ff; }
+    tbody tr.cat-archived { background: #f5f5f5; }
+    .prio-inline { color: #885b08; margin-left: 6px; font-size: 12px; font-weight: 700; }
     .board-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .board-toolbar .hint { color: var(--muted); font-size: 12px; }
     .button {
       display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px;
       border: 1px solid #d9e1ee; border-radius: 9px; background: #fff; color: var(--blue);
@@ -106,22 +101,38 @@
 <body>
   <div class="app">
     <header class="hero">
-      <p class="eyebrow">JOB BOARD · 2026-08-27</p>
+      <p class="eyebrow">JOB BOARD</p>
       <h1>可投岗位表</h1>
-      <p>工作地含北京 · 2027 夏/秋可入职 · 仅列官网可打开的 JD。定稿投递版后由助手移入投递进度表。</p>
+      <p>按 config 硬过滤 · 仅列官网可打开的 JD。定稿投递版后由助手移入投递进度表。</p>
     </header>
 
     <div class="stats">
-      <div class="stat"><div class="stat-label">当前列表</div><div class="stat-value" id="statTotal">0</div></div>
-      <div class="stat success"><div class="stat-label">硬匹配</div><div class="stat-value" id="statExact">0</div></div>
-      <div class="stat warning"><div class="stat-label">优先</div><div class="stat-value" id="statUrgent">0</div></div>
-      <div class="stat"><div class="stat-label">地点</div><div class="stat-value">北京</div></div>
+      <div class="stat">
+        <div class="stat-label">待确认</div>
+        <div class="stat-hint">扩面审计入库，待人工确认分类</div>
+        <div class="stat-value" id="statPending">0</div>
+      </div>
+      <div class="stat success">
+        <div class="stat-label">待投递</div>
+        <div class="stat-hint">已确认要出简历并投递</div>
+        <div class="stat-value" id="statReady">0</div>
+      </div>
+      <div class="stat warning">
+        <div class="stat-label">候补</div>
+        <div class="stat-hint">愿投但同司投递名额已满</div>
+        <div class="stat-value" id="statBackup">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">归档</div>
+        <div class="stat-hint">硬条件不符或确认后放弃，仅供了解</div>
+        <div class="stat-value" id="statArchived">0</div>
+      </div>
     </div>
 
     <div class="callouts">
       <div class="callout info">
         <strong>用法</strong>
-        官网实搜入库的候选岗。浏览器「删除」仅本机隐藏；生成投递版并定稿后，助手会写入投递进度表并从本表移除。
+        可在浏览器里改类别、删除；变更记在本机，刷新仍保留。要写入磁盘上的 HTML 时，点「导出操作记录」把 JSON 发助手，或直接说「同步可投表」。
       </div>
     </div>
 
@@ -133,15 +144,25 @@
         </div>
         <div class="board-toolbar">
           <a class="button" href="application-tracker.html">投递进度表</a>
-          <button class="button" id="exportDismissedButton" type="button">导出已隐藏</button>
-          <button class="button" id="clearDismissedButton" type="button">恢复已隐藏</button>
-          <span class="hint" id="dismissedHint"></span>
+          <button class="button" id="exportStateButton" type="button">导出操作记录</button>
         </div>
       </div>
       <div class="filters">
         <div class="field search"><input id="searchInput" type="search" placeholder="搜索公司、岗位、城市或匹配理由…"></div>
         <div class="field"><select id="companyFilter" aria-label="按公司筛选"><option value="">全部公司</option></select></div>
-        <div class="field"><select id="trackFilter" aria-label="筛选方向"></select></div>
+        <div class="field"><select id="trackFilter" aria-label="按岗位方向筛选"></select></div>
+        <div class="field"><select id="categoryFilter" aria-label="按类别筛选">
+          <option value="all">全部类别</option>
+          <option value="pending">待确认</option>
+          <option value="ready">待投递</option>
+          <option value="backup">候补</option>
+          <option value="archived">归档</option>
+        </select></div>
+        <div class="field"><select id="sortSelect" aria-label="排序方式">
+          <option value="priority-fit">综合：优先 + 公司</option>
+          <option value="priority">优先：优先→可投</option>
+          <option value="company">公司：A-Z</option>
+        </select></div>
       </div>
       <div class="table-wrap">
         <table>
@@ -150,9 +171,7 @@
               <th>公司</th>
               <th>岗位</th>
               <th>城市</th>
-              <th>匹配</th>
               <th>为何适合</th>
-              <th>投递</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -161,7 +180,7 @@
       </div>
     </section>
 
-    <p class="footer">来源：各公司招聘官网实搜 + 人-岗适配。仅北京可核验 JD。更新 2026-08-27。</p>
+    <p class="footer">来源：各公司招聘官网实搜 + 人-岗适配。</p>
   </div>
 
   <script>
@@ -173,46 +192,171 @@
       { value: "design", label: "用研 / 体验" },
       { value: "other", label: "其他" },
     ];
-    const FIT_LABEL = { exact: "硬匹配", strong: "强匹配", stretch: "进取" };
     const STATUS_LABEL = { urgent: "优先", open: "可投" };
+    const FIT_ORDER = { exact: 0, strong: 1, stretch: 2 };
+    const STATUS_ORDER = { urgent: 0, open: 1 };
+    const STATE_KEY = "resume-ssot-job-match-state-v3";
+    const LEGACY_STATE_KEY = "resume-ssot-job-match-state-v2";
+    const LEGACY_STATE_KEY_V1 = "resume-ssot-job-match-state-v1";
+    const LEGACY_DISMISS_KEY = "resume-ssot-job-match-dismissed-v1";
+    const CATEGORY_FILTER_KEY = "resume-ssot-job-match-category-filter-v2";
+    const SORT_KEY = "resume-ssot-job-match-sort-v1";
+    const CATEGORIES = [
+      { value: "pending", label: "待确认" },
+      { value: "ready", label: "待投递" },
+      { value: "backup", label: "候补" },
+      { value: "archived", label: "归档" },
+    ];
+    const LEGACY_CATEGORY_MAP = {
+      active: "ready",
+      explore: "archived",
+      archived: "backup",
+    };
     // Agent replaces this array on each audited refresh.
     const JOBS = [];
 
-
-
-
-    const DISMISS_KEY = "resume-ssot-job-match-dismissed-v1";
-
-    function loadDismissed() {
-      try {
-        const raw = localStorage.getItem(DISMISS_KEY);
-        const value = raw ? JSON.parse(raw) : [];
-        return new Set(Array.isArray(value) ? value : []);
-      } catch {
-        return new Set();
+    function defaultCategory(job) {
+      if (job.category && CATEGORIES.some((item) => item.value === job.category)) return job.category;
+      if (/实习|了解|探索|科研·了解/.test(job.role || "")) return "archived";
+      return "pending";
+    }
+    function normalizeCategory(value) {
+      if (CATEGORIES.some((item) => item.value === value)) return value;
+      if (LEGACY_CATEGORY_MAP[value]) return LEGACY_CATEGORY_MAP[value];
+      return null;
+    }
+    function normalizeCategories(raw) {
+      const categories = {};
+      if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+        for (const [id, value] of Object.entries(raw)) {
+          const mapped = normalizeCategory(value);
+          if (mapped) categories[id] = mapped;
+        }
       }
+      return categories;
     }
-    function saveDismissed(set) {
-      localStorage.setItem(DISMISS_KEY, JSON.stringify([...set]));
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STATE_KEY);
+        if (raw) {
+          const value = JSON.parse(raw);
+          return {
+            deleted: new Set(Array.isArray(value?.deleted) ? value.deleted : []),
+            categories: normalizeCategories(value?.categories),
+          };
+        }
+      } catch {
+        /* fall through */
+      }
+      try {
+        const legacyV2 = localStorage.getItem(LEGACY_STATE_KEY);
+        if (legacyV2) {
+          const value = JSON.parse(legacyV2);
+          const migrated = {
+            deleted: new Set(Array.isArray(value?.deleted) ? value.deleted : []),
+            categories: normalizeCategories(value?.categories),
+          };
+          saveState(migrated);
+          localStorage.removeItem(LEGACY_STATE_KEY);
+          return migrated;
+        }
+      } catch {
+        /* ignore */
+      }
+      try {
+        const legacyV1 = localStorage.getItem(LEGACY_STATE_KEY_V1);
+        if (legacyV1) {
+          const value = JSON.parse(legacyV1);
+          const categories = {};
+          if (Array.isArray(value?.archived)) {
+            value.archived.forEach((id) => { categories[id] = "backup"; });
+          }
+          const migrated = {
+            deleted: new Set(Array.isArray(value?.deleted) ? value.deleted : []),
+            categories: normalizeCategories(categories),
+          };
+          saveState(migrated);
+          localStorage.removeItem(LEGACY_STATE_KEY_V1);
+          return migrated;
+        }
+      } catch {
+        /* ignore */
+      }
+      try {
+        const legacy = localStorage.getItem(LEGACY_DISMISS_KEY);
+        const ids = legacy ? JSON.parse(legacy) : [];
+        if (Array.isArray(ids) && ids.length) {
+          const migrated = { deleted: new Set(ids), categories: {} };
+          saveState(migrated);
+          localStorage.removeItem(LEGACY_DISMISS_KEY);
+          return migrated;
+        }
+      } catch {
+        /* ignore */
+      }
+      return { deleted: new Set(), categories: {} };
     }
-    let dismissed = loadDismissed();
+    function saveState(nextState) {
+      localStorage.setItem(STATE_KEY, JSON.stringify({
+        deleted: [...nextState.deleted],
+        categories: nextState.categories,
+      }));
+    }
+    let state = loadState();
 
-    function activeJobs() {
-      return JOBS.filter((job) => !dismissed.has(job.id));
+    function aliveJobs() {
+      return JOBS.filter((job) => !state.deleted.has(job.id));
     }
-    function updateDismissedHint() {
-      const el = document.getElementById("dismissedHint");
-      if (el) el.textContent = dismissed.size ? `已隐藏 ${dismissed.size} 条` : "";
+    function getCategory(job) {
+      return state.categories[job.id] || defaultCategory(job);
     }
-    function dismissJob(id) {
-      dismissed.add(id);
-      saveDismissed(dismissed);
+    function setCategory(id, category) {
+      if (state.deleted.has(id)) return;
+      if (!CATEGORIES.some((item) => item.value === category)) return;
+      const job = JOBS.find((item) => item.id === id);
+      if (job && category === defaultCategory(job)) delete state.categories[id];
+      else state.categories[id] = category;
+      saveState(state);
+      render();
+    }
+    function countByCategory(category) {
+      return aliveJobs().filter((job) => getCategory(job) === category).length;
+    }
+    function getTrack(job) {
+      const value = job.track;
+      if (value && TRACKS.some((item) => item.value === value && item.value !== "all")) return value;
+      return "other";
+    }
+    function deleteJob(id) {
+      state.deleted.add(id);
+      delete state.categories[id];
+      saveState(state);
       render();
     }
 
     const trackFilter = document.getElementById("trackFilter");
     const companyFilter = document.getElementById("companyFilter");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const sortSelect = document.getElementById("sortSelect");
     const searchInput = document.getElementById("searchInput");
+
+    try {
+      const savedCategory = localStorage.getItem(CATEGORY_FILTER_KEY)
+        || localStorage.getItem("resume-ssot-job-match-category-filter-v1");
+      const legacyFilterMap = { primary: "ready", active: "ready", explore: "archived", archived: "backup" };
+      const mapped = legacyFilterMap[savedCategory] || savedCategory;
+      if (mapped && categoryFilter.querySelector(`option[value="${mapped}"]`)) {
+        categoryFilter.value = mapped;
+      }
+      const savedSort = localStorage.getItem(SORT_KEY);
+      if (savedSort === "fit") {
+        sortSelect.value = "priority-fit";
+      } else if (savedSort && sortSelect.querySelector(`option[value="${savedSort}"]`)) {
+        sortSelect.value = savedSort;
+      }
+    } catch {
+      /* ignore */
+    }
     TRACKS.forEach((track) => {
       const option = document.createElement("option");
       option.value = track.value;
@@ -235,79 +379,128 @@
         companies.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
       if (companies.includes(prev)) companyFilter.value = prev;
     }
+    function rowActions(job) {
+      const id = escapeHtml(job.id);
+      const category = getCategory(job);
+      const options = CATEGORIES.map((item) =>
+        `<option value="${item.value}"${item.value === category ? " selected" : ""}>${item.label}</option>`
+      ).join("");
+      return `<select class="category-select" data-category-for="${id}" aria-label="岗位类别">${options}</select>`
+        + `<button class="icon-button delete" type="button" data-delete="${id}">删除</button>`;
+    }
+    function sortJobs(jobs, sort) {
+      const fitRank = (job) => FIT_ORDER[job.fit] ?? 9;
+      const statusRank = (job) => STATUS_ORDER[job.status] ?? 9;
+      return [...jobs].sort((a, b) => {
+        if (sort === "company") {
+          return (a.company || "").localeCompare(b.company || "", "zh-CN");
+        }
+        if (sort === "priority") {
+          const byStatus = statusRank(a) - statusRank(b);
+          if (byStatus) return byStatus;
+          return fitRank(a) - fitRank(b);
+        }
+        const byStatus = statusRank(a) - statusRank(b);
+        if (byStatus) return byStatus;
+        const byFit = fitRank(a) - fitRank(b);
+        if (byFit) return byFit;
+        return (a.company || "").localeCompare(b.company || "", "zh-CN");
+      });
+    }
     function visibleJobs() {
       const track = trackFilter.value;
       const company = companyFilter.value;
+      const category = categoryFilter.value;
       const query = (searchInput.value || "").trim().toLowerCase();
-      return activeJobs().filter((job) => {
-        if (track !== "all" && job.track !== track) return false;
+      const filtered = aliveJobs().filter((job) => {
+        if (category !== "all" && getCategory(job) !== category) return false;
+        if (track !== "all" && getTrack(job) !== track) return false;
         if (company && job.company !== company) return false;
         if (!query) return true;
-        const haystack = [job.company, job.role, job.city, job.why, FIT_LABEL[job.fit], STATUS_LABEL[job.status]]
+        const categoryLabel = CATEGORIES.find((item) => item.value === getCategory(job))?.label || "";
+        const haystack = [job.company, job.role, job.city, job.why, categoryLabel, STATUS_LABEL[job.status]]
           .join(" ").toLowerCase();
         return haystack.includes(query);
       });
+      return sortJobs(filtered, sortSelect.value);
     }
 
     function render() {
-      populateCompanyFilter(activeJobs());
+      populateCompanyFilter(aliveJobs());
       const visible = visibleJobs();
-      document.getElementById("statTotal").textContent = String(visible.length);
-      document.getElementById("statExact").textContent = String(visible.filter((j) => j.fit === "exact").length);
-      document.getElementById("statUrgent").textContent = String(visible.filter((j) => j.status === "urgent").length);
+      document.getElementById("statPending").textContent = String(countByCategory("pending"));
+      document.getElementById("statReady").textContent = String(countByCategory("ready"));
+      document.getElementById("statBackup").textContent = String(countByCategory("backup"));
+      document.getElementById("statArchived").textContent = String(countByCategory("archived"));
       const hint = document.getElementById("resultHint");
       if (hint) hint.textContent = `显示 ${visible.length} 条`;
-      updateDismissedHint();
-      document.getElementById("jobBody").innerHTML = visible.map((job) => `
-        <tr class="${job.status}" data-id="${escapeHtml(job.id)}">
+      document.getElementById("jobBody").innerHTML = visible.map((job) => {
+        const category = getCategory(job);
+        const rowClass = [job.status, category !== "ready" ? `cat-${category}` : ""].filter(Boolean).join(" ");
+        const prio = job.status === "urgent"
+          ? `<span class="prio-inline">${STATUS_LABEL[job.status]}</span>` : "";
+        return `
+        <tr class="${rowClass}" data-id="${escapeHtml(job.id)}">
           <td class="company">${escapeHtml(job.company)}</td>
-          <td>${escapeHtml(job.role)}</td>
+          <td><a href="${escapeHtml(job.href)}" target="_blank" rel="noopener">${escapeHtml(job.role)}</a>${prio}</td>
           <td>${escapeHtml(job.city)}</td>
-          <td>
-            <span class="status fit-${escapeHtml(job.fit)}">${FIT_LABEL[job.fit] || job.fit}</span>
-            <span class="prio">${STATUS_LABEL[job.status] || job.status}</span>
-          </td>
           <td class="why">${escapeHtml(job.why)}</td>
-          <td><a href="${escapeHtml(job.href)}" target="_blank" rel="noopener">${escapeHtml(job.hrefLabel || "JD")}</a></td>
-          <td class="row-actions">
-            <button class="icon-button delete" type="button" data-dismiss="${escapeHtml(job.id)}">删除</button>
-          </td>
-        </tr>
-      `).join("");
+          <td class="row-actions">${rowActions(job)}</td>
+        </tr>`;
+      }).join("");
     }
 
     trackFilter.addEventListener("change", render);
     companyFilter.addEventListener("change", render);
-    searchInput.addEventListener("input", render);
-    document.getElementById("jobBody").addEventListener("click", (event) => {
-      const dismiss = event.target.closest("[data-dismiss]");
-      if (!dismiss) return;
-      const job = JOBS.find((item) => item.id === dismiss.dataset.dismiss);
-      const label = job ? `${job.company} · ${job.role}` : "该岗位";
-      if (confirm(`从可投列表删除「${label}」？仅隐藏，可点「恢复已隐藏」。`)) dismissJob(dismiss.dataset.dismiss);
+    categoryFilter.addEventListener("change", () => {
+      try {
+        localStorage.setItem(CATEGORY_FILTER_KEY, categoryFilter.value);
+      } catch {
+        /* ignore */
+      }
+      render();
     });
-    const exportBtn = document.getElementById("exportDismissedButton");
+    sortSelect.addEventListener("change", () => {
+      try {
+        localStorage.setItem(SORT_KEY, sortSelect.value);
+      } catch {
+        /* ignore */
+      }
+      render();
+    });
+    searchInput.addEventListener("input", render);
+    document.getElementById("jobBody").addEventListener("change", (event) => {
+      const select = event.target.closest("[data-category-for]");
+      if (!select) return;
+      setCategory(select.dataset.categoryFor, select.value);
+    });
+    document.getElementById("jobBody").addEventListener("click", (event) => {
+      const deleteBtn = event.target.closest("[data-delete]");
+      if (!deleteBtn) return;
+      const id = deleteBtn.dataset.delete;
+      const job = JOBS.find((item) => item.id === id);
+      const label = job ? `${job.company} · ${job.role}` : "该岗位";
+      if (confirm(`永久删除「${label}」？删除后不再显示；助手刷新岗位表时会从 HTML 同步移除。`)) {
+        deleteJob(id);
+      }
+    });
+    const exportBtn = document.getElementById("exportStateButton");
     if (exportBtn) {
       exportBtn.addEventListener("click", () => {
+        const categories = {};
+        aliveJobs().forEach((job) => {
+          categories[job.id] = getCategory(job);
+        });
         const blob = new Blob([JSON.stringify({
           exported_at: new Date().toISOString(),
-          dismissed_ids: [...dismissed],
+          deleted_ids: [...state.deleted],
+          categories,
         }, null, 2)], { type: "application/json" });
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = "job-match-dismissed.json";
+        a.download = "job-match-state.json";
         a.click();
         URL.revokeObjectURL(a.href);
-      });
-    }
-    const clearBtn = document.getElementById("clearDismissedButton");
-    if (clearBtn) {
-      clearBtn.addEventListener("click", () => {
-        if (!dismissed.size) return;
-        if (!confirm(`恢复 ${dismissed.size} 条已隐藏岗位？`)) return;
-        dismissed = new Set();
-        saveDismissed(dismissed);
-        render();
       });
     }
     render();

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.12.0 (2026-08-30)
+
+- Job-match board v3: category workflow (`pending` / `ready` / `backup` / `archived`); stats by category; row category dropdown + filters/sort
+- Browser state `resume-ssot-job-match-state-v3` (`deleted` + `categories`); export `job-match-state.json`; Agent sync path documented
+- Template `job-match-board.html` upgraded to v3 shell; legacy dismissed/state keys auto-migrate
+
 ## 2.11.0 (2026-08-30)
 
 - Job-match: `offers/_scratch/search-ledger.json` for company dedup (slug / last_searched_at / last_result / watch?)
