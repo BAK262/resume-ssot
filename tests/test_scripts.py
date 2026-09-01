@@ -68,6 +68,11 @@ def test_export_from_html() -> None:
     assert "项目" in text
     assert "不负责后端" not in text
     assert "PROJ-2024-001" not in text
+    assert "94.2%（结题口径）" in text
+    assert "Lin, X., Chen, Y." in text
+    assert "示例理工大学 计算机学院" in text
+    assert "可入职 2020.09" in text
+    assert "实时告警平台 2024.07" in text
     out.unlink(missing_ok=True)
 
 

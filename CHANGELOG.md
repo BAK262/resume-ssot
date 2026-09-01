@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.12.1 (2026-09-02)
+
+- Plain-text export: keep inline HTML (`span` / `a` / `strong` / `em`) on the same line as surrounding sentence text
+- Job-match: third-party posts require official-channel lookup before入库; salary/channel notes go in `why` (no extra board column); reorganized `job-match.md`
+
 ## 2.12.0 (2026-08-30)
 
 - Job-match board v3: category workflow (`pending` / `ready` / `backup` / `archived`); stats by category; row category dropdown + filters/sort

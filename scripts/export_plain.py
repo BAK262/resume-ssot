@@ -51,6 +51,14 @@ def apply_term_registry(text: str, registry: list) -> str:
     return text.strip()
 
 
+# Block tags start a new plain-text line. Inline tags (span/a/strong/em/…) stay in the sentence.
+_BLOCK_FLUSH = frozenset({"p", "div", "li", "h1", "h3", "blockquote", "pre", "tr"})
+
+
+def _collapse_ws(text: str) -> str:
+    return " ".join(text.split())
+
+
 class _ResumeHTMLParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
@@ -77,7 +85,15 @@ class _ResumeHTMLParser(HTMLParser):
             self._section_title = ""
             self._section_lines = []
         elif tag == "li":
-            self._buffer.append("\n- ")
+            self._flush(header=self._in_header)
+            self._buffer.append("- ")
+        elif tag == "br":
+            self._flush(header=self._in_header)
+        if tag == "span":
+            for name, val in attrs:
+                if name == "class" and val and "date" in val.split():
+                    self._buffer.append(" ")
+                    break
 
     def handle_endtag(self, tag: str) -> None:
         if tag in self._ignore_tags:
@@ -86,30 +102,26 @@ class _ResumeHTMLParser(HTMLParser):
         if self._ignore_depth:
             return
         if tag == "header":
-            self._in_header = False
             self._flush(header=True)
+            self._in_header = False
         elif tag == "h2":
-            self._section_title = " ".join(self._buffer).strip()
+            self._section_title = _collapse_ws("".join(self._buffer))
             self._buffer.clear()
         elif tag == "section":
             self._flush()
             if self._section_title:
                 self.sections.append((self._section_title, self._section_lines))
             self._in_section = False
-        elif tag in ("p", "div", "li", "span", "a", "strong"):
+        elif tag in _BLOCK_FLUSH:
             self._flush(header=self._in_header)
 
     def handle_data(self, data: str) -> None:
         if self._ignore_depth:
             return
-        chunk = " ".join(data.split())
-        if chunk:
-            self._buffer.append(chunk)
+        self._buffer.append(data)
 
     def _flush(self, header: bool = False) -> None:
-        if not self._buffer:
-            return
-        line = " ".join(self._buffer).strip()
+        line = _collapse_ws("".join(self._buffer))
         self._buffer.clear()
         if not line:
             return
