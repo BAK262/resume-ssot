@@ -57,7 +57,8 @@ flowchart LR
 | 给了旧简历路径 | scan → 若要 JD 则直接 jd（lazy base） |
 | 只口述 | walkthrough，3 轮，第 1 轮后出草稿 |
 | 新缩写 ≤5 | 内联翻译，跳过 audit-terms |
-| 投递版交付 | HTML + 尝试 PDF + `export_plain.py --from-html`；短审计 + 必答追问；有 offers/ 则联动进度表 |
+| 投递版交付 | HTML + 尝试 PDF + `export_plain.py --from-html`；短审计 + 必答追问；有 offers/ 则看板联动（第三方定稿留可投表，实投后进进度表） |
+| 第三方岗感兴趣 / 已打招呼 | [job-match.md](workflows/job-match.md) 投递通道：入库 `待确认` → 平台沟通 → `待投递` → 出投递版 → 发简历后进进度表 |
 | 只改一句 | [workflows/patch.md](workflows/patch.md)：改 HTML → 最小 ssot 回写 → validate |
 | 学术版简历 | `academic` 轨 + `templates/resume-academic.html` |
 | 搜可投岗位 / 刷新岗位表 | [workflows/candidate-profile.md](workflows/candidate-profile.md)（步骤 0 默认刷新）→ [workflows/job-match.md](workflows/job-match.md)：脑暴 → 多渠道实搜 → 审计入库 |

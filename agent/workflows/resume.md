@@ -51,7 +51,7 @@ JD + 岗位名 + ssot.json + 基线 HTML（无则 lazy base）
 - [HR 自检 5 项](../rules/resume.md#hr-自检) 短报
 - 页数报告
 - **必答追问 2–3 条**（对本稿高风险 Claim；口径见 [interview.md](interview.md) grill——只列问题，不代写可背答案）
-- **看板联动**（有 `offers/` 时**定稿交付默认必做**）：按 [offer.md](offer.md) 写入投递进度表（定稿 → `待投递`；已确认投出 → `已投递`），并从可投表 `JOBS` 删除对应条目；提醒用户刷新/重开进度表
+- **看板联动**（有 `offers/` 时**定稿交付默认必做**）：**第三方岗**定稿 → 可投表保持 `ready`、`why` 补投递版路径，**不**入进度表；**官网 / 邮件**定稿 → 按 [offer.md](offer.md) 写进度表 `待投递`。用户确认**已发简历 / 已投递** → 进度表 upsert + 从可投表 `JOBS` 删除；提醒刷新/重开进度表
 
 HTML 模板联系区预留 GitHub / 作品集 / LinkedIn（有则填，无则删该行）。
 
