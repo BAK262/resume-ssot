@@ -40,7 +40,7 @@ flowchart LR
 │   ├── academic_<jd-slug>.html
 │   └── academic_<jd-slug>.txt
 ├── offers/                          # 可选：求职漏斗
-│   ├── job-match-industry.html      # 可投岗位表（官网实搜+审计）
+│   ├── job-match-industry.html      # 可投岗位表（多渠道实搜+审计）
 │   ├── application-tracker.html     # 投递进度表
 │   ├── candidate-profile.json       # 求职画像（技能/偏好；扩岗前默认更新）
 │   └── _scratch/                    # 临时检索；勿对用户堆路径
@@ -60,7 +60,8 @@ flowchart LR
 | 投递版交付 | HTML + 尝试 PDF + `export_plain.py --from-html`；短审计 + 必答追问；有 offers/ 则联动进度表 |
 | 只改一句 | [workflows/patch.md](workflows/patch.md)：改 HTML → 最小 ssot 回写 → validate |
 | 学术版简历 | `academic` 轨 + `templates/resume-academic.html` |
-| 搜可投岗位 / 刷新岗位表 | [workflows/candidate-profile.md](workflows/candidate-profile.md)（步骤 0 默认刷新）→ [workflows/job-match.md](workflows/job-match.md)：脑暴 → 官网实搜 → 审计入库 |
+| 搜可投岗位 / 刷新岗位表 | [workflows/candidate-profile.md](workflows/candidate-profile.md)（步骤 0 默认刷新）→ [workflows/job-match.md](workflows/job-match.md)：脑暴 → 多渠道实搜 → 审计入库 |
+| 搜可投 + 本机已配置 boss-agent MCP | [workflows/job-match.md](workflows/job-match.md) 步骤 2：Boss/智联优先 CLI `search`/`detail`；猎聘等降级浏览器 |
 | 总结技能/求职偏好 / 适合投什么 | [workflows/candidate-profile.md](workflows/candidate-profile.md) |
 | 无岗位表 | 从 `templates/job-match-board.html` 复制到 `offers/` |
 | 同步可投表 / 发来 job-match-state.json | [workflows/job-match.md](workflows/job-match.md)「Agent 同步可投表」 |

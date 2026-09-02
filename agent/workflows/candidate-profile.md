@@ -46,7 +46,7 @@
 - `identity_one_liner` — 一句话定位
 - `pillar_layers` — 能力分层
 - `skill_strengths` / `skill_boundaries` — 可举证强项与 **constraints 对齐** 的禁区
-- `job_preferences` — want / avoid / hard_filters
+- `job_preferences` — want / avoid / hard_filters（`notes` 须与 [job-match.md](job-match.md) 信息源口径一致：官网与第三方平等、JD URL 可核验）
 - `audit_axes` — 供 [job-match.md](job-match.md) 审计轴
 - `applied_behavior_summary` — 从已投行为反推 core / bridge 赛道
 - `role_directions` + `keywords`（含 negative）

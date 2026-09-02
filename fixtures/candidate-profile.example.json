@@ -22,7 +22,11 @@
   },
   "skill_boundaries": [],
   "job_preferences": {
-    "hard_filters": { "cities": [], "start_window": "", "notes": "" },
+    "hard_filters": {
+      "cities": [],
+      "start_window": "",
+      "notes": "JD 详情 URL 须可打开且地点可核验。官网与第三方平台（Boss/猎聘/智联等）地位相同；有官网 JD 时记入 official_href 作交叉核验。投递方式写入 why。"
+    },
     "want": {
       "essence": "",
       "role_shapes_priority": [],

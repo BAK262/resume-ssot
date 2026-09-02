@@ -4,13 +4,13 @@
 
 | 层 | 谁做 | 做什么 |
 |----|------|--------|
-| **Agent** | 任意 coding agent | 选材与证据化改写、JD 对齐、术语人话、一页压缩、HR 自检与开场文案、官网实搜岗位匹配、投递进度、面试追问 |
+| **Agent** | 任意 coding agent | 选材与证据化改写、JD 对齐、术语人话、一页压缩、HR 自检与开场文案、多渠道实搜岗位匹配（官网 + 第三方；推荐 boss-agent MCP）、投递进度、面试追问 |
 | **经历档案** | `ssot.json` | 全量事实、边界、冲突、术语表 |
 | **脚本** | `scripts/` | 校验、HTML→PDF、HTML→plain |
 
 **刻意不提供** SSOT→HTML 全自动渲染。HTML 由 Agent 按 `templates/` + `agent/rules/resume.md` 生成；`{{PLACEHOLDER}}` 是结构骨架。
 
-**可投岗位表**须官网实搜三步（脑暴 → 按企检索 → 人-岗审计），见 [workflows/job-match.md](workflows/job-match.md)；禁止用第三方聚合结果直接入库。
+**可投岗位表**须多渠道实搜三步（脑暴 → 按企检索 → 人-岗审计），见 [workflows/job-match.md](workflows/job-match.md)；官网与 Boss/猎聘/智联等第三方地位相同；禁止用聚合新闻/「听说有岗」直接入库。
 
 **投递进度表**见 [workflows/offer.md](workflows/offer.md)；与可投表联动由 Agent 在投递版定稿 / 确认投递时自动完成（写入进度、移出可投）。
 

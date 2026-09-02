@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.13.0 (2026-09-02)
+
+- Job-match: **多渠道实搜** — 官网与 Boss/猎聘/智联等第三方信息源地位相同；官源交叉核验改为可选（非入库门槛）
+- Job-match: recommend **boss-agent MCP** (boss-agent-cli) for Boss/Zhilian search + `detail`; browser fallback for Liepin, CAPTCHA, or missing MCP
+- Job-match: **投递通道** — 无官网时平台沟通/打招呼为主通道；搜到不自动打招呼；`ready` 后再投递
+- Offer: third-party apply notes (`Boss 已打招呼` / `猎聘已投递`); `jdUrl` = platform JD when no portal
+- Template/README: board copy — JD detail URL required (official or third-party), not official-only
+
 ## 2.12.1 (2026-09-02)
 
 - Plain-text export: keep inline HTML (`span` / `a` / `strong` / `em`) on the same line as surrounding sentence text
