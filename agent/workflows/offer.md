@@ -31,6 +31,7 @@
    - **Agent**：改 HTML 内 `initialRecords` 种子（每条必写 `updatedAt`）；联动时**同时**改可投表 `JOBS`（见下）。
 5. 邮箱巡检 → [email-monitoring.md](../references/email-monitoring.md)；登录 / MFA / CAPTCHA 由用户完成。
 6. 要做投递版简历 → [resume.md](resume.md) Mode · jd（**定稿交付时自动看板联动**）。
+7. 实战面试结束且要复盘落盘 → [interview.md](interview.md) Mode · debrief；本表 `note` 挂岗复盘与暴露台账路径。
 
 ### 状态
 

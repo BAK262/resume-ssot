@@ -34,20 +34,20 @@ flowchart LR
 ├── ssot.json
 ├── resumes/
 │   ├── industry_base.html
-│   ├── industry_<jd-slug>.html
-│   ├── industry_<jd-slug>.txt
+│   ├── industry_<jd-slug>.html / .txt
 │   ├── academic_base.html
-│   ├── academic_<jd-slug>.html
-│   └── academic_<jd-slug>.txt
+│   ├── academic_<jd-slug>.html / .txt
+│   └── <岗目录>/interview-rN-YYYYMMDD.md   # 单岗实战复盘（可选；不进 ssot）
 ├── offers/                          # 可选：求职漏斗
 │   ├── job-match-industry.html      # 可投岗位表（多渠道实搜+审计）
 │   ├── application-tracker.html     # 投递进度表
 │   ├── candidate-profile.json       # 求职画像（技能/偏好；扩岗前默认更新）
+│   ├── interview-exposure-ledger.md # 跨岗面试暴露台账（可选）
 │   └── _scratch/                    # 临时检索；勿对用户堆路径
 └── config.json   # 可选，templates/config.example.json
 ```
 
-对用户称：**经历档案 / 通用版 / 投递版 / 网申文本 / 可投岗位表 / 投递进度表 / 面试准备**。
+对用户称：**经历档案 / 通用版 / 投递版 / 网申文本 / 可投岗位表 / 投递进度表 / 面试准备 / 面试复盘 / 暴露台账**。
 
 ## 智能默认
 
@@ -70,6 +70,8 @@ flowchart LR
 | 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/` |
 | 岗位定位 / 要点改写 / HR 开场（不要文件） | [workflows/resume.md](workflows/resume.md) Mode · pitch + [rules/resume.md](rules/resume.md) |
 | 面试预测 / 追问 / 掌握度 | [workflows/interview.md](workflows/interview.md) |
+| 实战面试结束 / 复盘落盘 / 暴露台账 | [workflows/interview.md](workflows/interview.md) Mode · debrief；进度表挂链 → [workflows/offer.md](workflows/offer.md) |
+| 无暴露台账 | 从 `templates/interview-exposure-ledger.md` 复制到 `offers/` |
 | 用户焦虑 | [README.md](../README.md) FAQ；≤3 问/轮 |
 
 **禁止**：要求用户读 agent 文档；一次丢 >3 路径；对用户说 workflow/schema 名、SSOT、audit、subagent。
@@ -93,7 +95,7 @@ flowchart LR
 | 总结技能/求职偏好 | [workflows/candidate-profile.md](workflows/candidate-profile.md) |
 | 搜可投岗位 | [workflows/candidate-profile.md](workflows/candidate-profile.md) + [workflows/job-match.md](workflows/job-match.md) |
 | 投递进度 / Offer | [workflows/offer.md](workflows/offer.md) |
-| 面试准备 | [workflows/interview.md](workflows/interview.md) |
+| 面试准备 / 实战复盘落盘 | [workflows/interview.md](workflows/interview.md) |
 | 从 GitHub 安装 | [INSTALL.md](INSTALL.md) |
 | PDF / ATS | [scripts/README.md](../scripts/README.md) |
 

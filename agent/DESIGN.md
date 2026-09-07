@@ -4,7 +4,7 @@
 
 | 层 | 谁做 | 做什么 |
 |----|------|--------|
-| **Agent** | 任意 coding agent | 选材与证据化改写、JD 对齐、术语人话、一页压缩、HR 自检与开场文案、多渠道实搜岗位匹配（官网 + 第三方；推荐 boss-agent MCP）、投递进度、面试追问 |
+| **Agent** | 任意 coding agent | 选材与证据化改写、JD 对齐、术语人话、一页压缩、HR 自检与开场文案、多渠道实搜岗位匹配（官网 + 第三方；推荐 boss-agent MCP）、投递进度、面试追问、实战复盘落盘与暴露台账 |
 | **经历档案** | `ssot.json` | 全量事实、边界、冲突、术语表 |
 | **脚本** | `scripts/` | 校验、HTML→PDF、HTML→plain |
 
@@ -14,7 +14,7 @@
 
 **投递进度表**见 [workflows/offer.md](workflows/offer.md)；与可投表联动由 Agent 在投递版定稿 / 确认投递时自动完成（写入进度、移出可投）。
 
-**定位 / 要点包装 / HR 开场**在 [workflows/resume.md](workflows/resume.md)（含 Mode · pitch）与 [rules/resume.md](rules/resume.md)。**面试预测与追问**见 [workflows/interview.md](workflows/interview.md)。主张确认态可选 [references/claim-evidence-ledger.md](references/claim-evidence-ledger.md)。
+**定位 / 要点包装 / HR 开场**在 [workflows/resume.md](workflows/resume.md)（含 Mode · pitch）与 [rules/resume.md](rules/resume.md)。**面试预测 / 追问 / 实战复盘落盘**见 [workflows/interview.md](workflows/interview.md)。主张确认态可选 [references/claim-evidence-ledger.md](references/claim-evidence-ledger.md)。
 
 闭环在 **Agent + 人裁决**，不在 offline pipeline。
 
@@ -33,4 +33,4 @@ PDF 相关脚本改编自 resume-master。完整说明见 [ACKNOWLEDGEMENTS.md](
 
 - 入口仅 [README.md](../README.md)（人类单页 prompt）
 - **禁止**要求用户读 `agent/`、`schema`、`workflows`、文件名如 `ssot.json` / `industry_base`
-- 对用户只说：经历档案、通用版、投递版、网申文本、可投岗位表、投递进度表、面试准备
+- 对用户只说：经历档案、通用版、投递版、网申文本、可投岗位表、投递进度表、面试准备、面试复盘、暴露台账

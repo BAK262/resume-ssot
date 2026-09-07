@@ -134,6 +134,14 @@ Workspace: D:\career\. Tailored resume: [path or role]. JD: [paste or skip].
 Predict likely interview questions; or grill mode—one question at a time—to pressure-test resume claims.
 ```
 
+### H · After a real interview · debrief on disk
+
+```text
+Workspace: D:\career\. Role: [company · title]. Round: [1st/2nd…] done.
+Here is what was asked, what I answered, and interviewer feedback.
+Write a per-role interview debrief (Q&A + live feedback only) and update the cross-role exposure ledger (gaps → how to close them); link both paths in the tracker note.
+```
+
 ---
 
 ## After your first success, check these
@@ -146,6 +154,7 @@ Predict likely interview questions; or grill mode—one question at a time—to 
 | Open-roles board | Official JD links; browser **Delete** hides a candidate (AI moves roles to tracker when a tailored resume is finalized / applied) |
 | Application tracker | Status matches evidence; no duplicate of open-roles rows; refresh/reopen after AI writes |
 | Interview prep | Oral round on high-risk claims in this version |
+| Interview debrief / exposure ledger | Per-role debrief after real interviews; cross-role ledger with open gaps; tracker note links paths |
 
 If the chat mentions internal filenames—**ignore them**; the career archive is maintained by the AI.
 

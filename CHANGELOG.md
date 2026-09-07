@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.15.0 (2026-09-07)
+
+- Interview: **Mode · debrief** — 实战面试后落盘单岗复盘（岗目录 `interview-rN-YYYYMMDD.md`，只记问答与当场反馈）+ 跨岗 **暴露台账**（`offers/interview-exposure-ledger.md`：暴露点 → 补齐方向）
+- Interview: 对话内掌握度复盘（Mode · review）与落盘复盘分离；复盘/表现不写进经历档案
+- Offer: 进度表 `note` 可挂复盘与台账路径；一面结束无过关证据不升轮次
+- Templates: `interview-exposure-ledger.md`、`interview-debrief.example.md`
+- ROUTER / SKILL / README: 路由与人类 prompt「面试复盘 / 暴露台账」
+
 ## 2.14.0 (2026-09-02)
 
 - Job-match / Offer: **第三方平台求职路径** — 入库默认 `待确认`；第一步为平台沟通/打招呼（非发简历）；已打招呼 → `待投递`；不匹配/放弃 → `归档`；交流后发简历 → 投递进度表
