@@ -161,6 +161,8 @@
         <div class="field"><select id="sortSelect" aria-label="排序方式">
           <option value="priority-fit">综合：优先 + 公司</option>
           <option value="priority">优先：优先→可投</option>
+          <option value="date-desc">时间：新到旧</option>
+          <option value="date-asc">时间：旧到新</option>
           <option value="company">公司：A-Z</option>
         </select></div>
       </div>
@@ -213,7 +215,16 @@
       archived: "backup",
     };
     // Agent replaces this array on each audited refresh.
+    // Optional fields: added_at (ISO), official_href (cross-check only; not a table column).
     const JOBS = [];
+    const JOB_ORDER = new Map(JOBS.map((job, index) => [job.id, index]));
+    function jobSortTime(job) {
+      if (job.added_at) {
+        const parsed = Date.parse(job.added_at);
+        if (!Number.isNaN(parsed)) return parsed;
+      }
+      return JOB_ORDER.get(job.id) ?? 0;
+    }
 
     function defaultCategory(job) {
       if (job.category && CATEGORIES.some((item) => item.value === job.category)) return job.category;
@@ -392,6 +403,12 @@
       const fitRank = (job) => FIT_ORDER[job.fit] ?? 9;
       const statusRank = (job) => STATUS_ORDER[job.status] ?? 9;
       return [...jobs].sort((a, b) => {
+        if (sort === "date-desc") {
+          return jobSortTime(b) - jobSortTime(a);
+        }
+        if (sort === "date-asc") {
+          return jobSortTime(a) - jobSortTime(b);
+        }
         if (sort === "company") {
           return (a.company || "").localeCompare(b.company || "", "zh-CN");
         }

@@ -184,13 +184,17 @@
 
 **JOBS 字段**
 
-`{ id, company, role, city, track, category, fit, status, why, href, hrefLabel }`
+`{ id, company, role, city, track, category, fit, status, why, href, hrefLabel, added_at?, official_href? }`
 
 | 字段 | 值 | 说明 |
 | --- | --- | --- |
 | `category` | `pending` \| `ready` \| `backup` \| `archived` | 投递决策类 |
 | `fit` | `exact` \| `strong` \| `stretch` | 过筛后贴合度 |
 | `status` | `urgent` \| `open` | 排序；仅 `urgent` 显示「优先」 |
+| `added_at` | ISO 时间（可选） | 看板「时间」排序；缺省按种子数组下标 |
+| `official_href` | URL（可选） | 官源交叉核验；**不**渲染为表列，结论写 `why` |
+
+**TRACKS**：模板默认通用方向；Agent 可按候选人赛道替换标签，保持 `getTrack` / 筛选契约。
 
 **默认 `category`**
 
@@ -199,7 +203,7 @@
 - 标题含实习 / 了解 / 探索 / 科研·了解 → `archived`
 - 用户当轮明确「待投」→ `ready`；「同司名额已满」→ `backup`
 
-薪酬、官源、投递方式只写进 `why`，不单开表列；`match-*.json` 可保留 `salary` / `channel_note` 备查。
+薪酬、官源、投递方式只写进 `why`，不单开表列；`match-*.json` 可保留 `salary` / `channel_note` 备查。看板排序含：综合 / 优先 / **时间新→旧·旧→新** / 公司。
 
 ---
 

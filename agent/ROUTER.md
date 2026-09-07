@@ -67,7 +67,7 @@ flowchart LR
 | 无岗位表 | 从 `templates/job-match-board.html` 复制到 `offers/` |
 | 同步可投表 / 发来 job-match-state.json | [workflows/job-match.md](workflows/job-match.md)「Agent 同步可投表」 |
 | 更新投递 / Offer / 进度表 | [workflows/offer.md](workflows/offer.md) |
-| 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/` |
+| 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/`（含归档面板 / 停留提醒 / 备注气泡） |
 | 岗位定位 / 要点改写 / HR 开场（不要文件） | [workflows/resume.md](workflows/resume.md) Mode · pitch + [rules/resume.md](rules/resume.md) |
 | 面试预测 / 追问 / 掌握度 | [workflows/interview.md](workflows/interview.md) |
 | 实战面试结束 / 复盘落盘 / 暴露台账 | [workflows/interview.md](workflows/interview.md) Mode · debrief；进度表挂链 → [workflows/offer.md](workflows/offer.md) |

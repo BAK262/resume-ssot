@@ -152,7 +152,7 @@ Write a per-role interview debrief (Q&A + live feedback only) and update the cro
 | Matching `.txt` | Paste into application forms |
 | Matching `.pdf` | Use as attachment (or HTML → Print → Save as PDF) |
 | Open-roles board | Official JD links; browser **Delete** hides a candidate (AI moves roles to tracker when a tailored resume is finalized / applied) |
-| Application tracker | Status matches evidence; no duplicate of open-roles rows; refresh/reopen after AI writes |
+| Application tracker | Status matches evidence; no duplicate of open-roles rows; refresh/reopen after AI writes; 7-day dwell warn / reject-or-10-day archive; hover notes |
 | Interview prep | Oral round on high-risk claims in this version |
 | Interview debrief / exposure ledger | Per-role debrief after real interviews; cross-role ledger with open gaps; tracker note links paths |
 

@@ -26,14 +26,39 @@
     button, input, select, textarea { font: inherit; }
     button { cursor: pointer; }
     .app { width: min(1220px, calc(100% - 36px)); margin: 0 auto; padding: 34px 0 48px; }
-    .hero {
-      display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
-      padding: 8px 4px 24px;
-    }
+    .hero { padding: 8px 4px 24px; }
     .eyebrow { margin: 0 0 7px; color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .12em; }
     h1 { margin: 0; font-size: clamp(28px, 4vw, 42px); line-height: 1.15; letter-spacing: -.04em; }
     .hero p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
-    .hero-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+    .callouts { display: grid; gap: 10px; margin-bottom: 18px; }
+    .callout { padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    .callout strong { display: block; margin-bottom: 4px; }
+    .callout.info { background: #eef5ff; border-color: #c9dbf4; }
+    .callout.warn { background: #fff8e8; border-color: #f0d9a0; display: none; }
+    .callout.warn.open { display: block; }
+    .callout.warn ul { margin: 8px 0 0; padding-left: 18px; color: #6b5420; font-size: 13px; line-height: 1.55; }
+    .dwell { white-space: nowrap; font-variant-numeric: tabular-nums; vertical-align: top; }
+    .dwell-badge {
+      display: inline-flex; align-items: center; min-height: 22px; padding: 0 8px; border-radius: 99px;
+      color: #536174; background: #eef1f5; font-size: 11px; font-weight: 700;
+    }
+    .dwell-badge.warn { color: #885b08; background: #fff5d6; }
+    .dwell-badge.danger { color: #ad3a2f; background: #ffebe8; }
+    tr.stale-row { background: #fffbf0; }
+    tr.stale-row:hover { background: #fff6e0; }
+    .archive-panel { margin-top: 14px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.92); }
+    .archive-panel summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 14px 18px; color: #5a667a; font-size: 14px; font-weight: 700;
+    }
+    .archive-panel summary::-webkit-details-marker { display: none; }
+    .archive-panel summary::before { content: "▸"; color: var(--muted); }
+    .archive-panel[open] summary::before { content: "▾"; }
+    .archive-panel .table-wrap { border-top: 1px solid var(--line); }
+    .archive-panel tbody { color: #5c677a; }
+    .archive-panel tbody .company { color: #3d4a5f; }
+    .archive-empty { padding: 18px; color: var(--muted); font-size: 13px; }
+    .board-toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
     .button {
       display: inline-flex; justify-content: center; align-items: center; gap: 7px;
       min-height: 40px; padding: 0 15px; border: 1px solid transparent; border-radius: 10px;
@@ -69,20 +94,47 @@
     .field input:focus, .field select:focus, .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus {
       border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47,85,151,.12);
     }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; min-width: 980px; }
+    .table-wrap { overflow-x: auto; overflow-y: visible; }
+    table { width: 100%; border-collapse: collapse; min-width: 860px; }
     th, td { padding: 15px 17px; border-bottom: 1px solid #edf0f5; text-align: left; vertical-align: top; }
     th { color: #667085; background: #fff; font-size: 12px; font-weight: 700; white-space: nowrap; }
     td { color: #263247; font-size: 14px; line-height: 1.55; }
     tbody tr:hover { background: #fafcff; }
+    tbody tr:hover, tbody tr:focus-within { position: relative; z-index: 3; }
     tbody tr:last-child td { border-bottom: 0; }
     .date { color: #59677c; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .company { min-width: 150px; color: #172b4d; font-weight: 800; }
     .company .dept { margin-top: 3px; color: #718096; font-size: 12px; font-weight: 500; line-height: 1.4; }
     .position { min-width: 130px; }
+    .position-jd {
+      position: relative; cursor: default;
+      border-bottom: 1px dashed #a8b3c4;
+    }
+    .position-jd .note-bubble {
+      top: calc(100% + 8px); bottom: auto; left: 0; right: auto;
+      width: 50vw; max-width: 50vw; max-height: none; overflow: visible;
+    }
+    .position-jd:hover .note-bubble, .position-jd:focus-within .note-bubble { display: block; }
     .cell-link { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; }
     .cell-link:hover { color: var(--blue); border-bottom-color: currentColor; }
-    .note { min-width: 170px; max-width: 270px; color: #667085; }
+    .note-cell { width: 44px; text-align: center; vertical-align: top; }
+    .note-mark {
+      position: relative; display: inline-flex; justify-content: center; align-items: center;
+      width: 28px; height: 28px; border: 1px solid #d8e0eb; border-radius: 8px;
+      color: var(--blue); background: #fff; font-size: 12px; font-weight: 700; cursor: default;
+    }
+    .note-mark.empty { color: #c0c7d2; border-color: transparent; background: transparent; font-weight: 500; }
+    .note-bubble {
+      display: none; position: absolute; z-index: 20;
+      padding: 10px 12px; border: 1px solid #d9e1ee; border-radius: 10px;
+      color: #475467; background: #fff; box-shadow: 0 10px 28px rgba(41, 66, 105, .16);
+      font-size: 12px; font-weight: 500; line-height: 1.55; text-align: left; white-space: pre-wrap;
+    }
+    .note-mark .note-bubble {
+      top: calc(100% + 8px); bottom: auto; left: auto; right: 0;
+      width: min(360px, 70vw);
+    }
+    .note-mark:hover .note-bubble, .note-mark:focus-within .note-bubble { display: block; }
     .status {
       display: inline-flex; align-items: center; min-height: 27px; padding: 2px 10px; border-radius: 99px;
       font-size: 12px; font-weight: 700; white-space: nowrap;
@@ -112,7 +164,7 @@
     .icon-button.delete { color: #b42318; }
     .empty { padding: 62px 20px; text-align: center; color: var(--muted); }
     .empty strong { display: block; margin-bottom: 8px; color: #475467; font-size: 16px; }
-    .footer { padding: 14px 4px 0; color: #8a95a6; font-size: 12px; text-align: right; }
+    .footer { padding: 14px 4px 0; color: #8a95a6; font-size: 12px; }
     .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(15, 28, 51, .38); }
     .modal-backdrop.open { display: flex; }
     .modal { width: min(620px, 100%); max-height: min(760px, calc(100vh - 40px)); overflow: auto; border-radius: 18px; background: #fff; box-shadow: 0 24px 70px rgba(17, 32, 57, .25); }
@@ -129,8 +181,6 @@
     .required { color: #c0392b; }
     @media (max-width: 760px) {
       .app { width: min(100% - 24px, 1220px); padding-top: 20px; }
-      .hero { align-items: flex-start; flex-direction: column; }
-      .hero-actions { justify-content: flex-start; }
       .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .panel-head { align-items: flex-start; flex-direction: column; }
       .modal-form { grid-template-columns: 1fr; }
@@ -141,69 +191,83 @@
       body { background: #fff; }
       .app { width: 100%; padding: 0; }
       .hero { padding-top: 0; }
-      .hero-actions, .filters, .row-actions, .footer, .panel-hint, .modal-backdrop { display: none !important; }
+      .hero-actions, .board-toolbar, .filters, .row-actions, .footer, .panel-hint, .modal-backdrop { display: none !important; }
       .panel, .stat { border: 1px solid #d9dee7; box-shadow: none; }
       .stats { margin-bottom: 12px; }
       .stat { padding: 10px 14px; }
       .stat-value { font-size: 20px; }
       th, td { padding: 8px 9px; font-size: 10px; }
       .company { min-width: 0; }
-      .note { max-width: none; }
+      .note-bubble { display: none !important; }
     }
   </style>
 </head>
 <body>
   <div class="app">
     <header class="hero">
-      <div>
-        <h1>投递进度表</h1>
-        <p>记录投递、面试与反馈；与可投岗位表联动（简历定稿后由助手写入）。</p>
-      </div>
-      <div class="hero-actions">
-        <button class="button secondary" id="importButton" type="button">覆盖导入</button>
-        <button class="button secondary" id="mergeImportButton" type="button">合并导入</button>
-        <button class="button secondary" id="exportJsonButton" type="button">备份 JSON</button>
-        <button class="button secondary" id="exportCsvButton" type="button">导出 CSV</button>
-        <button class="button secondary" id="printButton" type="button">打印 / PDF</button>
-        <a class="button secondary" href="job-match-industry.html">可投岗位表</a>
-        <button class="button" id="addButton" type="button">＋ 新增记录</button>
-        <input id="importInput" type="file" accept="application/json,.json" hidden>
-        <input id="mergeImportInput" type="file" accept="application/json,.json" hidden>
-      </div>
+      <p class="eyebrow">APPLICATION TRACKER</p>
+      <h1>投递进度表</h1>
+      <p>记录投递、面试与反馈；同进度满 7 天提醒，拒绝或满 10 天自动归档。与可投岗位表联动（简历定稿后由助手写入）。</p>
     </header>
 
     <section class="stats" aria-label="投递统计">
-      <div class="stat"><div class="stat-label">全部记录</div><div class="stat-value" id="totalCount">0</div></div>
       <div class="stat"><div class="stat-label">进行中</div><div class="stat-value" id="activeCount">0</div></div>
+      <div class="stat"><div class="stat-label">待跟进</div><div class="stat-value" id="staleCount">0</div></div>
       <div class="stat"><div class="stat-label">已获 Offer</div><div class="stat-value" id="offerCount">0</div></div>
-      <div class="stat"><div class="stat-label">已拒绝</div><div class="stat-value" id="rejectedCount">0</div></div>
+      <div class="stat"><div class="stat-label">已归档</div><div class="stat-value" id="archivedCount">0</div></div>
       <div class="stat"><div class="stat-label">本月投递</div><div class="stat-value" id="monthCount">0</div></div>
     </section>
+
+    <div class="callouts">
+      <div class="callout info">
+        <strong>用法</strong>
+        可在浏览器里新增、编辑、删除投递记录；变更记在本机，刷新仍保留。要写入磁盘上的 HTML 时，点「导出操作记录」把 JSON 发助手，或直接说「同步投递进度表」并说明改了什么。
+      </div>
+      <div class="callout warn" id="staleCallout">
+        <strong>停留提醒（≥7 天）</strong>
+        <ul id="staleList"></ul>
+      </div>
+    </div>
 
     <section class="panel">
       <div class="panel-head">
         <div>
           <h2 class="panel-title">投递记录</h2>
-          <span class="panel-hint">进度存在本机浏览器；建议定期备份 JSON。种子记录在 HTML 内，刷新后与本地合并。</span>
+          <span class="panel-hint" id="resultHint">显示 0 条</span>
         </div>
-        <span class="panel-hint" id="resultHint">显示 0 条</span>
+        <div class="board-toolbar">
+          <a class="button secondary" href="job-match-board.html">可投岗位表</a>
+          <button class="button secondary" id="exportStateButton" type="button">导出操作记录</button>
+          <button class="button" id="addButton" type="button">＋ 新增记录</button>
+        </div>
       </div>
       <div class="filters">
         <div class="field search"><input id="searchInput" type="search" placeholder="搜索公司、部门、岗位、内推或备注…"></div>
         <div class="field"><select id="companyFilter" aria-label="按公司筛选"><option value="">全部公司</option></select></div>
         <div class="field"><select id="statusFilter" aria-label="按进度筛选"><option value="">全部进度</option></select></div>
         <div class="field"><select id="referralFilter" aria-label="按内推筛选"><option value="">全部内推</option></select></div>
-        <div class="field"><select id="sortSelect" aria-label="排序方式"><option value="date-desc">时间：新到旧</option><option value="date-asc">时间：旧到新</option><option value="company">公司：A-Z</option><option value="status">按进度</option><option value="referral">按内推</option></select></div>
+        <div class="field"><select id="sortSelect" aria-label="排序方式"><option value="date-desc">时间：新到旧</option><option value="date-asc">时间：旧到新</option><option value="dwell-desc">停留：长到短</option><option value="dwell-asc">停留：短到长</option><option value="company">公司：A-Z</option><option value="status">按进度</option><option value="referral">按内推</option></select></div>
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>时间</th><th>公司</th><th>岗位</th><th>进度</th><th>内推</th><th>下一步</th><th>备注</th><th>操作</th></tr></thead>
+          <thead><tr><th>时间</th><th>公司</th><th>岗位</th><th>进度</th><th>停留</th><th>内推</th><th>下一步</th><th>备注</th><th>操作</th></tr></thead>
           <tbody id="recordBody"></tbody>
         </table>
-        <div class="empty" id="emptyState"><strong>还没有投递记录</strong>点击右上角「新增记录」开始登记。</div>
+        <div class="empty" id="emptyState"><strong>还没有投递记录</strong>点击「＋ 新增记录」开始登记。</div>
       </div>
     </section>
-    <div class="footer">快捷键：按 <b>N</b> 新增记录，按 <b>Esc</b> 关闭弹窗</div>
+
+    <details class="archive-panel" id="archivePanel">
+      <summary><span id="archiveSummary">已归档（0）</span><span class="panel-hint">拒绝或同进度满 10 天自动收入此处</span></summary>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>时间</th><th>公司</th><th>岗位</th><th>进度</th><th>停留</th><th>归档原因</th><th>备注</th><th>操作</th></tr></thead>
+          <tbody id="archiveBody"></tbody>
+        </table>
+        <div class="archive-empty" id="archiveEmpty">暂无归档记录</div>
+      </div>
+    </details>
+    <p class="footer">快捷键：按 <b>N</b> 新增记录，按 <b>Esc</b> 关闭弹窗</p>
   </div>
 
   <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -217,7 +281,8 @@
         <div class="modal-field"><label for="positionInput">岗位</label><input id="positionInput" type="text" placeholder="例如：前端开发工程师"></div>
         <div class="modal-field"><label for="statusInput">进度 <span class="required">*</span></label><select id="statusInput" required></select></div>
         <div class="modal-field full"><label for="portalUrlInput">官网个人页</label><input id="portalUrlInput" type="url" placeholder="https://… 招聘官网个人中心 / 我的投递"></div>
-        <div class="modal-field full"><label for="jdUrlInput">岗位描述页</label><input id="jdUrlInput" type="url" placeholder="https://… 岗位 JD 链接"></div>
+        <div class="modal-field full"><label for="jdUrlInput">岗位描述页</label><input id="jdUrlInput" type="url" placeholder="https://… 岗位 JD 链接（无链接可留空，用下方全文）"></div>
+        <div class="modal-field full"><label for="jdTextInput">岗位 JD 全文</label><textarea id="jdTextInput" placeholder="无跳转链接时粘贴 HR 发来的 JD；岗位名悬停可看"></textarea></div>
         <div class="modal-field"><label for="referralInput">内推方式</label><select id="referralInput"></select></div>
         <div class="modal-field"><label for="referralCodeInput">内推码</label><input id="referralCodeInput" type="text" placeholder="填写使用的内推码"></div>
         <div class="modal-field full"><label for="referralContactInput">内推渠道 / 联系人</label><input id="referralContactInput" type="text" placeholder="例如：师兄张三、校友群、HR 直推"></div>
@@ -232,10 +297,13 @@
     (() => {
       const STORAGE_KEY = 'resume-ssot-application-tracker-v1';
       const LEGACY_STORAGE_KEY = 'offer-skills-application-tracker-v1';
+      const WARN_DAYS = 7;
+      const ARCHIVE_DAYS = 10;
       const statuses = ['待投递', '简历已投递', '已投递', '投递成功', '新投递', '简历筛选中', '待笔试', '笔试', '测评中', '评估中', '一面', '二面', 'HR面', 'Offer', '拒绝', '已结束', '暂缓', '放弃'];
       const referrals = ['无内推', '内推码', '请人内推', '码+请人', '待内推'];
       const $ = (selector) => document.querySelector(selector);
       const body = $('#recordBody');
+      const archiveBody = $('#archiveBody');
       const emptyState = $('#emptyState');
       const modalBackdrop = $('#modalBackdrop');
       const form = $('#recordForm');
@@ -245,13 +313,40 @@
       const positionInput = $('#positionInput');
       const portalUrlInput = $('#portalUrlInput');
       const jdUrlInput = $('#jdUrlInput');
+      const jdTextInput = $('#jdTextInput');
       const statusInput = $('#statusInput');
       const referralInput = $('#referralInput');
       const referralCodeInput = $('#referralCodeInput');
       const referralContactInput = $('#referralContactInput');
       const nextInput = $('#nextInput');
       const noteInput = $('#noteInput');
-      const initialRecords = [];
+      const initialRecords = [
+        {
+          id: "demo-acme-frontend-20260101",
+          date: "2026-01-01",
+          time: "10:00",
+          company: "示例科技",
+          department: "终端软件部",
+          position: "前端开发工程师",
+          portalUrl: "https://example.com/portal",
+          jdUrl: "https://example.com/jobs/frontend",
+          jdText: "负责 Web 前端开发与组件库维护，协同设计与后端交付。",
+          status: "简历已投递",
+          referral: "无内推",
+          referralCode: "",
+          referralContact: "",
+          next: "等待简历筛选",
+          note: "模板示例记录，可删。",
+          updatedAt: "2026-01-01T10:00:00+08:00",
+          statusSince: "2026-01-01T10:00:00+08:00",
+          archived: false,
+          archivedAt: "",
+          archiveReason: ""
+        }
+      ];
+      // Agent 移回可投表/删岗：id 或「公司\\0岗位」键写这里；加载时剔除并回写 localStorage。
+      const removedRecordIds = [];
+      const removedRecordKeys = [];
       const timeInput = $('#timeInput');
       let records = loadRecords();
       let editingId = null;
@@ -277,15 +372,33 @@
       }
       function loadRecords() {
         try {
-          const seed = initialRecords.map((item) => ({ ...item }));
+          const seed = initialRecords.map((item) => normalizeRecord(item));
           const saved = readStoredRaw();
-          if (!saved) return seed;
-          const value = JSON.parse(saved);
-          if (!Array.isArray(value)) return seed;
-          const loaded = value.map(normalizeRecord).filter((item) => item.company);
-          // Seed second: newer updatedAt on Agent-written initialRecords wins over stale browser cache
-          return mergeRecords(loaded, seed).records;
-        } catch { return initialRecords.map((item) => ({ ...item })); }
+          let list;
+          if (!saved) list = seed;
+          else {
+            const value = JSON.parse(saved);
+            if (!Array.isArray(value)) list = seed;
+            else {
+              const loaded = value.map(normalizeRecord).filter((item) => item.company);
+              list = mergeRecords(loaded, seed).records;
+            }
+          }
+          list = applySeedRemovals(list);
+          return applyAutoArchive(list);
+        } catch { return applyAutoArchive(applySeedRemovals(initialRecords.map((item) => normalizeRecord(item)))); }
+      }
+      function applySeedRemovals(list) {
+        if (!removedRecordIds.length && !removedRecordKeys.length) return list;
+        const banId = new Set(removedRecordIds);
+        const banKey = new Set(removedRecordKeys.map((k) => k.replace(/\s+/g, '').toLocaleLowerCase('zh-CN')));
+        const next = list.filter((item) => {
+          if (banId.has(item.id)) return false;
+          const key = `${item.company.replace(/\s+/g, '').toLocaleLowerCase('zh-CN')}\u0000${item.position.replace(/\s+/g, '').toLocaleLowerCase('zh-CN')}`;
+          return !banKey.has(key);
+        });
+        if (next.length !== list.length) localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        return next;
       }
       function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify(records)); }
       function splitCompanyDepartment(company, department) {
@@ -306,8 +419,13 @@
           return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
         } catch { return ''; }
       }
+      function fallbackStatusSince(item) {
+        return item.statusSince || item.updatedAt || `${item.date || today()}T${item.time || '00:00'}:00`;
+      }
       function normalizeRecord(item) {
         const split = splitCompanyDepartment(item.company, item.department);
+        const status = statuses.includes(item.status) ? item.status : '已投递';
+        const updatedAt = item.updatedAt || `${item.date || ''}T${item.time || ''}`;
         return {
           id: item.id || makeId(),
           date: item.date || today(),
@@ -317,14 +435,55 @@
           position: String(item.position || '').trim(),
           portalUrl: normalizeUrl(item.portalUrl),
           jdUrl: normalizeUrl(item.jdUrl),
-          status: statuses.includes(item.status) ? item.status : '已投递',
+          jdText: String(item.jdText || '').trim(),
+          status,
           referral: referrals.includes(item.referral) ? item.referral : '无内推',
           referralCode: String(item.referralCode || '').trim(),
           referralContact: String(item.referralContact || '').trim(),
           next: String(item.next || ''),
           note: String(item.note || ''),
-          updatedAt: item.updatedAt || `${item.date || ''}T${item.time || ''}`
+          updatedAt,
+          statusSince: item.statusSince || updatedAt || `${item.date || today()}T00:00:00`,
+          archived: Boolean(item.archived),
+          archivedAt: item.archivedAt || '',
+          archiveReason: String(item.archiveReason || '')
         };
+      }
+      function parseMoment(value) {
+        if (!value) return null;
+        const parsed = new Date(value);
+        return Number.isNaN(parsed.getTime()) ? null : parsed;
+      }
+      function dwellMs(item, now = new Date()) {
+        const start = parseMoment(fallbackStatusSince(item));
+        if (!start) return 0;
+        return Math.max(0, now.getTime() - start.getTime());
+      }
+      function daysInStatus(item, now = new Date()) {
+        return Math.floor(dwellMs(item, now) / 86400000);
+      }
+      function applyAutoArchive(list) {
+        const now = new Date();
+        const stamp = now.toISOString();
+        let changed = false;
+        const next = list.map((item) => {
+          if (item.archived) return item;
+          if (item.status === '拒绝') {
+            changed = true;
+            return { ...item, archived: true, archivedAt: stamp, archiveReason: '拒绝' };
+          }
+          if (daysInStatus(item, now) >= ARCHIVE_DAYS) {
+            changed = true;
+            return { ...item, archived: true, archivedAt: stamp, archiveReason: `停留${ARCHIVE_DAYS}天` };
+          }
+          return item;
+        });
+        if (changed) localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        return next;
+      }
+      function dwellBadge(days) {
+        const tone = days >= ARCHIVE_DAYS ? 'danger' : days >= WARN_DAYS ? 'warn' : '';
+        return `<span class="dwell-badge ${tone}">${days} 天</span>`;
       }
       function referralCell(item) {
         const meta = [item.referralCode, item.referralContact].filter(Boolean).join(' · ');
@@ -336,33 +495,93 @@
         if (!url) return `<span class="${escapeHtml(className)}">${label}</span>`;
         return `<a class="${classes}" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${label}</a>`;
       }
+      function positionCell(item) {
+        const label = escapeHtml(item.position || '-');
+        const jd = String(item.jdText || '').trim();
+        const bubble = jd ? `<span class="note-bubble">${escapeHtml(jd)}</span>` : '';
+        if (item.jdUrl) {
+          return `<a class="cell-link${jd ? ' position-jd' : ''}" href="${escapeHtml(item.jdUrl)}" target="_blank" rel="noopener noreferrer">${label}${bubble}</a>`;
+        }
+        if (jd) return `<span class="position-jd" tabindex="0">${label}${bubble}</span>`;
+        return `<span>${label}</span>`;
+      }
       function recordKey(item) {
         return `${item.company.replace(/\s+/g, '').toLocaleLowerCase('zh-CN')}\u0000${item.position.replace(/\s+/g, '').toLocaleLowerCase('zh-CN')}`;
       }
       function recency(item) { return item.updatedAt || `${item.date || ''}T${item.time || ''}`; }
       function mergeRecords(current, incoming) {
-        const byKey = new Map(current.map((item) => [recordKey(item), item]));
+        const list = current.map((item) => ({ ...item }));
+        const indexById = new Map();
+        const indexByKey = new Map();
+        list.forEach((item, index) => {
+          if (item.id) indexById.set(item.id, index);
+          indexByKey.set(recordKey(item), index);
+        });
         let added = 0;
         let updated = 0;
         for (const item of incoming) {
-          const key = recordKey(item);
-          const previous = byKey.get(key);
-          if (!previous) { byKey.set(key, item); added += 1; continue; }
+          let index = item.id && indexById.has(item.id) ? indexById.get(item.id) : undefined;
+          if (index === undefined) index = indexByKey.get(recordKey(item));
+          if (index === undefined) {
+            list.push(item);
+            const nextIndex = list.length - 1;
+            if (item.id) indexById.set(item.id, nextIndex);
+            indexByKey.set(recordKey(item), nextIndex);
+            added += 1;
+            continue;
+          }
+          const previous = list[index];
           if (recency(item) >= recency(previous)) {
-            byKey.set(key, {
+            const statusChanged = item.status && item.status !== previous.status;
+            const merged = {
               ...previous,
               ...item,
-              id: previous.id,
+              id: previous.id || item.id,
               department: item.department || previous.department,
               portalUrl: item.portalUrl || previous.portalUrl,
               jdUrl: item.jdUrl || previous.jdUrl,
+              jdText: item.jdText || previous.jdText,
               referralCode: item.referralCode || previous.referralCode,
-              referralContact: item.referralContact || previous.referralContact
-            });
+              referralContact: item.referralContact || previous.referralContact,
+              statusSince: statusChanged ? (item.statusSince || item.updatedAt || previous.statusSince) : (item.statusSince || previous.statusSince),
+              archived: item.archived ?? previous.archived,
+              archivedAt: item.archivedAt || previous.archivedAt,
+              archiveReason: item.archiveReason || previous.archiveReason
+            };
+            const oldKey = recordKey(previous);
+            const newKey = recordKey(merged);
+            list[index] = merged;
+            if (oldKey !== newKey) indexByKey.delete(oldKey);
+            indexByKey.set(newKey, index);
+            if (merged.id) indexById.set(merged.id, index);
             updated += 1;
           }
         }
-        return { records: [...byKey.values()], added, updated };
+        const deduped = [];
+        const seenId = new Map();
+        const seenKey = new Map();
+        for (const item of list) {
+          const id = item.id || '';
+          if (id && seenId.has(id)) {
+            const prevIdx = seenId.get(id);
+            if (recency(item) >= recency(deduped[prevIdx])) deduped[prevIdx] = item;
+            continue;
+          }
+          const key = recordKey(item);
+          if (seenKey.has(key)) {
+            const prevIdx = seenKey.get(key);
+            if (recency(item) >= recency(deduped[prevIdx])) {
+              deduped[prevIdx] = item;
+              if (id) seenId.set(id, prevIdx);
+            }
+            continue;
+          }
+          const nextIdx = deduped.length;
+          deduped.push(item);
+          if (id) seenId.set(id, nextIdx);
+          seenKey.set(key, nextIdx);
+        }
+        return { records: deduped, added, updated };
       }
       function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
@@ -381,54 +600,112 @@
       function populateCompanyFilter() {
         const select = $('#companyFilter');
         const prev = select.value;
-        const companies = [...new Set(records.map((item) => item.company).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
+        const companies = [...new Set(records.filter((item) => !item.archived).map((item) => item.company).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
         select.innerHTML = '<option value="">全部公司</option>' + companies.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
         if (companies.includes(prev)) select.value = prev;
       }
-      function visibleRecords() {
+      function matchFilters(item) {
         const query = $('#searchInput').value.trim().toLowerCase();
         const companyFilter = $('#companyFilter').value;
         const filter = $('#statusFilter').value;
         const referralFilter = $('#referralFilter').value;
+        const haystack = [item.company, item.department, item.position, item.status, item.referral, item.referralCode, item.referralContact, item.next, item.note, item.jdText].join(' ').toLowerCase();
+        return (!query || haystack.includes(query)) && (!companyFilter || item.company === companyFilter) && (!filter || item.status === filter) && (!referralFilter || item.referral === referralFilter);
+      }
+      function sortRecords(list) {
         const sort = $('#sortSelect').value;
-        const result = records.filter((item) => {
-          const haystack = [item.company, item.department, item.position, item.status, item.referral, item.referralCode, item.referralContact, item.next, item.note].join(' ').toLowerCase();
-          return (!query || haystack.includes(query)) && (!companyFilter || item.company === companyFilter) && (!filter || item.status === filter) && (!referralFilter || item.referral === referralFilter);
-        });
-        result.sort((a, b) => {
+        return list.slice().sort((a, b) => {
           const aMoment = `${a.date || ''} ${a.time || ''}`;
           const bMoment = `${b.date || ''} ${b.time || ''}`;
           if (sort === 'date-asc') return aMoment.localeCompare(bMoment);
+          if (sort === 'dwell-desc') {
+            const byDwell = dwellMs(b) - dwellMs(a);
+            if (byDwell) return byDwell;
+            return bMoment.localeCompare(aMoment);
+          }
+          if (sort === 'dwell-asc') {
+            const byDwell = dwellMs(a) - dwellMs(b);
+            if (byDwell) return byDwell;
+            return bMoment.localeCompare(aMoment);
+          }
           if (sort === 'company') return (a.company || '').localeCompare(b.company || '', 'zh-CN');
           if (sort === 'status') return statuses.indexOf(a.status) - statuses.indexOf(b.status);
           if (sort === 'referral') return referrals.indexOf(a.referral) - referrals.indexOf(b.referral);
           return bMoment.localeCompare(aMoment);
         });
-        return result;
+      }
+      function visibleActive() {
+        return sortRecords(records.filter((item) => !item.archived && matchFilters(item)));
+      }
+      function visibleArchived() {
+        return sortRecords(records.filter((item) => item.archived && matchFilters(item)));
+      }
+      function noteCell(item) {
+        const note = String(item.note || '').trim();
+        if (!note) return '<td class="note-cell"><span class="note-mark empty" title="无备注">·</span></td>';
+        return `<td class="note-cell"><span class="note-mark" tabindex="0" aria-label="备注">注<span class="note-bubble">${escapeHtml(note)}</span></span></td>`;
+      }
+      function renderStaleCallout(active) {
+        const stale = active.filter((item) => daysInStatus(item) >= WARN_DAYS);
+        const callout = $('#staleCallout');
+        const list = $('#staleList');
+        if (!stale.length) {
+          callout.classList.remove('open');
+          list.innerHTML = '';
+          return;
+        }
+        callout.classList.add('open');
+        list.innerHTML = stale.map((item) => {
+          const days = daysInStatus(item);
+          return `<li>${escapeHtml(item.company)} · ${escapeHtml(item.position || '-')} · ${escapeHtml(item.status)} 已 ${days} 天</li>`;
+        }).join('');
       }
       function render() {
+        records = applyAutoArchive(records);
         populateCompanyFilter();
-        const visible = visibleRecords();
-        body.innerHTML = visible.map((item) => `<tr>
+        const active = visibleActive();
+        const archived = visibleArchived();
+        body.innerHTML = active.map((item) => {
+          const days = daysInStatus(item);
+          return `<tr class="${days >= WARN_DAYS ? 'stale-row' : ''}">
           <td class="date">${escapeHtml(formatDate(item.date))}</td>
           <td class="company">${linkOrText(item.portalUrl, item.company)}${item.department ? `<div class="dept">${escapeHtml(item.department)}</div>` : ''}</td>
-          <td class="position">${linkOrText(item.jdUrl, item.position || '-')}</td>
+          <td class="position">${positionCell(item)}</td>
           <td><span class="status status-${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td>
+          <td class="dwell">${dwellBadge(days)}</td>
           <td>${referralCell(item)}</td>
           <td>${escapeHtml(item.next || '-')}</td>
-          <td class="note">${escapeHtml(item.note || '-')}</td>
+          ${noteCell(item)}
           <td><div class="row-actions"><button class="icon-button" data-edit="${item.id}" type="button">编辑</button><button class="icon-button delete" data-delete="${item.id}" type="button">删除</button></div></td>
-        </tr>`).join('');
-        emptyState.style.display = visible.length ? 'none' : 'block';
-        $('#resultHint').textContent = `显示 ${visible.length} 条`;
+        </tr>`;
+        }).join('');
+        archiveBody.innerHTML = archived.map((item) => {
+          const days = daysInStatus(item);
+          return `<tr>
+          <td class="date">${escapeHtml(formatDate(item.date))}</td>
+          <td class="company">${linkOrText(item.portalUrl, item.company)}${item.department ? `<div class="dept">${escapeHtml(item.department)}</div>` : ''}</td>
+          <td class="position">${positionCell(item)}</td>
+          <td><span class="status status-${escapeHtml(item.status)}">${escapeHtml(item.status)}</span></td>
+          <td class="dwell">${dwellBadge(days)}</td>
+          <td>${escapeHtml(item.archiveReason || '-')}</td>
+          ${noteCell(item)}
+          <td><div class="row-actions"><button class="icon-button" data-unarchive="${item.id}" type="button">恢复</button><button class="icon-button delete" data-delete="${item.id}" type="button">删除</button></div></td>
+        </tr>`;
+        }).join('');
+        emptyState.style.display = active.length ? 'none' : 'block';
+        $('#archiveEmpty').style.display = archived.length ? 'none' : 'block';
+        $('#archiveSummary').textContent = `已归档（${records.filter((item) => item.archived).length}）`;
+        $('#resultHint').textContent = `显示 ${active.length} 条进行中`;
+        renderStaleCallout(active);
         updateStats();
       }
       function updateStats() {
         const month = today().slice(0, 7);
-        $('#totalCount').textContent = records.length;
-        $('#activeCount').textContent = records.filter((item) => !['Offer', '拒绝', '已结束', '放弃'].includes(item.status)).length;
-        $('#offerCount').textContent = records.filter((item) => item.status === 'Offer').length;
-        $('#rejectedCount').textContent = records.filter((item) => item.status === '拒绝').length;
+        const active = records.filter((item) => !item.archived);
+        $('#activeCount').textContent = active.filter((item) => !['Offer', '拒绝', '已结束', '放弃'].includes(item.status)).length;
+        $('#staleCount').textContent = active.filter((item) => daysInStatus(item) >= WARN_DAYS).length;
+        $('#offerCount').textContent = active.filter((item) => item.status === 'Offer').length;
+        $('#archivedCount').textContent = records.filter((item) => item.archived).length;
         $('#monthCount').textContent = records.filter((item) => (item.date || '').startsWith(month)).length;
       }
       function openModal(record) {
@@ -441,6 +718,7 @@
         positionInput.value = record?.position || '';
         portalUrlInput.value = record?.portalUrl || '';
         jdUrlInput.value = record?.jdUrl || '';
+        jdTextInput.value = record?.jdText || '';
         statusInput.value = record?.status || '简历已投递';
         referralInput.value = record?.referral || '无内推';
         referralCodeInput.value = record?.referralCode || '';
@@ -451,145 +729,21 @@
         setTimeout(() => companyInput.focus(), 30);
       }
       function closeModal() { modalBackdrop.classList.remove('open'); form.reset(); editingId = null; }
-      function download(name, content, type) {
-        const blob = new Blob([content], { type });
-        const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = name; link.click();
+      function exportState() {
+        const blob = new Blob([JSON.stringify({
+          exported_at: new Date().toISOString(),
+          records,
+        }, null, 2)], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'application-tracker-state.json';
+        link.click();
         setTimeout(() => URL.revokeObjectURL(link.href), 500);
-      }
-      function exportCsv() {
-        const header = ['日期', '时间', '公司', '部门', '岗位', '官网个人页', '岗位描述页', '进度', '内推方式', '内推码', '内推渠道/联系人', '下一步', '备注'];
-        const rows = records.map((item) => [item.date, item.time, item.company, item.department, item.position, item.portalUrl, item.jdUrl, item.status, item.referral, item.referralCode, item.referralContact, item.next, item.note]);
-        const csv = [header, ...rows].map((row) => row.map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
-        download(`投递进度-${today()}.csv`, '\ufeff' + csv, 'text/csv;charset=utf-8');
-      }
-      function isValidCalendarDate(value) {
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-        const [year, month, day] = value.split('-').map(Number);
-        const parsed = new Date(0);
-        parsed.setUTCHours(0, 0, 0, 0);
-        parsed.setUTCFullYear(year, month - 1, day);
-        return parsed.getUTCFullYear() === year && parsed.getUTCMonth() === month - 1 && parsed.getUTCDate() === day;
-      }
-      function normalizeImportedRecord(item, index, seenIds) {
-        const fail = (reason) => { throw new Error(`第 ${index + 1} 条：${reason}`); };
-        if (!item || typeof item !== 'object' || Array.isArray(item)) fail('记录格式无效');
-        if (typeof item.company !== 'string' || !item.company.trim()) fail('公司不能为空');
-        if (typeof item.date !== 'string' || !isValidCalendarDate(item.date)) fail('日期必须是有效的 YYYY-MM-DD');
-        if (typeof item.status !== 'string' || !statuses.includes(item.status)) fail('进度状态不受支持');
-        if (item.referral != null && item.referral !== '' && (typeof item.referral !== 'string' || !referrals.includes(item.referral))) fail('内推方式不受支持');
-
-        const optionalFields = [['time', '时间'], ['department', '部门'], ['position', '岗位'], ['portalUrl', '官网个人页'], ['jdUrl', '岗位描述页'], ['referralCode', '内推码'], ['referralContact', '内推渠道/联系人'], ['next', '下一步'], ['note', '备注'], ['updatedAt', '更新时间']];
-        const normalized = {};
-        optionalFields.forEach(([field, label]) => {
-          const value = item[field];
-          if (value == null) normalized[field] = '';
-          else if (typeof value !== 'string') fail(`${label}必须是文本`);
-          else normalized[field] = value;
-        });
-        if (normalized.time && !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(normalized.time)) fail('时间必须是有效的 HH:mm');
-        const portalUrl = normalizeUrl(normalized.portalUrl);
-        const jdUrl = normalizeUrl(normalized.jdUrl);
-        if (normalized.portalUrl && !portalUrl) fail('官网个人页必须是有效的 http(s) 链接');
-        if (normalized.jdUrl && !jdUrl) fail('岗位描述页必须是有效的 http(s) 链接');
-
-        let id = item.id;
-        if (id == null || id === '') {
-          do { id = makeId(); } while (seenIds.has(id));
-        } else if (typeof id !== 'string' || !id.trim() || id !== id.trim()) fail('ID 格式无效');
-        if (seenIds.has(id)) fail('ID 重复');
-        seenIds.add(id);
-
-        const split = splitCompanyDepartment(item.company, normalized.department);
-        return {
-          id,
-          date: item.date,
-          time: normalized.time,
-          company: split.company,
-          department: split.department,
-          position: normalized.position,
-          portalUrl,
-          jdUrl,
-          status: item.status,
-          referral: item.referral || '无内推',
-          referralCode: normalized.referralCode.trim(),
-          referralContact: normalized.referralContact.trim(),
-          next: normalized.next,
-          note: normalized.note,
-          updatedAt: normalized.updatedAt || `${item.date}T${normalized.time}`
-        };
-      }
-      function importIssueSummary(issues) {
-        if (!issues.length) return '';
-        const visible = issues.slice(0, 5).join('\n');
-        const remaining = issues.length > 5 ? `\n另有 ${issues.length - 5} 条异常记录。` : '';
-        return `${visible}${remaining}`;
-      }
-      function importJson(file, mode = 'replace') {
-        const reader = new FileReader();
-        reader.onload = () => {
-          let value;
-          try {
-            value = JSON.parse(reader.result);
-          } catch {
-            alert('导入失败：文件不是有效的 JSON。');
-            return;
-          }
-          if (!Array.isArray(value)) {
-            alert('导入失败：备份内容必须是记录数组。');
-            return;
-          }
-          if (!value.length) {
-            alert('导入失败：备份中没有记录。');
-            return;
-          }
-
-          const importedRecords = [];
-          const issues = [];
-          const seenIds = new Set();
-          value.forEach((item, index) => {
-            try { importedRecords.push(normalizeImportedRecord(item, index, seenIds)); }
-            catch (error) { issues.push(error.message); }
-          });
-          if (!importedRecords.length) {
-            alert(`导入失败：没有可导入的有效记录。\n${importIssueSummary(issues)}`);
-            return;
-          }
-
-          const skippedMessage = issues.length ? `，跳过 ${issues.length} 条异常记录` : '';
-          let nextRecords;
-          let successMessage;
-          if (mode === 'merge') {
-            const result = mergeRecords(records, importedRecords);
-            nextRecords = result.records;
-            successMessage = `已合并 ${importedRecords.length} 条有效记录${skippedMessage}：新增 ${result.added} 条，更新 ${result.updated} 条。`;
-          } else {
-            nextRecords = importedRecords;
-            successMessage = `已覆盖导入 ${importedRecords.length} 条有效记录${skippedMessage}。`;
-          }
-
-          if (mode === 'replace' && records.length) {
-            const details = issues.length ? `\n\n${importIssueSummary(issues)}` : '';
-            const confirmed = confirm(`现有 ${records.length} 条记录将被 ${importedRecords.length} 条有效记录替换${skippedMessage}。${details}\n\n确定继续导入吗？`);
-            if (!confirmed) return;
-          }
-
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(nextRecords));
-          } catch {
-            alert('导入失败：无法写入浏览器存储，现有记录未改变。');
-            return;
-          }
-          records = nextRecords;
-          render();
-          const details = issues.length ? `\n${importIssueSummary(issues)}` : '';
-          alert(`${successMessage}${details}`);
-        };
-        reader.onerror = () => alert('导入失败：无法读取所选文件。');
-        reader.readAsText(file, 'utf-8');
       }
 
       populateStatuses(); render();
       $('#addButton').addEventListener('click', () => openModal());
+      $('#exportStateButton').addEventListener('click', exportState);
       $('#closeModal').addEventListener('click', closeModal);
       $('#cancelButton').addEventListener('click', closeModal);
       modalBackdrop.addEventListener('click', (event) => { if (event.target === modalBackdrop) closeModal(); });
@@ -598,18 +752,9 @@
       $('#statusFilter').addEventListener('change', render);
       $('#referralFilter').addEventListener('change', render);
       $('#sortSelect').addEventListener('change', render);
-      $('#printButton').addEventListener('click', () => window.print());
-      $('#exportCsvButton').addEventListener('click', exportCsv);
-      $('#importButton').addEventListener('click', () => $('#importInput').click());
-      $('#mergeImportButton').addEventListener('click', () => $('#mergeImportInput').click());
-      $('#exportJsonButton').addEventListener('click', () => {
-        const backup = JSON.stringify(records, null, 2);
-        download(`投递进度备份-${today()}.json`, backup, 'application/json;charset=utf-8');
-      });
-      $('#importInput').addEventListener('change', (event) => { if (event.target.files[0]) importJson(event.target.files[0]); event.target.value = ''; });
-      $('#mergeImportInput').addEventListener('change', (event) => { if (event.target.files[0]) importJson(event.target.files[0], 'merge'); event.target.value = ''; });
       form.addEventListener('submit', (event) => {
         event.preventDefault();
+        const nowIso = new Date().toISOString();
         const data = {
           date: dateInput.value,
           time: timeInput.value,
@@ -618,6 +763,7 @@
           position: positionInput.value.trim(),
           portalUrl: normalizeUrl(portalUrlInput.value),
           jdUrl: normalizeUrl(jdUrlInput.value),
+          jdText: jdTextInput.value.trim(),
           status: statusInput.value,
           referral: referralInput.value || '无内推',
           referralCode: referralCodeInput.value.trim(),
@@ -630,16 +776,59 @@
         if (jdUrlInput.value.trim() && !data.jdUrl) return jdUrlInput.focus();
         if (editingId) {
           const index = records.findIndex((item) => item.id === editingId);
-          if (index >= 0) records[index] = { ...records[index], ...data, updatedAt: new Date().toISOString() };
-        } else records.push({ id: makeId(), ...data, updatedAt: new Date().toISOString() });
+          if (index >= 0) {
+            const prev = records[index];
+            const statusChanged = data.status !== prev.status;
+            const archived = data.status === '拒绝' ? true : prev.archived;
+            records[index] = {
+              ...prev,
+              ...data,
+              updatedAt: nowIso,
+              statusSince: statusChanged ? nowIso : (prev.statusSince || nowIso),
+              archived,
+              archivedAt: archived && !prev.archived ? nowIso : prev.archivedAt,
+              archiveReason: data.status === '拒绝' ? '拒绝' : (archived ? prev.archiveReason : '')
+            };
+          }
+        } else {
+          records.push({
+            id: makeId(),
+            ...data,
+            updatedAt: nowIso,
+            statusSince: nowIso,
+            archived: data.status === '拒绝',
+            archivedAt: data.status === '拒绝' ? nowIso : '',
+            archiveReason: data.status === '拒绝' ? '拒绝' : ''
+          });
+        }
         persist(); render(); closeModal();
       });
-      body.addEventListener('click', (event) => {
+      function onTableClick(event) {
         const edit = event.target.closest('[data-edit]');
         const remove = event.target.closest('[data-delete]');
+        const unarchive = event.target.closest('[data-unarchive]');
         if (edit) openModal(records.find((item) => item.id === edit.dataset.edit));
-        if (remove && confirm('确定删除这条投递记录吗？')) { records = records.filter((item) => item.id !== remove.dataset.delete); persist(); render(); }
-      });
+        if (unarchive) {
+          const index = records.findIndex((item) => item.id === unarchive.dataset.unarchive);
+          if (index >= 0) {
+            records[index] = {
+              ...records[index],
+              archived: false,
+              archivedAt: '',
+              archiveReason: '',
+              statusSince: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            };
+            persist(); render();
+          }
+        }
+        if (remove && confirm('确定删除这条投递记录吗？')) {
+          records = records.filter((item) => item.id !== remove.dataset.delete);
+          persist(); render();
+        }
+      }
+      body.addEventListener('click', onTableClick);
+      archiveBody.addEventListener('click', onTableClick);
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && modalBackdrop.classList.contains('open')) closeModal();
         if (event.key.toLowerCase() === 'n' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) openModal();

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.16.0 (2026-09-07)
+
+- Tracker template: reverse-port from career-workspace — archive panel, dwell badges (7d warn / 10d auto-archive), note + JD hover bubbles (stacking fix), `statusSince` / `jdText` / `archived*`, id+key merge + `removedRecord*` cull, export operation log
+- Job-match board: sort by time (`date-desc` / `date-asc`); optional JOBS `added_at` / `official_href`; TRACKS customization note
+- Offer / job-match docs: field tables + auto-archive / sync behavior aligned with templates
+- README: tracker checklist covers dwell / archive / note bubbles
+
 ## 2.15.0 (2026-09-07)
 
 - Interview: **Mode · debrief** — 实战面试后落盘单岗复盘（岗目录 `interview-rN-YYYYMMDD.md`，只记问答与当场反馈）+ 跨岗 **暴露台账**（`offers/interview-exposure-ledger.md`：暴露点 → 补齐方向）
