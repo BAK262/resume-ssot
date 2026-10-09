@@ -94,20 +94,16 @@
 | 入口 | 做法 |
 | --- | --- |
 | 企业官网 / 校招 | `portal_url` 实搜 |
-| 第三方平台 | Boss / 猎聘 / 智联关键词或公司页；见下「第三方检索工具」 |
+| 第三方平台 | Boss / 猎聘 / 智联关键词或公司页；see Third-party website access below |
 | 用户直链 | 打开用户给的 Boss/猎聘/智联/邮件链 → 读 JD → 可选官源交叉核验 |
 
-**第三方检索工具（推荐，可降级）**
+**Third-party website access**
 
-本机已配置 **`boss-agent` MCP**（[boss-agent-cli](https://github.com/can4hou6joeng4/boss-agent-cli)）时，优先用于 **Boss 直聘**（及 CLI 已支持的 **智联** 求职者只读）：
+Follow [Website access](../ROUTER.md#website-access). Prefer connected local Chrome for BOSS Zhipin, Liepin, and Zhilian searches, company pages, and JD detail links. Check login and full JD visibility first; if signed out, remind the user to log in in Chrome and wait before continuing that site's search or reading.
 
-| 能力 | MCP / CLI | 说明 |
-| --- | --- | --- |
-| 关键词搜岗 | `search` | 城市、经验、薪资等筛选；结果写 `match-*.json` |
-| 读 JD 详情 | `detail` | 用户直链或列表 `security_id` |
-| 登录态 | 本机 `boss login`（用户完成） | 非 Boss 官方 API；须遵守平台协议与频率 |
+Reuse retrieved details and process requests sequentially, including across company agents sharing the same platform session. Avoid parallel or repeated platform requests.
 
-**降级**：未配置 MCP、登录失效、猎聘、验证码墙、公司页打不开 → **浏览器 MCP** 或用户提供的 JD 链。不因缺 MCP 而跳过第三方扩岗。
+If the user chooses a platform MCP/CLI fallback and `boss-agent` is configured, use `search` for scoped searches and `detail` for individual JDs. Verify its own login state separately; Chrome login does not establish MCP/CLI authentication. Stop on CAPTCHA, rate limiting, or risk-control warnings and follow the router's recovery rule.
 
 **官源交叉核验（可选，非入库门槛）**
 

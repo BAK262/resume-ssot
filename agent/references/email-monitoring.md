@@ -15,7 +15,7 @@
 
 ## 浏览器处理流程
 
-1. 使用用户指定的浏览器入口；如果用户没有指定，使用当前可用的默认浏览器入口。
+1. Follow [Website access](../ROUTER.md#website-access): prefer connected local Chrome unless the user specifies another browser or tab.
 2. 打开用户所用邮箱服务商的官方网页。
 3. 如果需要登录，请用户在浏览器中完成登录；确认邮箱页面已准备好后再继续。
 4. 使用公司名称、招聘关键词、邮件主题或发件人搜索近期邮件，优先查看上次检查之后的新邮件或未读邮件。

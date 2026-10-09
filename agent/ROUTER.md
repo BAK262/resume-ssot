@@ -62,7 +62,7 @@ flowchart LR
 | 只改一句 | [workflows/patch.md](workflows/patch.md)：改 HTML → 最小 ssot 回写 → validate |
 | 学术版简历 | `academic` 轨 + `templates/resume-academic.html` |
 | 搜可投岗位 / 刷新岗位表 | [workflows/candidate-profile.md](workflows/candidate-profile.md)（步骤 0 默认刷新）→ [workflows/job-match.md](workflows/job-match.md)：脑暴 → 多渠道实搜 → 审计入库 |
-| 搜可投 + 本机已配置 boss-agent MCP | [workflows/job-match.md](workflows/job-match.md) 步骤 2：Boss/智联优先 CLI `search`/`detail`；猎聘等降级浏览器 |
+| 搜可投 + 招聘网站访问 | [workflows/job-match.md](workflows/job-match.md) step 2: local Chrome first; follow Website access below |
 | 总结技能/求职偏好 / 适合投什么 | [workflows/candidate-profile.md](workflows/candidate-profile.md) |
 | 无岗位表 | 从 `templates/job-match-board.html` 复制到 `offers/` |
 | 同步可投表 / 发来 job-match-state.json | [workflows/job-match.md](workflows/job-match.md)「Agent 同步可投表」 |
@@ -75,6 +75,14 @@ flowchart LR
 | 用户焦虑 | [README.md](../README.md) FAQ；≤3 问/轮 |
 
 **禁止**：要求用户读 agent 文档；一次丢 >3 路径；对用户说 workflow/schema 名、SSOT、audit、subagent。
+
+## Website access
+
+- Scope: website reading and interaction for this skill, including job platforms (BOSS Zhipin, Liepin, Zhilian), employer portals, supplied JD links, and recruitment webmail. An explicit user browser or tab selection takes precedence.
+- Prefer connected local Google Chrome with the user's existing profile. In Codex, select the Chrome browser control entry (`@Chrome`), rather than the built-in `@Browser` entry. Verify that the available tool can control that browser; installed Chrome alone does not establish a connection.
+- Before reading account-dependent content or taking action, check the visible login state and whether the full required content is accessible. If signed out or prompted to log in, remind the user to sign in to that site in the connected Chrome profile. Wait for the user, then verify access again before continuing the affected operation. The user completes passwords, MFA, and CAPTCHA in the browser.
+- If Chrome control is unavailable, report the connection issue and ask the user to connect Chrome or provide the JD content. Use another browser or platform MCP/CLI when the user chooses that fallback. An unauthenticated preview is insufficient evidence for a full JD.
+- Reuse opened pages and already collected JD details; keep platform requests sequential and limited to the task. Platform MCP/CLI is an optional fallback, not the default search route. On CAPTCHA, rate limiting, or a risk-control warning, stop requests to the affected site and notify the user; do not retry in a loop or switch tools to bypass the restriction. Resume after user resolution and a successful access check.
 
 ## 何时读 references（默认不读）
 
