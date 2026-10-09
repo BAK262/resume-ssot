@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.16.1 (2026-10-01)
+
+- Tracker: dwell / warn / auto-archive count **business days** (Mon–Fri − CN statutory holidays + makeup workdays; 2025–2026 国办发明电 baked in)
+
 ## 2.16.0 (2026-09-07)
 
 - Tracker template: reverse-port from career-workspace — archive panel, dwell badges (7d warn / 10d auto-archive), note + JD hover bubbles (stacking fix), `statusSince` / `jdText` / `archived*`, id+key merge + `removedRecord*` cull, export operation log

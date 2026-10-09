@@ -224,7 +224,7 @@
         可在浏览器里新增、编辑、删除投递记录；变更记在本机，刷新仍保留。要写入磁盘上的 HTML 时，点「导出操作记录」把 JSON 发助手，或直接说「同步投递进度表」并说明改了什么。
       </div>
       <div class="callout warn" id="staleCallout">
-        <strong>停留提醒（≥7 天）</strong>
+        <strong>停留提醒（≥7 工作日）</strong>
         <ul id="staleList"></ul>
       </div>
     </div>
@@ -299,6 +299,49 @@
       const LEGACY_STORAGE_KEY = 'offer-skills-application-tracker-v1';
       const WARN_DAYS = 7;
       const ARCHIVE_DAYS = 10;
+      function ymdKey(date) {
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+      function dateRange(startYmd, endYmd) {
+        const out = [];
+        const cur = new Date(`${startYmd}T00:00:00`);
+        const last = new Date(`${endYmd}T00:00:00`);
+        while (cur <= last) {
+          out.push(ymdKey(cur));
+          cur.setDate(cur.getDate() + 1);
+        }
+        return out;
+      }
+      // 国务院办公厅放假调休（国办发明电）；2027 未公布前该年仍按周一至周五
+      const CN_HOLIDAY_OFF = new Set([
+        '2025-01-01',
+        ...dateRange('2025-01-28', '2025-02-04'),
+        ...dateRange('2025-04-04', '2025-04-06'),
+        ...dateRange('2025-05-01', '2025-05-05'),
+        ...dateRange('2025-05-31', '2025-06-02'),
+        ...dateRange('2025-10-01', '2025-10-08'),
+        ...dateRange('2026-01-01', '2026-01-03'),
+        ...dateRange('2026-02-15', '2026-02-23'),
+        ...dateRange('2026-04-04', '2026-04-06'),
+        ...dateRange('2026-05-01', '2026-05-05'),
+        ...dateRange('2026-06-19', '2026-06-21'),
+        ...dateRange('2026-09-25', '2026-09-27'),
+        ...dateRange('2026-10-01', '2026-10-07')
+      ]);
+      const CN_HOLIDAY_WORK = new Set([
+        '2025-01-26', '2025-02-08', '2025-04-27', '2025-09-28', '2025-10-11',
+        '2026-01-04', '2026-02-14', '2026-02-28', '2026-05-09', '2026-09-20', '2026-10-10'
+      ]);
+      function isCnBusinessDay(date) {
+        const key = ymdKey(date);
+        if (CN_HOLIDAY_WORK.has(key)) return true;
+        if (CN_HOLIDAY_OFF.has(key)) return false;
+        const wd = date.getDay();
+        return wd !== 0 && wd !== 6;
+      }
       const statuses = ['待投递', '简历已投递', '已投递', '投递成功', '新投递', '简历筛选中', '待笔试', '笔试', '测评中', '评估中', '一面', '二面', 'HR面', 'Offer', '拒绝', '已结束', '暂缓', '放弃'];
       const referrals = ['无内推', '内推码', '请人内推', '码+请人', '待内推'];
       const $ = (selector) => document.querySelector(selector);
@@ -459,8 +502,20 @@
         if (!start) return 0;
         return Math.max(0, now.getTime() - start.getTime());
       }
+      function businessDaysBetween(start, end) {
+        const cur = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+        const last = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+        let days = 0;
+        while (cur < last) {
+          cur.setDate(cur.getDate() + 1);
+          if (isCnBusinessDay(cur)) days += 1;
+        }
+        return days;
+      }
       function daysInStatus(item, now = new Date()) {
-        return Math.floor(dwellMs(item, now) / 86400000);
+        const start = parseMoment(fallbackStatusSince(item));
+        if (!start) return 0;
+        return businessDaysBetween(start, now);
       }
       function applyAutoArchive(list) {
         const now = new Date();
@@ -474,7 +529,7 @@
           }
           if (daysInStatus(item, now) >= ARCHIVE_DAYS) {
             changed = true;
-            return { ...item, archived: true, archivedAt: stamp, archiveReason: `停留${ARCHIVE_DAYS}天` };
+            return { ...item, archived: true, archivedAt: stamp, archiveReason: `停留${ARCHIVE_DAYS}工作日` };
           }
           return item;
         });
@@ -483,7 +538,7 @@
       }
       function dwellBadge(days) {
         const tone = days >= ARCHIVE_DAYS ? 'danger' : days >= WARN_DAYS ? 'warn' : '';
-        return `<span class="dwell-badge ${tone}">${days} 天</span>`;
+        return `<span class="dwell-badge ${tone}">${days} 工作日</span>`;
       }
       function referralCell(item) {
         const meta = [item.referralCode, item.referralContact].filter(Boolean).join(' · ');
@@ -619,12 +674,12 @@
           const bMoment = `${b.date || ''} ${b.time || ''}`;
           if (sort === 'date-asc') return aMoment.localeCompare(bMoment);
           if (sort === 'dwell-desc') {
-            const byDwell = dwellMs(b) - dwellMs(a);
+            const byDwell = daysInStatus(b) - daysInStatus(a) || dwellMs(b) - dwellMs(a);
             if (byDwell) return byDwell;
             return bMoment.localeCompare(aMoment);
           }
           if (sort === 'dwell-asc') {
-            const byDwell = dwellMs(a) - dwellMs(b);
+            const byDwell = daysInStatus(a) - daysInStatus(b) || dwellMs(a) - dwellMs(b);
             if (byDwell) return byDwell;
             return bMoment.localeCompare(aMoment);
           }
@@ -657,7 +712,7 @@
         callout.classList.add('open');
         list.innerHTML = stale.map((item) => {
           const days = daysInStatus(item);
-          return `<li>${escapeHtml(item.company)} · ${escapeHtml(item.position || '-')} · ${escapeHtml(item.status)} 已 ${days} 天</li>`;
+          return `<li>${escapeHtml(item.company)} · ${escapeHtml(item.position || '-')} · ${escapeHtml(item.status)} 已 ${days} 工作日</li>`;
         }).join('');
       }
       function render() {
