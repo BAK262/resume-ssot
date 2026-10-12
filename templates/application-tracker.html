@@ -140,10 +140,10 @@
       font-size: 12px; font-weight: 700; white-space: nowrap;
     }
     .status-待投递 { color: #536174; background: #eef1f5; }
-    .status-已投递, .status-简历已投递, .status-投递成功, .status-新投递, .status-简历筛选中 { color: #285c9f; background: #eaf2ff; }
-    .status-待笔试, .status-笔试, .status-测评中, .status-评估中, .status-一面, .status-二面, .status-HR面 { color: #885b08; background: #fff5d6; }
+    .status-已投递 { color: #285c9f; background: #eaf2ff; }
+    .status-笔试中, .status-测评中, .status-评估中, .status-面试中 { color: #885b08; background: #fff5d6; }
     .status-Offer { color: #16734d; background: #ddf8eb; }
-    .status-拒绝, .status-放弃, .status-已结束 { color: #ad3a2f; background: #ffebe8; }
+    .status-已结束 { color: #ad3a2f; background: #ffebe8; }
     .status-暂缓 { color: #6c49a8; background: #f1eaff; }
     .referral {
       display: inline-flex; flex-direction: column; gap: 3px; align-items: flex-start;
@@ -207,7 +207,7 @@
     <header class="hero">
       <p class="eyebrow">APPLICATION TRACKER</p>
       <h1>投递进度表</h1>
-      <p>记录投递、面试与反馈；同进度满 7 天提醒，拒绝或满 10 天自动归档。与可投岗位表联动（简历定稿后由助手写入）。</p>
+      <p>记录投递、面试与反馈；同进度满 7 天提醒，已结束或满 10 天自动归档。与可投岗位表联动（简历定稿后由助手写入）。</p>
     </header>
 
     <section class="stats" aria-label="投递统计">
@@ -258,7 +258,7 @@
     </section>
 
     <details class="archive-panel" id="archivePanel">
-      <summary><span id="archiveSummary">已归档（0）</span><span class="panel-hint">拒绝或同进度满 10 天自动收入此处</span></summary>
+      <summary><span id="archiveSummary">已归档（0）</span><span class="panel-hint">已结束或同进度满 10 天自动收入此处</span></summary>
       <div class="table-wrap">
         <table>
           <thead><tr><th>时间</th><th>公司</th><th>岗位</th><th>进度</th><th>停留</th><th>归档原因</th><th>备注</th><th>操作</th></tr></thead>
@@ -342,7 +342,12 @@
         const wd = date.getDay();
         return wd !== 0 && wd !== 6;
       }
-      const statuses = ['待投递', '简历已投递', '已投递', '投递成功', '新投递', '简历筛选中', '待笔试', '笔试', '测评中', '评估中', '一面', '二面', 'HR面', 'Offer', '拒绝', '已结束', '暂缓', '放弃'];
+      const statuses = ['待投递', '已投递', '笔试中', '测评中', '评估中', '面试中', 'Offer', '已结束', '暂缓'];
+      const statusAliases = {
+        '简历已投递': '已投递', '投递成功': '已投递', '新投递': '已投递', '简历筛选中': '评估中',
+        '待笔试': '笔试中', '笔试': '笔试中', '一面': '面试中', '二面': '面试中', 'HR面': '面试中',
+        '拒绝': '已结束', '放弃': '已结束', '流程终止': '已结束'
+      };
       const referrals = ['无内推', '内推码', '请人内推', '码+请人', '待内推'];
       const $ = (selector) => document.querySelector(selector);
       const body = $('#recordBody');
@@ -374,11 +379,11 @@
           portalUrl: "https://example.com/portal",
           jdUrl: "https://example.com/jobs/frontend",
           jdText: "负责 Web 前端开发与组件库维护，协同设计与后端交付。",
-          status: "简历已投递",
+          status: "已投递",
           referral: "无内推",
           referralCode: "",
           referralContact: "",
-          next: "等待简历筛选",
+          next: "等待评估反馈",
           note: "模板示例记录，可删。",
           updatedAt: "2026-01-01T10:00:00+08:00",
           statusSince: "2026-01-01T10:00:00+08:00",
@@ -467,7 +472,8 @@
       }
       function normalizeRecord(item) {
         const split = splitCompanyDepartment(item.company, item.department);
-        const status = statuses.includes(item.status) ? item.status : '已投递';
+        const mapped = statusAliases[item.status] || item.status;
+        const status = statuses.includes(mapped) ? mapped : '已投递';
         const updatedAt = item.updatedAt || `${item.date || ''}T${item.time || ''}`;
         return {
           id: item.id || makeId(),
@@ -523,9 +529,9 @@
         let changed = false;
         const next = list.map((item) => {
           if (item.archived) return item;
-          if (item.status === '拒绝') {
+          if (item.status === '已结束') {
             changed = true;
-            return { ...item, archived: true, archivedAt: stamp, archiveReason: '拒绝' };
+            return { ...item, archived: true, archivedAt: stamp, archiveReason: item.archiveReason || '已结束' };
           }
           if (daysInStatus(item, now) >= ARCHIVE_DAYS) {
             changed = true;
@@ -757,7 +763,7 @@
       function updateStats() {
         const month = today().slice(0, 7);
         const active = records.filter((item) => !item.archived);
-        $('#activeCount').textContent = active.filter((item) => !['Offer', '拒绝', '已结束', '放弃'].includes(item.status)).length;
+        $('#activeCount').textContent = active.filter((item) => !['Offer', '已结束'].includes(item.status)).length;
         $('#staleCount').textContent = active.filter((item) => daysInStatus(item) >= WARN_DAYS).length;
         $('#offerCount').textContent = active.filter((item) => item.status === 'Offer').length;
         $('#archivedCount').textContent = records.filter((item) => item.archived).length;
@@ -774,7 +780,7 @@
         portalUrlInput.value = record?.portalUrl || '';
         jdUrlInput.value = record?.jdUrl || '';
         jdTextInput.value = record?.jdText || '';
-        statusInput.value = record?.status || '简历已投递';
+        statusInput.value = record?.status || '已投递';
         referralInput.value = record?.referral || '无内推';
         referralCodeInput.value = record?.referralCode || '';
         referralContactInput.value = record?.referralContact || '';
@@ -834,7 +840,7 @@
           if (index >= 0) {
             const prev = records[index];
             const statusChanged = data.status !== prev.status;
-            const archived = data.status === '拒绝' ? true : prev.archived;
+            const archived = data.status === '已结束' ? true : prev.archived;
             records[index] = {
               ...prev,
               ...data,
@@ -842,7 +848,7 @@
               statusSince: statusChanged ? nowIso : (prev.statusSince || nowIso),
               archived,
               archivedAt: archived && !prev.archived ? nowIso : prev.archivedAt,
-              archiveReason: data.status === '拒绝' ? '拒绝' : (archived ? prev.archiveReason : '')
+              archiveReason: data.status === '已结束' ? '已结束' : (archived ? prev.archiveReason : '')
             };
           }
         } else {
@@ -851,9 +857,9 @@
             ...data,
             updatedAt: nowIso,
             statusSince: nowIso,
-            archived: data.status === '拒绝',
-            archivedAt: data.status === '拒绝' ? nowIso : '',
-            archiveReason: data.status === '拒绝' ? '拒绝' : ''
+            archived: data.status === '已结束',
+            archivedAt: data.status === '已结束' ? nowIso : '',
+            archiveReason: data.status === '已结束' ? '已结束' : ''
           });
         }
         persist(); render(); closeModal();

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.17.0 (2026-10-12)
+
+- Tracker: progress column reduced to the mutually exclusive, exhaustive set `待投递` / `已投递` / `笔试中` / `测评中` / `评估中` / `面试中` / `Offer` / `已结束` / `暂缓`.
+- Tracker: legacy `拒绝` / `放弃` / `流程终止` semantics converge on `已结束`; interview rounds stay in notes; legacy values load through aliases.
+
 ## 2.16.1 (2026-10-01)
 
 - Tracker: dwell / warn / auto-archive count **business days** (Mon–Fri − CN statutory holidays + makeup workdays; 2025–2026 国办发明电 baked in)
