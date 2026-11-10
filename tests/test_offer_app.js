@@ -13,8 +13,8 @@ function app(data=seed){
   const click=b=>events.click({target:{closest:()=>({dataset:{},...b})}});
   return {node,click,events};
 }
-let a=app();assert.match(a.node('#content').innerHTML,/虚构示例/);
-a.click({dataset:{tab:'compare'}});assert.match(a.node('#content').innerHTML,/共同口径/);
+let a=app();assert.match(a.node('#content').innerHTML,/虚构示例/);assert.match(a.node('#content').innerHTML,/常用条件/);assert.match(a.node('#content').innerHTML,/完整维度与待问清单/);assert.equal((a.node('#content').innerHTML.match(/id="recordSelect"/g)||[]).length,1);
+a.click({dataset:{tab:'compare'}});assert.match(a.node('#content').innerHTML,/常用条件/);
 a.click({dataset:{calc:'fictional-a'}});assert.match(a.node('#content').innerHTML,/本年预计到账/);
 a.click({id:'startDraft'});assert.match(a.node('#content').innerHTML,/正在试算/);
 a.click({id:'discardDraft'});assert.match(a.node('#content').innerHTML,/当前真实报价/);

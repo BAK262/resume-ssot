@@ -2,6 +2,8 @@
 
 本流程用于对比 Offer、拆解薪酬、谈薪准备、读取招聘方方案和同步手动修改。对用户称“Offer 对比看板”。
 
+默认用单页对比表：常用条件点击编辑，完整横向维度、单岗核对和计算参数在同页折叠展示。保持原始字段、来源、历史版本与计算能力。
+
 ## Artifacts and boundaries
 
 - 私有记录唯一文件：`offers/offer-comparison.html` 的 `offer-data` JSON；浏览器 localStorage 是尚待同步的编辑副本。`offers/offer-research.html` 是人类可读来源与说明。

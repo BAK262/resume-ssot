@@ -2,9 +2,8 @@
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Offer 对比看板</title><style>/*STYLE*/</style></head>
 <body><main>
 <header><div><p class="eyebrow">职业选择 · 条件核实 · 谈薪准备</p><h1>Offer 对比看板</h1><p>把每个机会放在同一张桌上，先看事实，再做选择。</p></div><a class="button quiet" href="application-tracker.html">投递进度表 ↗</a></header>
-<div class="toolbar"><button id="add">＋ 新增机会</button><button id="export" class="quiet">导出操作记录</button><label class="button quiet">导入记录<input id="import" type="file" accept=".json" hidden></label><button id="print" class="quiet">打印／PDF</button><label><input id="archived" type="checkbox"> 显示归档</label></div>
+<div class="toolbar"><button id="add">＋ 新增机会</button><details class="more-actions"><summary>更多</summary><button id="export" class="quiet">导出操作记录</button><label class="button quiet">导入记录<input id="import" type="file" accept=".json" hidden></label><button id="print" class="quiet">打印／PDF</button><label><input id="archived" type="checkbox"> 显示归档</label></details></div>
 <p id="saveState" role="status" class="notice"></p><div id="conflicts"></div><div id="stats" class="stats"></div>
-<nav aria-label="看板视图"><button data-tab="overview" class="active">机会总览</button><button data-tab="compare">横向对比</button><button data-tab="detail">资料与核对</button><button data-tab="calc">薪酬测算</button><button data-tab="guide">使用与依据</button></nav>
 <div id="content"></div><footer>本地保存 · 材料由 AI 解析更新 · 测算条件与政策有效期随结果展示</footer>
 </main>
 <dialog id="editor"><form id="editForm"><div class="dialog-head"><h2 id="editTitle">编辑</h2><button type="button" id="cancelEdit" class="quiet">关闭</button></div><div id="editBody"></div><p id="editError" role="alert"></p><button type="submit">保存</button></form></dialog>

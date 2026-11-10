@@ -2,7 +2,7 @@
   'use strict';
   const C=OfferCore, $=s=>document.querySelector(s), esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const seed=C.validate(JSON.parse($('#offer-data').textContent)), key='resume-ssot-offer-board-v1:'+seed.boardId;
-  let state=C.clone(seed), base=C.clone(seed), conflicts=[], tab='overview', selected=new Set(), activeId='', draft=null, unknownOnly=false, audience='全部', editAction=null, storageError='';
+  let state=C.clone(seed), base=C.clone(seed), conflicts=[], tab='compare', selected=new Set(), activeId='', draft=null, unknownOnly=false, audience='全部', editAction=null, storageError='';
   const fmt=n=>C.known(n)?'¥ '+n.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2}):'待确认';
   const show=v=>v==null||v===''?'待确认':typeof v==='boolean'?(v?'是':'否'):String(v);
   let lastSaved=null;
@@ -25,19 +25,34 @@
     if(tab==='guide'){$('#content').innerHTML=guide();return;}
     if(!list.length){$('#content').innerHTML='<div class="empty"><h2>先加入一个机会</h2><p>已到 Offer 阶段但尚未定薪的机会，也可以先记录并逐项核实。</p><p>点击“新增机会”，或让 AI 从投递进度表整理加入。</p></div>';return;}
     if(tab==='overview')$('#content').innerHTML=`<div class="cards">${list.map(r=>`<article class="card"><div class="card-head"><div><h2>${esc(title(r))}</h2><p>${esc(C.val(r,'position')||'岗位待确认')}</p></div><label><input type="checkbox" data-select="${esc(r.id)}" ${selected.has(r.id)?'checked':''}> 对比</label></div><span class="badge">${esc(C.val(r,'stage')||'阶段待确认')}</span><dl>${[['city','工作地'],['level','序列／职级'],['quotedPackage','HR 所述年包'],['deadline','回复期限'],['ownership','研究主责']].map(([k,t])=>`<dt>${t}</dt><dd>${esc(k==='quotedPackage'?fmt(C.val(r,k)):show(C.val(r,k)))}</dd>`).join('')}</dl><p class="tag">${pending(r)} 项待核实</p><div class="actions"><button data-open="${esc(r.id)}">查看与编辑</button><button class="quiet" data-calc="${esc(r.id)}">测算</button></div></article>`).join('')}</div>`;
-    if(tab==='compare')renderCompare(list);
+    if(tab==='compare')renderSimple(list);
     if(tab==='detail')renderDetail();
     if(tab==='calc')renderCalc();
   }
+  function renderSimple(list){
+    const opened=new Set(Array.from(document.querySelectorAll('details[data-section]')).filter(x=>x.open).map(x=>x.dataset.section));
+    const rows=[['position','岗位'],['city','城市'],['duties','工作内容'],['components','工资与奖金'],['quotedPackage','HR 所述年包'],['contributionTerms','五险一金'],['concerns','主要顾虑'],['deadline','回复期限']];
+    let html='<p class="help">点击单元格即可修改；金额按同一年份比较，详细条件在下方展开。</p><div class="table-wrap"><table class="compare compact"><thead><tr><th>常用条件</th>'+list.map(r=>`<th><button class="cell-edit" data-inline="${esc(r.id)}" data-key="company">${esc(title(r))}</button><span class="meta">${esc(C.val(r,'stage')||'阶段待确认')}</span></th>`).join('')+'</tr></thead><tbody>';
+    for(const [k,label]of rows)html+=`<tr><th>${label}</th>${list.map(r=>{let value=k==='quotedPackage'?fmt(C.val(r,k)):show(C.val(r,k));if(k==='components')value=C.val(r,k).map(p=>`${p.name||'未命名'}：${fmt(p.amount)} / ${{monthly:'月',annual:'年',once:'次'}[p.frequency]}`).join('\n')||'填写工资与奖金';return `<td><button class="cell-edit" data-inline="${esc(r.id)}" data-key="${k}">${esc(value)}</button></td>`;}).join('')}</tr>`;
+    const calculated=list.map(r=>C.calculate(r,calcYear,scenario,bonusMode));
+    html+=`<tr class="section-row"><th colspan="${list.length+1}">${calcYear} 年 · ${scenario==='fixed'?'固定现金':'目标现金'} · ${bonusMode==='combined'?'奖金并入':'合格全年奖单独计税'}</th></tr>`;
+    for(const [label,k]of [['年现金（税前）','gross'],['预计到账（全年）','net'],['月均到账（全年÷12）','monthly']])html+=`<tr><th>${label}</th>${calculated.map(x=>`<td>${fmt(k==='monthly'?(x.net===null?null:x.net/12):x[k])}${x.blocked?'<div class="meta">待补齐条件；税前为已录小计</div>':x.hypothetical?'<div class="meta">政策延用试算</div>':''}</td>`).join('')}</tr>`;
+    html+='</tbody></table></div>';
+    renderCompare(list);const full=$('#content').innerHTML;
+    renderDetail();const detail=$('#content').innerHTML.replace(recordSelect(),'').replaceAll('<details open>','<details>');
+    renderCalc();const calc=$('#content').innerHTML.replace(recordSelect(),'');
+    html+=`<details data-section="full" ${opened.has('full')?'open':''}><summary>展开全部对比维度</summary>${full}</details><div class="controls">${recordSelect()}<span class="help">展开后查看该机会的完整资料与计算</span></div><details data-section="detail" ${opened.has('detail')?'open':''}><summary>完整维度与待问清单</summary>${detail}</details><details data-section="calc" ${opened.has('calc')?'open':''}><summary>详细测算、计算参数与假设方案</summary>${calc}</details><details data-section="guide" ${opened.has('guide')?'open':''}><summary>使用说明与调研依据</summary>${guide()}</details>`;
+    $('#content').innerHTML=html;
+  }
   function renderCompare(list){
     const offers=list.filter(r=>selected.size?selected.has(r.id):true);
-    let html='<p class="help">在总览勾选要比较的机会；未勾选时显示全部。点击值旁的编辑按钮即可修改。</p><div class="table-wrap"><table class="compare"><thead><tr><th>共同维度</th>'+offers.map(r=>`<th>${esc(title(r))}<br><span class="meta">${esc(C.val(r,'position'))}</span></th>`).join('')+'</tr></thead><tbody>';
+    let html='<p class="help">所有机会按完整维度并排比较，点击编辑可补充来源和确认程度。</p><div class="table-wrap"><table class="compare"><thead><tr><th>共同维度</th>'+offers.map(r=>`<th>${esc(title(r))}<br><span class="meta">${esc(C.val(r,'position'))}</span></th>`).join('')+'</tr></thead><tbody>';
     for(const g of C.groups.slice(0,5)){html+=`<tr class="section-row"><th colspan="${offers.length+1}">${g[0]}</th></tr>`;for(const [k,t] of g[2])html+=`<tr><th>${t}</th>${offers.map(r=>`<td>${esc(k==='quotedPackage'?fmt(C.val(r,k)):show(C.val(r,k)))}<br><span class="meta">${esc(r.cells[k]?.status||'待确认')}</span> <button class="quiet small" data-inline="${esc(r.id)}" data-key="${k}">编辑</button></td>`).join('')}</tr>`;}
     for(const name of new Set(offers.flatMap(r=>C.val(r,'custom').map(x=>x.name))))html+=`<tr><th>${esc(name)}</th>${offers.map(r=>`<td>${esc(C.val(r,'custom').find(x=>x.name===name)?.value||'待确认')}</td>`).join('')}</tr>`;
     html+=`<tr class="section-row"><th colspan="${offers.length+1}">${calcYear} 年共同口径 · 目标现金 · 奖金并入</th></tr>`;
     const calculated=offers.map(r=>C.calculate(r,calcYear));
     for(const [label,k] of [['税前现金（资料未全时为已录小计）','gross'],['年度预扣后到账','net'],['月均到账（全年÷12）','monthly'],['汇算后现金估算','finalNet']])html+=`<tr><th>${label}</th>${calculated.map(x=>`<td>${fmt(k==='monthly'?(x.net===null?null:x.net/12):x[k])}<br><span class="meta">${x.blocked?'条件待补齐':x.hypothetical?'政策延用试算':'按录入条件估算'}</span></td>`).join('')}</tr>`;
-    html+='</tbody></table></div><p class="help">比较年份沿用“薪酬测算”所选年份；实际逐月到账、奖金和假设调整见该页。</p>';
+    html+='</tbody></table></div><p class="help">比较年份沿用下方详细测算所选年份；可展开查看逐月到账、奖金和假设调整。</p>';
     $('#content').innerHTML=html;
   }
   function renderDetail(){const r=current();
@@ -66,7 +81,7 @@
     html+='<div class="table-wrap"><table><thead><tr><th>发放月</th><th>税前现金</th><th>个人缴费</th><th>预扣税</th><th>预计到账</th><th>公积金个人</th><th>公积金单位</th></tr></thead><tbody>'+result.rows.map(x=>`<tr><td>${x.month}</td>${[x.gross,x.employee,result.blocked?null:x.tax,result.blocked?null:x.net,x.housingPersonal,x.housingEmployer].map(n=>`<td class="numbers">${fmt(n)}</td>`).join('')}</tr>`).join('')+'</tbody></table></div>';
     $('#content').innerHTML=html;
   }
-  function guide(){return `<div class="panel"><h2>从一份材料到一份可比较的方案</h2><ol><li>让 AI 整理进度表中已到 Offer 阶段的岗位，或点击“新增机会”。</li><li>把 HR 文字、截图或文件交给 AI；保留出处，逐项补齐资料。页面中的编辑按钮也可直接使用。</li><li>在“资料与核对”筛选待问项；让 HR 说明固定与浮动、计算基数、发放时间、首年折算和返还条件。</li><li>录入收入和缴费明细、年度税务背景，再查看逐月和年度测算。未知留空，明确没有填 0。</li><li>谈判前建立假设试算；拿到调整方案后保存旧版、更新报价。</li><li>手动修改先保存在本浏览器。导出操作记录交给 AI，同步至文件后才能随工作区跨设备使用。</li></ol><h3>请 HR 提供文字方案</h3><p>方便的话，麻烦把薪酬组成、奖金和补贴的发放条件，以及社保公积金的缴纳口径发我一份文字说明，我想完整了解一下，也方便后续确认。</p><h3>核实重点</h3><p>“几薪”拆分固定和奖金；签字费核对返还是否区分主动离职、裁员；奖金核对发放时点与在职条件；股权核对归属和流动性；人才补贴核对资格、申请与服务期限。月薪里的绩效、年终奖和额外薪月避免重复录入。</p><p>每个缴费项目独立设置参保地对应的基数、上下限、个人／单位比例、生效期间和来源。已经确认月缴额时可直接填写。新就业、试用期及政策调整月份需要分别核实。</p><h3>适用范围</h3><p>计算器用于大陆居民工资方案比较。股权、报销先单列；复杂税务处理由 AI 查证后录入。部分月工资、奖金首年折算通过拆分项目填写明确金额。未来政策未核实时结果标为规则延用试算。</p><p><a href="offer-research.html">调研与核实依据 ↗</a></p></div>`;}
+  function guide(){return `<div class="panel"><h2>从一份材料到一份可比较的方案</h2><ol><li>让 AI 整理进度表中已到 Offer 阶段的岗位，或点击“新增机会”。</li><li>把 HR 文字、截图或文件交给 AI；保留出处，逐项补齐资料。页面中的编辑按钮也可直接使用。</li><li>展开“完整维度与待问清单”筛选待问项；让 HR 说明固定与浮动、计算基数、发放时间、首年折算和返还条件。</li><li>录入收入和缴费明细、年度税务背景，再查看逐月和年度测算。未知留空，明确没有填 0。</li><li>谈判前建立假设试算；拿到调整方案后保存旧版、更新报价。</li><li>手动修改先保存在本浏览器。导出操作记录交给 AI，同步至文件后才能随工作区跨设备使用。</li></ol><h3>请 HR 提供文字方案</h3><p>方便的话，麻烦把薪酬组成、奖金和补贴的发放条件，以及社保公积金的缴纳口径发我一份文字说明，我想完整了解一下，也方便后续确认。</p><h3>核实重点</h3><p>“几薪”拆分固定和奖金；签字费核对返还是否区分主动离职、裁员；奖金核对发放时点与在职条件；股权核对归属和流动性；人才补贴核对资格、申请与服务期限。月薪里的绩效、年终奖和额外薪月避免重复录入。</p><p>每个缴费项目独立设置参保地对应的基数、上下限、个人／单位比例、生效期间和来源。已经确认月缴额时可直接填写。新就业、试用期及政策调整月份需要分别核实。</p><h3>适用范围</h3><p>计算器用于大陆居民工资方案比较。股权、报销先单列；复杂税务处理由 AI 查证后录入。部分月工资、奖金首年折算通过拆分项目填写明确金额。未来政策未核实时结果标为规则延用试算。</p><p><a href="offer-research.html">调研与核实依据 ↗</a></p></div>`;}
   const schemas={
     components:[['name','项目名'],['kind','收入性质','fixed|固定,variable|浮动,once|一次性,equity|股权（单列）,reimbursement|报销（单列）'],['amount','每次金额（元）','number'],['frequency','发放频次','monthly|每月,annual|每年,once|一次'],['from','开始／一次性发放月','month'],['to','结束月（周期项目）','month'],['payMonth','年度项目发放月 1–12','number'],['tax','计税处理','wage|工资综合所得,bonus|符合条件的全年一次性奖,exempt|有依据免税,unknown|待核实'],['trial','月项目参与试用期折扣','boolean'],['terms','发放、首年折算、返还条件'],['source','来源与日期']],
     contributions:[['name','险种／项目名'],['category','类别','social|社会保险,housing|公积金,annuity|企业年金／其他'],['mode','输入方式','amount|直接填月缴额,rate|基数与比例'],['employee','个人月额／比例%','number'],['employer','单位月额／比例%','number'],['base','申报基数（比例模式）','number'],['min','基数下限（比例模式）','number'],['max','基数上限（比例模式）','number'],['fixed','个人额外固定费用','number'],['rounding','取整','cent|分,yuan|元'],['from','缴费开始月','month'],['to','缴费结束／政策有效月','month'],['deduct','个人部分已确认可税前扣除','boolean'],['source','缴费地、政策来源与核验日']],
@@ -98,7 +113,7 @@
     if(b.dataset.open||b.dataset.calc){activeId=b.dataset.open||b.dataset.calc;draft=null;tab=b.dataset.calc?'calc':'detail';render();}
     if(b.dataset.inline){draft=null;activeId=b.dataset.inline;openEdit(b.dataset.key);}
     if(b.dataset.edit)openEdit(b.dataset.edit);
-    if(b.id==='add'){const r=C.newRecord('manual-'+Date.now());state.records.push(r);activeId=r.id;draft=null;tab='detail';persist();openEdit('company');}
+    if(b.id==='add'){const r=C.newRecord('manual-'+Date.now());state.records.push(r);activeId=r.id;draft=null;tab='compare';persist();openEdit('company');}
     if(b.id==='export')download({schema:1,boardId:seed.boardId,exportedAt:new Date().toISOString(),records:state.records,conflicts,base},'offer-comparison-state.json');
     if(b.id==='print')window.print();if(b.id==='cancelEdit')$('#editor').close();
     if(b.id==='addRow'){editRows=collectRows();editRows.push(editAction==='components'?C.component():editAction==='contributions'?C.contribution():editAction==='taxYears'?{year:calcYear,income:null,deduction:null,withheld:null,annualSpecial:null,bonusUsed:false,source:''}:{name:'',value:'',source:''});renderRows();}
@@ -107,7 +122,7 @@
     if(b.id==='snapshot'){const label=prompt('本轮方案名称，例如：首次书面报价');if(label){snapshot(label);persist();}}
     if(b.id==='startDraft'){draft=C.clone(current());render();}if(b.id==='discardDraft'){draft=null;render();}
     if(b.id==='commitDraft'&&draft&&confirm('确认对方已提供这一调整方案？将保留旧版，并把试算更新为当前报价。')){snapshot('调整前报价');current().cells=C.clone(draft.cells);current().updatedAt=new Date().toISOString();draft=null;persist();}
-    if(b.dataset.version){const v=current().versions.find(v=>v.id===b.dataset.version);draft=C.clone(current());draft.cells=C.clone(v.cells);tab='calc';render();}
+    if(b.dataset.version){const v=current().versions.find(v=>v.id===b.dataset.version);draft=C.clone(current());draft.cells=C.clone(v.cells);tab='compare';render();}
     if(b.dataset.resolve!==undefined){const c=conflicts[Number(b.dataset.resolve)];state.records.find(r=>r.id===c.id).cells[c.key]=C.clone(c[b.dataset.side]);conflicts.splice(Number(b.dataset.resolve),1);persist();}
     if(b.id==='copyQuestions'){const r=current(),lines=C.groups.slice(0,5).filter(g=>audience==='全部'||g[1]===audience||audience==='员工'&&g[0]==='工作与签约').flatMap(g=>g[2].filter(([k])=>!C.val(r,k)||['待确认','存在冲突'].includes(r.cells[k]?.status)).map(([,t])=>`[${g[1]}] 请确认：${t}`));const text=title(r)+' 待问清单\n'+lines.join('\n');if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>alert('已复制待问清单')).catch(()=>prompt('复制以下清单',text));else prompt('复制以下清单',text);}
   });
