@@ -90,7 +90,7 @@
     const inputs={};
     for(const key of ['trialMonths','trialFactor','firstMonthFactor','deduction','otherDeduction']) {
       inputs[key]=val(r,key);
-      if(!known(inputs[key])||inputs[key]<0)missing.add(key);
+      if(!known(inputs[key])||inputs[key]<0)missing.add(groups[5][2].find(x=>x[0]===key)[1]);
     }
     if(inputs.trialFactor>1 || inputs.firstMonthFactor>1)missing.add('工资系数应在 0–1 内');
     if(!Number.isInteger(inputs.trialMonths))missing.add('试用月数应为整数');
@@ -168,7 +168,7 @@
       withheld+=currentTax;
       rows.push({month:ym,gross:money(gross),employee:money(employee),deductible:money(deductible),tax:money(currentTax+separate),net:money(gross-employee-currentTax-separate),housingPersonal:money(housingPersonal),housingEmployer:hasEmployerUnknown?null:money(housingEmployer),employerSocial:money(employerSocial),items});
     }
-    const sum=k=>money(rows.reduce((s,x)=>s+(x[k]??0),0));
+    const sum=k=>rows.some(x=>x[k]===null)?null:money(rows.reduce((s,x)=>s+x[k],0));
     const annualDeduction=(background?.annualSpecial??NaN)+inputs.otherDeduction*rows.filter(x=>start!==null&&monthIndex(x.month)>=start).length;
     const taxable=Math.max(0,cumulative+(background?.income||0)-60000-sum('deductible')-annualDeduction-(background?.deduction||0));
     const finalTax=money(tax(taxable)+annualBonusTax);
@@ -177,12 +177,14 @@
     warnings.add('月预扣使用月扣除额；汇算使用年度背景中的全年专项附加扣除。其他扣除只填未包含的项目。');
     if(val(r,'policyNote'))warnings.add(val(r,'policyNote'));
     const blocked=missing.size>0;
+    if(start===null||!payments.length&&val(r,'inventoryComplete')!==true)rows.forEach(x=>{x.gross=null;});
+    if(val(r,'contributionsComplete')!==true&&!fees.length)rows.forEach(x=>{x.employee=null;x.housingPersonal=null;x.housingEmployer=null;});
     return {year,scenario,bonusMode,rows,missing:[...missing],warnings:[...warnings],blocked,hypothetical:hasPolicyGap,gross:sum('gross'),employee:sum('employee'),withheld:blocked?null:sum('tax'),net:blocked?null:sum('net'),finalTax:blocked?null:finalTax,adjustment:blocked?null:adjustment,finalNet:blocked?null:money(sum('net')+adjustment),housingPersonal:sum('housingPersonal'),housingEmployer:hasEmployerUnknown?null:sum('housingEmployer')};
   }
   function windowSummary(results, from, to) {
     const rows=results.flatMap(x=>x.rows).filter(x=>x.month>=from&&x.month<=to);
     const blocked=results.some(x=>x.blocked);
-    return {gross:money(rows.reduce((s,x)=>s+x.gross,0)),net:blocked?null:money(rows.reduce((s,x)=>s+x.net,0)),months:rows.length};
+    return {gross:rows.some(x=>x.gross===null)?null:money(rows.reduce((s,x)=>s+x.gross,0)),net:blocked?null:money(rows.reduce((s,x)=>s+x.net,0)),months:rows.length};
   }
   const api={clone,equal,known,money,cell,val,groups,newRecord,component,contribution,validate,merge,tax,bonusTax,monthIndex,monthString,calculate,windowSummary};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
