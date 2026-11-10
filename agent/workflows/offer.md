@@ -6,6 +6,8 @@
 
 用户说「更新投递 / 记一笔投递 / 进度表 / Offer 状态」时走本流程。对用户称：**投递进度表**。
 
+更新到 `Offer` 后，按 [offer-comparison.md](offer-comparison.md) 检查条件记录，用原 immutable ID 关联；已有记录原位补充。意向与正式报价按证据区分；薪酬未知仍可先列入。联动由 Agent 按意图执行。
+
 ---
 
 ## 前置

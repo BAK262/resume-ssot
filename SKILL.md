@@ -1,9 +1,9 @@
 ---
 name: resume-ssot
-version: "2.17.0"
+version: "2.18.0"
 description: >-
   Career archive + JD-tailored resumes (HTML/PDF/plain); official job match; application tracker;
-  positioning / HR pitch baked into resume rules; interview predict-grill-review-debrief.
+  positioning / HR pitch; interview predict-grill-review-debrief; offer comparison and mainland salary estimates.
   改简历、投递版、岗位定位、要点改写、HR开场、搜可投岗位、投递进度、Offer、面试预测、模拟面试、简历追问、面试复盘、暴露台账。
   Use when user mentions resume, CV, JD, internship, offer, tracker, job match,
   改简历, 投递, 网申, 可投岗位, 开场白, 岗位定位, 面试, 模拟面试, 追问, 复盘, or 暴露台账.
@@ -33,6 +33,7 @@ license: MIT
 | .txt                       | 网申粘贴文本             |
 | job-match-industry.html    | 可投岗位表              |
 | application-tracker.html   | 投递进度表              |
+| offer-comparison.html      | Offer 对比看板          |
 | candidate-profile.json     | 求职画像（技能/偏好）   |
 | interview-rN-*.md          | 面试复盘（单岗）           |
 | interview-exposure-ledger.md | 暴露台账（跨岗）         |
@@ -53,6 +54,7 @@ license: MIT
 | 总结技能 / 求职偏好 / 优势赛道 | [agent/workflows/candidate-profile.md](agent/workflows/candidate-profile.md) |
 | 搜可投岗位 / 刷新岗位表     | [agent/workflows/candidate-profile.md](agent/workflows/candidate-profile.md) + [agent/workflows/job-match.md](agent/workflows/job-match.md)（多渠道实搜；local Chrome first） |
 | 投递进度 / Offer         | [agent/workflows/offer.md](agent/workflows/offer.md)       |
+| Offer 对比 / 谈薪 / 薪酬拆解 / 五险一金 | [agent/workflows/offer-comparison.md](agent/workflows/offer-comparison.md) |
 | 面试预测 / 追问 / 复盘 / 暴露台账 | [agent/workflows/interview.md](agent/workflows/interview.md) |
 
 

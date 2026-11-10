@@ -4,6 +4,8 @@
 [![GitHub Stars](https://img.shields.io/github/stars/BAK262/resume-ssot?style=flat&logo=github&label=stars&color=181717)](https://github.com/BAK262/resume-ssot/stargazers)
 [![English](https://img.shields.io/badge/lang-English-555?style=flat)](README.en.md)
 
+现在也可以说：“整理已到 Offer 阶段的岗位，帮我比较方案。” **Offer 对比看板**支持手动编辑、材料提取、共同维度对照、待问清单与方案版本；薪酬测算包含逐月到账、年度现金、社保公积金和奖金口径。未知项目保持待确认，手动修改可导出后交给 AI 同步。数据保留在你的求职文件夹。
+
 **在 Cursor、Claude Code 或 Codex 里做简历，不用每次从零讲起。** 像聊天一样补齐教育、实习和项目，AI 先把内容记在**经历档案**里（保存在你的文件夹，不用自己打开那些文件）。之后每投一家公司，粘贴**岗位说明**（招聘页面上的职位介绍与要求），从真实经历里挑重点，生成**只占一页**的简历，并导出 **HTML · PDF · 可复制到招聘网站的纯文本**。
 
 > **经历存事实 → 通用版是底稿 → 投递版按岗位裁剪。** 换公司不丢经历，数字说不清就先问，**不替你编。**

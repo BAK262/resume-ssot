@@ -7,6 +7,8 @@ This kit **incorporates ideas and workflows** from earlier resume-related Agent 
 
 ## Lineage
 
+Offer-board design also draws on [offer-toolkit-skill](https://github.com/yanliudesign/offer-toolkit-skill), [job-search-pack](https://github.com/nikhilvdev/job-search-pack), [income-calc](https://github.com/ikiwihome/income-calc), [SalaryCalculator](https://github.com/Ignareo/SalaryCalculator), and [TaxCalculatorWeb](https://github.com/WingkySky/TaxCalculatorWeb). Shared dimensions, negotiation preparation, monthly withholding, and policy validity informed the design. The new board and calculation code are original implementations; the research page records the reviewed scope and official policy references.
+
 | Source | What influenced this project | Status |
 |--------|------------------------------|--------|
 | [**resume-master**](https://github.com/wangyafu/resume-skills/tree/main/skills/resume-master) (in [wangyafu/resume-skills](https://github.com/wangyafu/resume-skills)) | HTML-first resume delivery, resume writing norms, Chrome headless PDF pipeline | Workflows merged; PDF scripts adapted (see below) |

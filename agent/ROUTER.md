@@ -41,6 +41,8 @@ flowchart LR
 ├── offers/                          # 可选：求职漏斗
 │   ├── job-match-industry.html      # 可投岗位表（多渠道实搜+审计）
 │   ├── application-tracker.html     # 投递进度表
+│   ├── offer-comparison.html        # Offer 条件、来源、版本与计算
+│   ├── offer-research.html          # 人类可读核实依据
 │   ├── candidate-profile.json       # 求职画像（技能/偏好；扩岗前默认更新）
 │   ├── interview-exposure-ledger.md # 跨岗面试暴露台账（可选）
 │   └── _scratch/                    # 临时检索；勿对用户堆路径
@@ -67,6 +69,7 @@ flowchart LR
 | 无岗位表 | 从 `templates/job-match-board.html` 复制到 `offers/` |
 | 同步可投表 / 发来 job-match-state.json | [workflows/job-match.md](workflows/job-match.md)「Agent 同步可投表」 |
 | 更新投递 / Offer / 进度表 | [workflows/offer.md](workflows/offer.md) |
+| Offer 对比 / 谈薪 / 税前税后 / 社保公积金 / 招聘方方案 | [workflows/offer-comparison.md](workflows/offer-comparison.md) |
 | 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/`（含归档面板 / 停留提醒 / 备注气泡） |
 | 岗位定位 / 要点改写 / HR 开场（不要文件） | [workflows/resume.md](workflows/resume.md) Mode · pitch + [rules/resume.md](rules/resume.md) |
 | 面试预测 / 追问 / 掌握度 | [workflows/interview.md](workflows/interview.md) |

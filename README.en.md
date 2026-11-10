@@ -4,6 +4,8 @@
 [![GitHub Stars](https://img.shields.io/github/stars/BAK262/resume-ssot?style=flat&logo=github&label=stars&color=181717)](https://github.com/BAK262/resume-ssot/stargazers)
 [![中文](https://img.shields.io/badge/lang-中文-0078d4?style=flat)](README.md)
 
+Offer comparison includes a local editable board, source-backed shared dimensions, HR questions, quote versions, hypothetical scenarios, and mainland salary estimates. It distinguishes monthly cash, annual settlement, bonuses, and social/housing contributions. Export browser edits for AI-assisted file synchronization; personal offer data stays in your private workspace.
+
 **Build resumes in Cursor, Claude Code, or Codex without starting from scratch every time.** Chat through education, internships, and projects; the assistant first saves everything in a **career archive** (stored in your folder—you don’t need to open those files). For each company you apply to, paste the **job posting** (the role description and requirements from the hiring page), pick highlights from your real experience, and get a **one-page** resume exported as **HTML · PDF · plain text you can paste into application forms**.
 
 > **Facts in the archive → base HTML as draft → tailored version per role.** Switch companies without losing history; if a number is unclear, the assistant asks first—**it won’t invent one for you**.

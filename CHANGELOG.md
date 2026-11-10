@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.18.0 (2026-11-10)
+
+- Add a local Offer comparison board with shared dimensions, evidence fields, manual edits, quote history, hypothetical scenarios, and conflict-preserving JSON synchronization.
+- Add mainland resident wage estimates: monthly cumulative withholding, annual settlement, payment-year bonus treatment, separate contribution bases and policy periods, and missing-value gates.
+- Route Offer-stage records through agent intent and immutable tracker IDs. Add source research, negotiation checks, original reusable templates, and calculation/merge/render tests.
+
 ## 2.17.0 (2026-10-12)
 
 - Tracker: progress column reduced to the mutually exclusive, exhaustive set `待投递` / `已投递` / `笔试中` / `测评中` / `评估中` / `面试中` / `Offer` / `已结束` / `暂缓`.
