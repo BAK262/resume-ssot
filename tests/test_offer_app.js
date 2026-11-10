@@ -18,7 +18,7 @@ a.click({dataset:{tab:'compare'}});assert.match(a.node('#content').innerHTML,/�
 a.click({dataset:{calc:'fictional-a'}});assert.match(a.node('#content').innerHTML,/本年预计到账/);
 a.click({id:'startDraft'});assert.match(a.node('#content').innerHTML,/正在试算/);
 a.click({id:'discardDraft'});assert.match(a.node('#content').innerHTML,/当前真实报价/);
-a.click({dataset:{open:'fictional-a'}});a.click({id:'snapshot'});assert.match(a.node('#content').innerHTML,/测试版本/);
+a.click({dataset:{open:'fictional-a'}});assert.doesNotMatch(a.node('#content').innerHTML,/报价历史与机会管理|使用说明与调研依据|HR 报价原话与口径|个人取舍/);
 a.click({dataset:{edit:'company'}});assert.equal(a.node('#editor').open,true);assert.equal(a.node('#editBody').innerHTML.includes('name="source"'),false);assert.equal(a.node('#editBody').innerHTML.includes('name="status"'),false);
 const form={elements:{namedItem:()=>({value:'手动公司'})}};
 a.node('#editForm').onsubmit({preventDefault(){},target:form});assert.match(a.node('#content').innerHTML,/手动公司/);
@@ -40,8 +40,11 @@ a.node('#editForm').onsubmit({preventDefault(){},target:{elements:{namedItem:()=
 const mergedBundle=JSON.parse([...storage.values()][0]).data.records[0];assert.equal(C.val(mergedBundle,'department'),'Team B; Leader A');assert.equal(C.val(mergedBundle,'leader'),null);assert.equal(mergedBundle.cells.leader.source,'original evidence');
 assert.match(a.node('#content').innerHTML,/monthly-chart/);assert.match(a.node('#content').innerHTML,/各机会年度现金对比/);assert.doesNotMatch(a.node('#content').innerHTML,/月均到账（年度÷12）/);
 a.click({dataset:{edit:'contributions'}});assert.doesNotMatch(a.node('#editBody').innerHTML,/name="0_base"/);
-storage.clear();const noSalary=C.newRecord('unknown');a=app({schema:1,boardId:'unknown-chart',records:[noSalary]});assert.match(a.node('#content').innerHTML,/填写入职月份与收入后显示逐月图/);assert.doesNotMatch(a.node('#content').innerHTML,/NaN|Infinity/);
+storage.clear();const noSalary=C.newRecord('unknown');a=app({schema:1,boardId:'unknown-chart',records:[noSalary]});assert.match(a.node('#content').innerHTML,/填写入职日期与收入后显示逐月图/);assert.doesNotMatch(a.node('#content').innerHTML,/NaN|Infinity/);
 console.log('Offer simplification: bundled edits, evidence preservation, conditional inputs and chart empty states passed.');
 
 storage.clear();const partial=C.clone(seed);partial.boardId='partial-chart';partial.records[0].cells.components.value[0].amount=null;a=app(partial);assert.doesNotMatch(a.node('#content').innerHTML,/class="stack"/);assert.match(a.node('#content').innerHTML,/固定现金<strong>待确认/);
 a.click({dataset:{edit:'calcSettings'}});assert.match(a.node('#editBody').innerHTML,/<input disabled name="trialFactor"/);
+
+storage.clear();a=app();a.click({dataset:{inline:'fictional-a',key:'start'}});assert.match(a.node('#editBody').innerHTML,/type="date"/);assert.match(a.node('#editBody').innerHTML,/原记录为 2026-01/);
+a.node('#editForm').onsubmit({preventDefault(){},target:{elements:{namedItem:()=>({value:'2026-07-15'})}}});assert.match(a.node('#content').innerHTML,/2026-07-15/);assert.doesNotMatch(a.node('#content').innerHTML,/NaN/);

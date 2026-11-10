@@ -27,6 +27,7 @@
   const isMissing=v=>v==null||v===''||Array.isArray(v)&&!v.length;
   function displayValue(r,k){
     const v=C.val(r,k);
+    if(k==='start'&&/^\d{4}-\d{2}$/.test(v||''))return v+'（具体日期待补充）';
     if(C.bundles[k])return C.bundledValue(r,k)||'待确认';
     if(k==='calcSettings'){const n=C.calculate(r,calcYear,scenario,bonusMode).missing.length;return n?'补充测算资料 · '+n+' 项待确认':'测算资料已齐，可查看结果';}
     if(k==='components')return v.map(p=>`${p.name||'未命名'}：${fmt(p.amount)} / ${{monthly:'月',annual:'年',once:'次'}[p.frequency]}${p.terms?'；'+p.terms:''}`).join('\n')+(C.bundledValue(r,'bonusTerms')?'\n'+C.bundledValue(r,'bonusTerms'):'')||'待补充';
@@ -37,7 +38,6 @@
   }
   function renderTable(list){
     const scroller=$('#comparison-table')?.parentElement;const scrollTop=scroller?.scrollTop||0,scrollLeft=scroller?.scrollLeft||0;
-    const opened=new Set(Array.from(document.querySelectorAll('details[data-section]')).filter(x=>x.open).map(x=>x.dataset.section));
     let html=`<div class="controls"><label><input id="unknownOnly" type="checkbox" ${unknownOnly?'checked':''}> 只看待补充</label><a href="#salary-analysis">薪酬分析 ↓</a><span class="help">点击内容编辑；金额自动计算。未知留空，明确没有填 0。</span></div><div class="table-wrap"><table class="compare compact" id="comparison-table"><thead><tr><th>对比项目</th>${list.map(r=>`<th><button class="cell-edit" data-inline="${esc(r.id)}" data-key="company">${esc(title(r))}</button></th>`).join('')}</tr></thead><tbody>`;
     const row=(k,label)=>`<tr><th>${esc(label)}</th>${list.map(r=>`<td><button class="cell-edit" data-inline="${esc(r.id)}" data-key="${k}">${esc(displayValue(r,k))}</button></td>`).join('')}</tr>`;
     for(const [name,fields]of C.comparisonGroups){
@@ -55,13 +55,12 @@
     }
     html+=row('custom','自定义比较项')+'</tbody></table></div>';
     renderCalc();const calc=$('#content').innerHTML;
-    const r=current();
-    html+=`<section id="salary-analysis"><h2>薪酬分析</h2><p class="help">共用上表的数据；选择年份和口径，查看逐月到账或建立假设试算。</p>${calc}<details data-section="history" ${opened.has('history')?'open':''}><summary>报价历史与机会管理</summary><button id="snapshot" class="quiet">保存当前报价版本</button>${r.versions.map(v=>`<p>${esc(v.label)} · ${esc(v.date)} <button class="quiet small" data-version="${esc(v.id)}">载入为试算</button></p>`).join('')}<button id="archive" class="quiet">${C.val(r,'archived')?'恢复机会':'归档机会'}</button></details></section><details data-section="guide" ${opened.has('guide')?'open':''}><summary>使用说明与调研依据</summary>${guide()}</details>`;
+    html+=`<section id="salary-analysis"><h2>薪酬分析</h2><p class="help">共用上表的数据；选择年份和口径，查看逐月到账或建立假设试算。</p>${calc}</section>`;
     $('#content').innerHTML=html;
     const next=$('#comparison-table')?.parentElement;if(next){next.scrollTop=scrollTop;next.scrollLeft=scrollLeft;}
   }
   let calcYear=new Date().getFullYear()+1,scenario='target',bonusMode='combined';
-  function renderCalc(){const r=editable();const result=C.calculate(r,calcYear,scenario,bonusMode);const begin=C.val(r,'start');const idx=C.monthIndex(begin);const results=idx===null?[]:[C.calculate(r,Math.floor(idx/12),scenario,bonusMode),C.calculate(r,Math.floor(idx/12)+1,scenario,bonusMode)];const window=idx===null?null:C.windowSummary(results,begin,C.monthString(idx+11));
+  function renderCalc(){const r=editable();const result=C.calculate(r,calcYear,scenario,bonusMode);const begin=C.startMonth(C.val(r,'start'));const idx=C.monthIndex(begin);const results=idx===null?[]:[C.calculate(r,Math.floor(idx/12),scenario,bonusMode),C.calculate(r,Math.floor(idx/12)+1,scenario,bonusMode)];const window=idx===null?null:C.windowSummary(results,begin,C.monthString(idx+11));
     const fixed=C.calculate(r,calcYear,'fixed',bonusMode),other=C.calculate(r,calcYear,scenario,bonusMode==='combined'?'separate':'combined');
     let html=`<div class="controls">${recordSelect()}<label>年份 <input id="calcYear" type="number" min="2023" max="2100" value="${calcYear}" style="width:100px"></label><select id="scenario"><option value="target" ${scenario==='target'?'selected':''}>目标现金：包含浮动与一次性</option><option value="fixed" ${scenario==='fixed'?'selected':''}>固定现金：只计固定项目</option></select><select id="bonusMode"><option value="combined" ${bonusMode==='combined'?'selected':''}>奖金并入综合所得</option><option value="separate" ${bonusMode==='separate'?'selected':''}>合格全年奖单独计税</option></select></div>`;
     html+=`<div class="notice">${draft?'正在试算：修改不会写入真实报价。':'当前真实报价；可复制为假设方案，比较谈薪调整效果。'} <button id="startDraft" class="quiet small">${draft?'重新复制当前报价':'建立假设试算'}</button> ${draft?'<button id="discardDraft" class="quiet small">退出试算</button><button id="commitDraft" class="quiet small">对方已确认，更新报价</button>':''}</div><div class="actions">${fieldButton('components','调整收入组成')}${fieldButton('contributions','调整缴费')}${fieldButton('taxYears','年度背景')}${fieldButton('calcSettings','测算条件')}</div>`;
@@ -93,13 +92,12 @@
       html+=`<svg class="monthly-chart" viewBox="0 0 600 190" role="img" aria-label="${esc(result.rows.map((x,i)=>x.month+' '+fmt(values[i])).join('；'))}"><text x="0" y="15">${esc(fmt(hi))}</text><line x1="0" x2="600" y1="${zero}" y2="${zero}" stroke="#9ba9a8"/>`;
       result.rows.forEach((x,i)=>{const n=values[i],px=10+i*49;if(C.known(n))html+=`<rect x="${px}" y="${Math.min(y(n),zero)}" width="28" height="${Math.max(1,Math.abs(y(n)-zero))}" rx="3" fill="${n<0?'#b35a48':'#287b70'}"><title>${x.month}：${fmt(n)}</title></rect>`;html+=`<text x="${px+14}" y="174" text-anchor="middle">${i+1}月</text>`;});
       html+='</svg>';
-    }else html+='<p class="chart-empty">填写入职月份与收入后显示逐月图</p>';
+    }else html+='<p class="chart-empty">填写入职日期与收入后显示逐月图</p>';
     html+='</section></div>';
     const compare=records().map(o=>({name:title(o),result:C.calculate(o,calcYear,scenario,bonusMode)}));
     if(compare.length>1){const max=Math.max(1,...compare.map(x=>C.known(x.result.gross)?x.result.gross:0));html+='<section class="chart-panel"><h3>各机会年度现金对比</h3><p class="help">各机会当前报价 · 同一发放年份与现金口径；条件未齐时为已录小计。</p>'+compare.map(x=>`<div class="offer-bar"><span>${esc(x.name)}</span><div><i style="width:${C.known(x.result.gross)?Math.max(0,x.result.gross)/max*100:0}%"></i></div><strong>${fmt(x.result.gross)}</strong></div>`).join('')+'</section>';}
     return html;
   }
-  function guide(){return `<div class="panel"><h3>比较时优先看什么</h3><p>实际职责与资源决定能否发挥研究能力；领导、团队和成长决定能积累什么；收入结构与生活成本决定可支配空间；入职、试用和离职约定决定需要承担的条件。个人取舍写下会改变选择的关键差异即可。</p><h2>从一份材料到一份可比较的方案</h2><ol><li>让 AI 整理进度表中已到 Offer 阶段的岗位，或点击“新增机会”。</li><li>把 HR 文字、截图或文件交给 AI；保留出处，逐项补齐资料。页面中的编辑按钮也可直接使用。</li><li>勾选“只看待补充”筛选缺项；让 HR 说明固定与浮动、计算基数、发放时间、首年折算和返还条件。</li><li>录入收入和缴费明细、年度税务背景，再查看逐月和年度测算。未知留空，明确没有填 0。</li><li>谈判前建立假设试算；拿到调整方案后保存旧版、更新报价。</li><li>手动修改先保存在本浏览器。导出操作记录交给 AI，同步至文件后才能随工作区跨设备使用。</li></ol><h3>请 HR 提供文字方案</h3><p>方便的话，麻烦把薪酬组成、奖金和补贴的发放条件，以及社保公积金的缴纳口径发我一份文字说明，我想完整了解一下，也方便后续确认。</p><h3>核实重点</h3><p>“几薪”拆分固定和奖金；签字费核对返还是否区分主动离职、裁员；奖金核对发放时点与在职条件；股权核对归属和流动性；人才补贴核对资格、申请与服务期限。月薪里的绩效、年终奖和额外薪月避免重复录入。</p><p>每个缴费项目独立设置参保地对应的基数、上下限、个人／单位比例、生效期间和来源。已经确认月缴额时可直接填写。新就业、试用期及政策调整月份需要分别核实。</p><h3>适用范围</h3><p>计算器用于大陆居民工资方案比较。股权、报销先单列；复杂税务处理由 AI 查证后录入。部分月工资、奖金首年折算通过拆分项目填写明确金额。未来政策未核实时结果标为规则延用试算。</p><p><a href="offer-research.html">调研与核实依据 ↗</a></p></div>`;}
   const schemas={
     components:[['name','项目名'],['kind','收入性质','fixed|固定,variable|浮动,once|一次性,equity|股权（单列）,reimbursement|报销（单列）'],['amount','每次金额（元）','number'],['frequency','发放频次','monthly|每月,annual|每年,once|一次'],['from','开始月（留空沿用入职月）；一次性需填','month'],['to','结束月（周期项目）','month'],['payMonth','年度项目发放月 1–12','number'],['tax','计税处理','wage|工资综合所得,bonus|符合条件的全年一次性奖,exempt|有依据免税,unknown|待核实'],['trial','月项目参与试用期折扣','boolean'],['terms','发放、首年折算、返还条件'],['source','免税适用依据']],
     contributions:[['name','险种／项目名'],['category','类别','social|社会保险,housing|公积金,annuity|企业年金／其他'],['mode','输入方式','amount|直接填月缴额,rate|基数与比例'],['employee','个人月额／比例%','number'],['employer','单位月额／比例%','number'],['base','申报基数（比例模式）','number'],['min','基数下限（比例模式）','number'],['max','基数上限（比例模式）','number'],['fixed','个人额外固定费用','number'],['rounding','取整','cent|分,yuan|元'],['from','缴费开始月','month'],['to','缴费结束／政策有效月','month'],['deduct','个人部分已确认可税前扣除','boolean'],['source','缴费地、政策来源与核验日']],
@@ -108,14 +106,14 @@
   };
   function input(name,value,type){if(type==='boolean')return `<select name="${name}"><option value="">待确认</option><option value="true" ${value===true?'selected':''}>是</option><option value="false" ${value===false?'selected':''}>否</option></select>`;
     if(type?.includes('|'))return `<select name="${name}">${type.split(',').map(x=>{const [v,t]=x.split('|');return `<option value="${v}" ${v===value?'selected':''}>${t}</option>`;}).join('')}</select>`;
-    if(type==='number'||type==='month')return `<input name="${name}" type="${type}" ${type==='number'?'step="any" min="0"':''} value="${esc(value)}">`;
+    if(type==='number'||type==='month'||type==='date')return `<input name="${name}" type="${type}" ${type==='number'?'step="any" min="0"':''} value="${esc(value)}">`;
     return `<textarea name="${name}">${esc(value)}</textarea>`;}
   function read(form,name,type){const value=form.elements.namedItem(name).value;return type==='number'?(value===''?null:Number(value)):type==='boolean'?(value===''?null:value==='true'):value;}
   let editRows=[];
   function openEdit(k){const r=editable();if(!r)return;editAction=k;$('#editError').textContent='';
     if(k==='calcSettings'){editRows=C.groups[5][2];$('#editTitle').textContent='测算条件';$('#editBody').innerHTML='<div class="edit-grid">'+editRows.map(([key,t,type])=>`<label>${key==='trialFactor'?'试用月薪系数（无试用期自动按 1）':t}${key==='trialFactor'&&C.val(r,'trialMonths')===0?input(key,1,type).replace('<input ','<input disabled '):input(key,C.val(r,key),type)}</label>`).join('')+'</div>';}
     else if(schemas[k]){editRows=C.clone(C.val(r,k)||[]);$('#editBody').innerHTML='';renderRows();}
-    else{const def=C.groups.flatMap(g=>g[2]).find(x=>x[0]===k),c=r.cells[k]||C.cell();$('#editTitle').textContent=C.comparisonGroups.flatMap(g=>g[1]).find(x=>x[0]===k)?.[1]||def?.[1]||k;$('#editBody').innerHTML=`<label>内容${input('value',C.bundles[k]?C.bundledValue(r,k):c.value,def?.[2])}</label>`;}
+    else{const def=C.groups.flatMap(g=>g[2]).find(x=>x[0]===k),c=r.cells[k]||C.cell();$('#editTitle').textContent=C.comparisonGroups.flatMap(g=>g[1]).find(x=>x[0]===k)?.[1]||def?.[1]||k;$('#editBody').innerHTML=`<label>内容${input('value',C.bundles[k]?C.bundledValue(r,k):k==='start'&&/^\d{4}-\d{2}$/.test(c.value||'')?'':c.value,def?.[2])}</label>${k==='start'?'<p class="help">'+(/^\d{4}-\d{2}$/.test(c.value||'')?'原记录为 '+esc(c.value)+'，请选择具体日期。':'')+'首月工资按测算条件中的已确认系数计算。</p>':''}`;}
     $('#editor').showModal();}
   function renderRows(){const k=editAction,legacyTerms=$('#editForm').elements.namedItem?.('legacyTerms')?.value??C.bundledValue(editable(),'bonusTerms'),feeTerms=$('#editForm').elements.namedItem?.('feeTerms')?.value??C.val(editable(),'contributionTerms');$('#editTitle').textContent=({components:'收入项目',contributions:'缴费项目',taxYears:'年度税务背景',custom:'自定义比较项'})[k];$('#editBody').innerHTML=`<p class="help">每笔收入只添加一次，奖金与额外薪月请先核对是否为同一笔。周期收入的开始月留空沿用入职月份，结束月留空表示持续发放。缴费可直接填月额，或选择基数与比例自动计算。</p>${editRows.map((row,i)=>`<div class="item-editor"><div class="edit-grid">${schemas[k].filter(([name])=>{if(name==='source')return k==='components'&&row.tax==='exempt';if(k==='contributions'&&row.mode==='amount'&&['base','min','max','fixed','rounding'].includes(name))return false;if(k==='components'&&name==='payMonth'&&row.frequency!=='annual')return false;if(k==='components'&&name==='to'&&row.frequency==='once')return false;if(k==='components'&&name==='trial'&&(row.frequency!=='monthly'||C.val(editable(),'trialMonths')===0))return false;return true;}).map(([name,t,type])=>`<label>${t}${input(i+'_'+name,row[name],type)}</label>`).join('')}</div><button type="button" class="quiet small" data-remove-row="${i}">移除此项</button></div>`).join('')}<button type="button" id="addRow" class="quiet">＋ 添加一项</button>${k==='components'&&C.bundledValue(editable(),'bonusTerms')?'<label>已有收入补充说明'+input('legacyTerms',legacyTerms)+'</label>':''}${k==='contributions'?'<label>参保地与特殊约定'+input('feeTerms',feeTerms)+'</label>':''}`;}
   function collectRows(){return editRows.map((row,i)=>{const x={...row};for(const [name,,type]of schemas[editAction])if($('#editForm').elements.namedItem(i+'_'+name))x[name]=read($('#editForm'),i+'_'+name,type);return x;});}
@@ -136,11 +134,8 @@
     if(b.id==='print')window.print();if(b.id==='cancelEdit')$('#editor').close();
     if(b.id==='addRow'){editRows=collectRows();editRows.push(editAction==='components'?C.component():editAction==='contributions'?C.contribution():editAction==='taxYears'?{year:calcYear,income:null,deduction:null,withheld:null,annualSpecial:null,bonusUsed:false,source:''}:{name:'',value:'',source:''});renderRows();}
     if(b.dataset.removeRow!==undefined){editRows=collectRows();editRows.splice(Number(b.dataset.removeRow),1);renderRows();}
-    if(b.id==='archive'){update('archived',!C.val(current(),'archived'),'本人确认','','','');}
-    if(b.id==='snapshot'){const label=prompt('本轮方案名称，例如：首次书面报价');if(label){snapshot(label);persist();}}
     if(b.id==='startDraft'){draft=C.clone(current());render();}if(b.id==='discardDraft'){draft=null;render();}
     if(b.id==='commitDraft'&&draft&&confirm('确认对方已提供这一调整方案？将保留旧版，并把试算更新为当前报价。')){snapshot('调整前报价');current().cells=C.clone(draft.cells);current().updatedAt=new Date().toISOString();draft=null;persist();}
-    if(b.dataset.version){const v=current().versions.find(v=>v.id===b.dataset.version);draft=C.clone(current());draft.cells=C.clone(v.cells);tab='compare';render();}
     if(b.dataset.resolve!==undefined){const c=conflicts[Number(b.dataset.resolve)];state.records.find(r=>r.id===c.id).cells[c.key]=C.clone(c[b.dataset.side]);conflicts.splice(Number(b.dataset.resolve),1);persist();}
 
   });

@@ -42,7 +42,6 @@ flowchart LR
 │   ├── job-match-industry.html      # 可投岗位表（多渠道实搜+审计）
 │   ├── application-tracker.html     # 投递进度表
 │   ├── offer-comparison.html        # Offer 条件、来源、版本与计算
-│   ├── offer-research.html          # 人类可读核实依据
 │   ├── candidate-profile.json       # 求职画像（技能/偏好；扩岗前默认更新）
 │   ├── interview-exposure-ledger.md # 跨岗面试暴露台账（可选）
 │   └── _scratch/                    # 临时检索；勿对用户堆路径

@@ -34,3 +34,7 @@ module.exports={fixture};
 r=fixture();r.cells.trialFactor.value=null;assert.equal(C.calculate(r,2026).blocked,false);assert.equal(C.calculate(r,2026).gross,120000);
 const visibleKeys=C.comparisonGroups.flatMap(g=>g[1].map(f=>f[0]));assert.equal(new Set(visibleKeys).size,visibleKeys.length);
 const covered=visibleKeys.flatMap(k=>C.bundles[k]||[k]);assert.equal(new Set(covered).size,covered.length);
+
+r=fixture();r.cells.start.value='2026-07-15';r.cells.firstMonthFactor.value=.5;C.validate({schema:1,boardId:'dates',records:[r]});x=C.calculate(r,2026);assert.equal(x.gross,55000);assert.equal(x.rows[6].gross,5000);
+assert.equal(C.startMonth('2024-02-29'),'2024-02');assert.equal(C.startMonth('2026-02-29'),null);assert.equal(C.startMonth('2026-04-31'),null);assert.equal(C.startMonth('2026-07'),'2026-07');
+r.cells.start.value='2026-02-29';assert.throws(()=>C.validate({schema:1,boardId:'dates',records:[r]}));

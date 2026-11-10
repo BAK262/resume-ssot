@@ -19,8 +19,7 @@ if(require.main===module){
     let data=read(option('--input'));
     if(args.includes('--merge')){const incoming=read(option('--merge'));if(incoming.boardId!==data.boardId)throw Error('Different board IDs');if(incoming.conflicts?.length)throw Error('Export has unresolved conflicts');if(!incoming.base)throw Error('Export needs its baseline for safe merging');const result=C.merge(C.validate(incoming.base),incoming,data);if(result.conflicts.length)throw Error('Conflicting fields: '+result.conflicts.map(x=>x.id+'/'+x.key).join(', '));data=result.data;}
     const out=path.resolve(option('--out')), html=render(data);fs.mkdirSync(path.dirname(out),{recursive:true});fs.writeFileSync(out,html,'utf8');
-    const guide=path.join(path.dirname(out),'offer-research.html');fs.copyFileSync(path.join(root,'templates/offer-board/research.html'),guide);
-    console.log(JSON.stringify({output:out,records:data.records.length,guide}));
+    console.log(JSON.stringify({output:out,records:data.records.length}));
   }catch(e){console.error(e.message);process.exitCode=1;}
 }
 module.exports={read,render};

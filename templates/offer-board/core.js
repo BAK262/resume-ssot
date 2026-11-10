@@ -11,7 +11,7 @@
   function tax(x) { if(!known(x))return NaN;const b = brackets.find(b => x <= b[0]); return money(Math.max(0, x * b[1] - b[2])); }
   function bonusTax(x) { if(!known(x))return NaN;const b = brackets.find(b => x <= b[0]); return money(Math.max(0, x * b[1] - b[2] / 12)); }
   const groups = [
-    ['岗位与团队','HR', [['company','公司'],['position','岗位'],['department','实际部门'],['entity','劳动合同签约主体'],['city','工作城市'],['leader','直属领导'],['level','岗位序列与职级'],['stage','方案阶段'],['deadline','回复期限'],['start','入职月份','month'],['duties','前半年任务与考核']]],
+    ['岗位与团队','HR', [['company','公司'],['position','岗位'],['department','实际部门'],['entity','劳动合同签约主体'],['city','工作城市'],['leader','直属领导'],['level','岗位序列与职级'],['stage','方案阶段'],['deadline','回复期限'],['start','入职日期','date'],['duties','前半年任务与考核']]],
     ['研究与成长','业务负责人', [['ownership','研究主责与时间占比'],['resources','数据、实验、算力与预算'],['collaboration','算法／产研协作与成果归属'],['impact','研究如何进入业务决策'],['growth','晋升、调薪及可迁移能力']]],
     ['待遇与兑现','HR', [['quotedPackage','HR 所述年包（元）','number'],['packageBasis','总包包含哪些项目／对应哪一年'],['bonusTerms','奖金计算基数、保底与绩效系数'],['bonusTiming','奖金首年折算、发放与离职条件'],['signonTerms','签字费／安家费发放、服务期与返还'],['equity','股权类型、数量、估值、归属、行权与离职处理'],['allowances','现金补贴、报销、人才补贴及条件'],['benefits','商业保险、年假、年金与其他福利'],['contributionTerms','参保地、基数组成、比例和起缴时间']]],
     ['工作与签约','HR', [['hours','工时、加班与调休'],['travel','出差与通勤'],['living','住房与生活成本'],['stability','团队稳定性／员工观察'],['contract','合同期限、试用期与转正标准'],['entryConditions','毕业、背调、体检等入职条件'],['agreements','三方、违约、服务期、竞业与知识产权']]],
@@ -29,10 +29,9 @@
   };
   const comparisonGroups = [
     ['岗位与成长', [['position','岗位'],['department','团队与直属领导'],['level','序列与职级'],['duties','实际职责与考核'],['resources','研究资源与协作'],['growth','成长与晋升']]],
-    ['薪酬与福利', [['components','现金收入与发放条件'],['contributions','社保与公积金'],['equity','股权与兑现条件'],['benefits','休假与其他福利'],['packageBasis','HR 报价原话与口径']]],
+    ['薪酬与福利', [['components','现金收入与发放条件'],['contributions','社保与公积金'],['equity','股权与兑现条件'],['benefits','休假与其他福利']]],
     ['工作与生活', [['city','工作城市'],['hours','工时与休息'],['living','通勤、出差与生活成本']]],
-    ['录用与签约', [['stage','方案阶段'],['deadline','回复期限'],['start','入职月份'],['contract','合同与试用安排'],['entryConditions','毕业及入职条件'],['agreements','违约、服务期与竞业']]],
-    ['个人取舍', [['target','诉求与底线'],['decision','判断与待核实问题'],['next','沟通记录与下一步']]],
+    ['录用与签约', [['stage','方案阶段'],['deadline','回复期限'],['start','入职日期'],['contract','合同与试用安排'],['entryConditions','毕业及入职条件'],['agreements','违约、服务期与竞业']]],
     ['测算资料', [['calcSettings','工资与税务条件'],['taxYears','各年收入与扣除背景']]]
   ];
   function bundledValue(r,key) {
@@ -57,7 +56,7 @@
       if (!r.id || ids.has(r.id) || !r.cells || !Array.isArray(r.versions)) throw Error('记录 ID 重复或结构不完整');
       ids.add(r.id);
       for (const [k,c] of Object.entries(r.cells)) if (!c || !Object.hasOwn(c,'value')) throw Error('字段格式错误：'+k);
-      for(const [, , fields] of groups)for(const [key,,type]of fields){const value=val(r,key);if(value==null||value==='')continue;if(type==='number'&&(!known(value)||value<0))throw Error('数字字段无效：'+key);if(type==='boolean'&&typeof value!=='boolean')throw Error('确认字段无效：'+key);if(type==='month'&&monthIndex(value)===null)throw Error('月份无效：'+key);}
+      for(const [, , fields] of groups)for(const [key,,type]of fields){const value=val(r,key);if(value==null||value==='')continue;if(type==='number'&&(!known(value)||value<0))throw Error('数字字段无效：'+key);if(type==='boolean'&&typeof value!=='boolean')throw Error('确认字段无效：'+key);if(type==='date'&&startMonth(value)===null)throw Error('入职日期无效');if(type==='month'&&monthIndex(value)===null)throw Error('月份无效：'+key);}
       for (const key of ['components','contributions','taxYears','custom']) if (!Array.isArray(val(r,key))) throw Error('明细格式错误：'+key);
       for (const p of val(r,'components')) {
         for(const k of ['from','to'])if(p[k]&&monthIndex(p[k])===null)throw Error('收入期间格式无效');
@@ -101,12 +100,18 @@
     return {data:out, conflicts};
   }
   function monthIndex(s) { if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(s||''))return null; const [y,m]=s.split('-').map(Number); return y*12+m-1; }
+  function startMonth(value) {
+    if(monthIndex(value)!==null)return value;
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(value||''))return null;
+    const date=new Date(value+'T00:00:00Z');
+    return Number.isFinite(date.getTime())&&date.toISOString().slice(0,10)===value?value.slice(0,7):null;
+  }
   function monthString(i) { return Math.floor(i/12)+'-'+String(i%12+1).padStart(2,'0'); }
   function inPeriod(p,ym) { return (!p.from||ym>=p.from)&&(!p.to||ym<=p.to); }
   function calculate(r, year, scenario='target', bonusMode='combined') {
     const warnings=new Set(), missing=new Set(), rows=[];
-    const start=monthIndex(val(r,'start'));
-    if(start===null)missing.add('入职月份');
+    const start=monthIndex(startMonth(val(r,'start')));
+    if(start===null)missing.add('入职日期');
     if(val(r,'resident')!==true)missing.add('大陆居民工资测算适用条件');
     if(val(r,'inventoryComplete')!==true)missing.add('完整现金项目');
     if(val(r,'contributionsComplete')!==true)missing.add('完整缴费项目');
@@ -209,7 +214,7 @@
     const blocked=results.some(x=>x.blocked);
     return {gross:rows.some(x=>x.gross===null)?null:money(rows.reduce((s,x)=>s+x.gross,0)),net:blocked?null:money(rows.reduce((s,x)=>s+x.net,0)),months:rows.length};
   }
-  const api={clone,equal,known,money,cell,val,groups,bundles,comparisonGroups,bundledValue,newRecord,component,contribution,validate,merge,tax,bonusTax,monthIndex,monthString,calculate,windowSummary};
+  const api={clone,equal,known,money,cell,val,groups,bundles,comparisonGroups,bundledValue,newRecord,component,contribution,validate,merge,tax,bonusTax,monthIndex,startMonth,monthString,calculate,windowSummary};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
   root.OfferCore=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
