@@ -2,7 +2,7 @@
   'use strict';
   const C=OfferCore, $=s=>document.querySelector(s);
   const moneyText=x=>String(x??'').replace(/([\d,]+(?:\.\d+)?)\s*(万元|千元|元)/g,(_,n,u)=>formatK(Number(n.replace(/,/g,''))*({万元:10000,千元:1000,元:1}[u])));
-  const formatK=n=>(n/1000).toLocaleString('en-US',{useGrouping:false,maximumFractionDigits:5})+'k';
+  const formatK=n=>(n/1000).toLocaleString('en-US',{useGrouping:false,maximumFractionDigits:1})+'k';
   const esc=x=>moneyText(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const seed=C.validate(JSON.parse($('#offer-data').textContent)), key='resume-ssot-offer-board-v1:'+seed.boardId;
   let state=C.clone(seed), base=C.clone(seed), conflicts=[], tab='compare', activeId='', draft=null, unknownOnly=false,  editAction=null, storageError='';
