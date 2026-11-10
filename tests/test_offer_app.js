@@ -9,9 +9,9 @@ function app(data=seed){
   node('#offer-data').textContent=JSON.stringify(data);
   const document={querySelector:node,querySelectorAll:()=>[],addEventListener:(event,fn)=>events[event]=fn};
   const context={OfferCore:C,document,localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v)},window:{addEventListener(){},print(){}},navigator:{},prompt:()=> '测试版本',confirm:()=>true,alert:()=>{},console,Date,Set,Map};
-  vm.runInNewContext(source,context);
+  vm.runInNewContext(source.replace(/  render\(\);\r?\n\}\)\(\);/,'  globalThis.testUnits={fmt,input,read,rowType,fieldType,esc};\n  render();\n})();'),context);
   const click=b=>events.click({target:{closest:()=>({dataset:{},...b})}});
-  return {node,click,events};
+  return {node,click,events,units:context.testUnits};
 }
 let a=app();assert.equal((a.node('#content').innerHTML.match(/data-key="city"/g)||[]).length,2);assert.equal(a.node('#content').innerHTML.includes('展开全部对比维度'),false);assert.match(a.node('#content').innerHTML,/虚构示例/);assert.match(a.node('#content').innerHTML,/对比项目/);assert.match(a.node('#content').innerHTML,/薪酬分析/);assert.equal((a.node('#content').innerHTML.match(/id="recordSelect"/g)||[]).length,1);
 a.click({dataset:{tab:'compare'}});assert.match(a.node('#content').innerHTML,/对比项目/);
@@ -48,3 +48,12 @@ a.click({dataset:{edit:'calcSettings'}});assert.match(a.node('#editBody').innerH
 
 storage.clear();a=app();a.click({dataset:{inline:'fictional-a',key:'start'}});assert.match(a.node('#editBody').innerHTML,/type="date"/);assert.match(a.node('#editBody').innerHTML,/原记录为 2026-01/);
 a.node('#editForm').onsubmit({preventDefault(){},target:{elements:{namedItem:()=>({value:'2026-07-15'})}}});assert.match(a.node('#content').innerHTML,/2026-07-15/);assert.doesNotMatch(a.node('#content').innerHTML,/NaN/);
+
+const units=app().units;
+assert.equal(units.fmt(22000),'22k');assert.equal(units.fmt(35500),'35.5k');assert.equal(units.fmt(35500.01),'35.50001k');assert.equal(units.fmt(0),'0k');assert.equal(units.fmt(-2000),'-2k');assert.equal(units.fmt(null),'待确认');
+assert.match(units.input('amount',35500,'money'),/value="35.5"/);
+const amountForm={elements:{namedItem:()=>({value:'35.5'})}};assert.equal(units.read(amountForm,'amount','money'),35500);assert.equal(units.read(amountForm,'rate','number'),35.5);
+assert.equal(units.rowType('fee',{mode:'rate'}),'number');assert.equal(units.rowType('fee',{mode:'amount'}),'money');assert.equal(units.fieldType('deduction','number'),'money');assert.equal(units.fieldType('trialMonths','number'),'number');
+assert.equal(units.esc('预算 6,000 元；行权 2 元/份'),'预算 6k；行权 0.002k/份');
+for(const n of [0,0.01,35500.01,123456.78]){const form={elements:{namedItem:()=>({value:String(n/1000)})}};assert.equal(units.read(form,'amount','money'),n);}
+console.log('Offer units: k formatting, money round trips, text amounts and unchanged rates/months passed.');
