@@ -1,6 +1,6 @@
 ---
 name: resume-ssot
-version: "2.19.3"
+version: "2.19.4"
 description: >-
   Career archive + JD-tailored resumes (HTML/PDF/plain); official job match; application tracker;
   positioning / HR pitch; interview predict-grill-review-debrief; offer comparison and mainland salary estimates.
@@ -55,6 +55,7 @@ license: MIT
 | 搜可投岗位 / 刷新岗位表     | [agent/workflows/candidate-profile.md](agent/workflows/candidate-profile.md) + [agent/workflows/job-match.md](agent/workflows/job-match.md)（多渠道实搜；local Chrome first） |
 | 投递进度 / Offer         | [agent/workflows/offer.md](agent/workflows/offer.md)       |
 | Offer 对比 / 谈薪 / 薪酬拆解 / 五险一金 | [agent/workflows/offer-comparison.md](agent/workflows/offer-comparison.md) |
+| Offer 阶段新增消息 / 文件 / 复盘 / 员工反馈 | [agent/workflows/offer-comparison.md](agent/workflows/offer-comparison.md)（主动提取并更新对比表） |
 | 面试预测 / 追问 / 复盘 / 暴露台账 | [agent/workflows/interview.md](agent/workflows/interview.md) |
 
 

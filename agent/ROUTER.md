@@ -69,6 +69,8 @@ flowchart LR
 | 同步可投表 / 发来 job-match-state.json | [workflows/job-match.md](workflows/job-match.md)「Agent 同步可投表」 |
 | 更新投递 / Offer / 进度表 | [workflows/offer.md](workflows/offer.md) |
 | Offer 对比 / 谈薪 / 税前税后 / 社保公积金 / 招聘方方案 | [workflows/offer-comparison.md](workflows/offer-comparison.md) |
+| 岗位进入 Offer 阶段（含录用意向） | [workflows/offer-comparison.md](workflows/offer-comparison.md)：主动回查该岗已有复盘、转写及沟通材料，建立或补齐对比表 |
+| Offer 阶段新增消息 / 文件 / 复盘 / 员工反馈 | [workflows/offer-comparison.md](workflows/offer-comparison.md)：主动提取与比较维度相关的增量信息，当轮写回对比表 |
 | 无进度表 | 从 `templates/application-tracker.html` 复制到 `offers/`（含归档面板 / 停留提醒 / 备注气泡） |
 | 岗位定位 / 要点改写 / HR 开场（不要文件） | [workflows/resume.md](workflows/resume.md) Mode · pitch + [rules/resume.md](rules/resume.md) |
 | 面试预测 / 追问 / 掌握度 | [workflows/interview.md](workflows/interview.md) |
