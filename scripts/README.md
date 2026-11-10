@@ -12,6 +12,17 @@
 
 ## Quick commands
 
+Offer 看板（Node.js 18+，无第三方依赖）：
+
+```bash
+node scripts/render_offer_board.js --input fixtures/example-offers.json --out /private/workspace/offers/offer-comparison.html
+node scripts/render_offer_board.js --input /private/workspace/offers/offer-comparison.html --merge /private/export.json --out /private/workspace/offers/offer-comparison.html
+node tests/test_offer_board.js
+node tests/test_offer_app.js
+```
+
+首次示例仅用于测试。真实板用私有材料建立，保持 boardId 不变；冲突需先核实。渲染器同时输出人类可读调研页。
+
 ```bash
 # Validate career archive JSON
 python scripts/validate_ssot.py fixtures/example-ssot.json
