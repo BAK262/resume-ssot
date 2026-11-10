@@ -18,6 +18,29 @@
     ['谈判与决策','本人', [['priorities','最看重的条件'],['strengths','优势与岗位贡献证据'],['concerns','顾虑与待核实事项'],['target','理想目标、底线及可交换条件'],['alternatives','真实备选及各自进展'],['stop','接受／暂停／退出条件'],['rounds','沟通日期、HR 原话与本轮结果'],['next','下一步与联系人'],['decision','个人判断与理由']]],
     ['测算条件','本人', [['resident','大陆居民工资测算适用','boolean'],['inventoryComplete','现金项目已完整录入（含明确没有的项目）','boolean'],['contributionsComplete','缴费项目已完整录入','boolean'],['trialMonths','试用月数（无则 0）','number'],['trialFactor','试用月薪系数（全薪填 1）','number'],['firstMonthFactor','入职首月工资系数（整月填 1）','number'],['firstEmployment','当年符合首次就业预扣条件','boolean'],['deduction','月专项附加扣除（无则 0）','number'],['otherDeduction','月其他允许税前扣除（无则 0）','number'],['policyThrough','所用工资个税规则已核实至','month'],['bonusEligible','满足全年一次性奖金条件且当年未使用','boolean'],['policyNote','政策来源、核验日期与测算假设']]]
   ];
+  // Presentation bundles share one editable value while retaining legacy evidence until edited.
+  const bundles = {
+    department:['department','leader','stability'], duties:['duties','ownership'],
+    resources:['resources','collaboration','impact'], living:['living','travel'],
+    contract:['contract','entity'], target:['target','priorities','stop'],
+    decision:['decision','strengths','concerns'], next:['next','rounds','alternatives'],
+    packageBasis:['packageBasis','quotedPackage'],
+    bonusTerms:['bonusTerms','bonusTiming','signonTerms','allowances']
+  };
+  const comparisonGroups = [
+    ['岗位与成长', [['position','岗位'],['department','团队与直属领导'],['level','序列与职级'],['duties','实际职责与考核'],['resources','研究资源与协作'],['growth','成长与晋升']]],
+    ['薪酬与福利', [['components','现金收入与发放条件'],['contributions','社保与公积金'],['equity','股权与兑现条件'],['benefits','休假与其他福利'],['packageBasis','HR 报价原话与口径']]],
+    ['工作与生活', [['city','工作城市'],['hours','工时与休息'],['living','通勤、出差与生活成本']]],
+    ['录用与签约', [['stage','方案阶段'],['deadline','回复期限'],['start','入职月份'],['contract','合同与试用安排'],['entryConditions','毕业及入职条件'],['agreements','违约、服务期与竞业']]],
+    ['个人取舍', [['target','诉求与底线'],['decision','判断与待核实问题'],['next','沟通记录与下一步']]],
+    ['测算资料', [['calcSettings','工资与税务条件'],['taxYears','各年收入与扣除背景']]]
+  ];
+  function bundledValue(r,key) {
+    const keys=bundles[key]||[key], labels=Object.fromEntries(groups.flatMap(g=>g[2]));
+    const filled=keys.filter(k=>val(r,k)!=null&&val(r,k)!=='');
+    if(filled.length===1&&filled[0]===key)return val(r,key);
+    return filled.map(k=>labels[k]+'：'+val(r,k)).join('\n');
+  }
   function newRecord(id) {
     const r = {id, trackerId: '', cells: {}, versions: [], updatedAt: new Date().toISOString()};
     groups.forEach(g => g[2].forEach(([key]) => r.cells[key] = cell()));
@@ -89,7 +112,7 @@
     if(val(r,'contributionsComplete')!==true)missing.add('完整缴费项目');
     const inputs={};
     for(const key of ['trialMonths','trialFactor','firstMonthFactor','deduction','otherDeduction']) {
-      inputs[key]=val(r,key);
+      inputs[key]=key==='trialFactor'&&val(r,'trialMonths')===0?1:val(r,key);
       if(!known(inputs[key])||inputs[key]<0)missing.add(groups[5][2].find(x=>x[0]===key)[1]);
     }
     if(inputs.trialFactor>1 || inputs.firstMonthFactor>1)missing.add('工资系数应在 0–1 内');
@@ -186,7 +209,7 @@
     const blocked=results.some(x=>x.blocked);
     return {gross:rows.some(x=>x.gross===null)?null:money(rows.reduce((s,x)=>s+x.gross,0)),net:blocked?null:money(rows.reduce((s,x)=>s+x.net,0)),months:rows.length};
   }
-  const api={clone,equal,known,money,cell,val,groups,newRecord,component,contribution,validate,merge,tax,bonusTax,monthIndex,monthString,calculate,windowSummary};
+  const api={clone,equal,known,money,cell,val,groups,bundles,comparisonGroups,bundledValue,newRecord,component,contribution,validate,merge,tax,bonusTax,monthIndex,monthString,calculate,windowSummary};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
   root.OfferCore=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

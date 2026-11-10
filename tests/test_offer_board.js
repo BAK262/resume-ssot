@@ -30,3 +30,7 @@ try {
 } finally { for(const name of fs.readdirSync(dir))fs.unlinkSync(path.join(dir,name));fs.rmdirSync(dir); }
 console.log('Offer board: tax, timing, contributions, missing values, merge and rendering checks passed.');
 module.exports={fixture};
+
+r=fixture();r.cells.trialFactor.value=null;assert.equal(C.calculate(r,2026).blocked,false);assert.equal(C.calculate(r,2026).gross,120000);
+const visibleKeys=C.comparisonGroups.flatMap(g=>g[1].map(f=>f[0]));assert.equal(new Set(visibleKeys).size,visibleKeys.length);
+const covered=visibleKeys.flatMap(k=>C.bundles[k]||[k]);assert.equal(new Set(covered).size,covered.length);

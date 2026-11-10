@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.19.1 — 2026-11-10
+
+- Offer 看板合并相近维度，收入及缴费条件集中录入，兼容已有数据与证据。
+- 薪酬分析改为收入构成、逐月现金流、跨机会比较图；简化主指标与录入条件。
+- 更新页面视觉、空值显示与合并编辑回归检查。
+
+
 ## 2.19.0 (2026-11-10)
 
 - Consolidate Offer inputs into one complete editable comparison table; remove duplicate summary/detail views and per-field metadata forms.

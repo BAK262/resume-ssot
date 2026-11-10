@@ -31,3 +31,17 @@ second.click({dataset:{open:'fictional-a'}});second.click({dataset:{edit:'level'
 const saved=JSON.parse([...storage.values()][0]);assert.equal(C.val(saved.data.records[0],'city'),'甲城');assert.equal(C.val(saved.data.records[0],'level'),'乙级');
 const empty=C.newRecord('empty');app({schema:1,boardId:'empty',records:[empty]}).click({dataset:{calc:'empty'}});
 console.log('Offer app: views, editing, draft isolation, snapshots, reload, conflicts and concurrent save checks passed.');
+
+// Bundled editing preserves all prior values until a deliberate save, then stores one value.
+storage.clear();const bundled=C.clone(seed);bundled.records[0].cells.leader=C.cell('Leader A','original evidence');bundled.records[0].cells.department=C.cell('Team B');
+a=app(bundled);assert.match(a.node('#content').innerHTML,/Leader A/);assert.equal((a.node('#content').innerHTML.match(/data-key="leader"/g)||[]).length,0);
+a.click({dataset:{inline:'fictional-a',key:'department'}});assert.match(a.node('#editBody').innerHTML,/Leader A/);assert.match(a.node('#editBody').innerHTML,/Team B/);
+a.node('#editForm').onsubmit({preventDefault(){},target:{elements:{namedItem:()=>({value:'Team B; Leader A'})}}});
+const mergedBundle=JSON.parse([...storage.values()][0]).data.records[0];assert.equal(C.val(mergedBundle,'department'),'Team B; Leader A');assert.equal(C.val(mergedBundle,'leader'),null);assert.equal(mergedBundle.cells.leader.source,'original evidence');
+assert.match(a.node('#content').innerHTML,/monthly-chart/);assert.match(a.node('#content').innerHTML,/各机会年度现金对比/);assert.doesNotMatch(a.node('#content').innerHTML,/月均到账（年度÷12）/);
+a.click({dataset:{edit:'contributions'}});assert.doesNotMatch(a.node('#editBody').innerHTML,/name="0_base"/);
+storage.clear();const noSalary=C.newRecord('unknown');a=app({schema:1,boardId:'unknown-chart',records:[noSalary]});assert.match(a.node('#content').innerHTML,/填写入职月份与收入后显示逐月图/);assert.doesNotMatch(a.node('#content').innerHTML,/NaN|Infinity/);
+console.log('Offer simplification: bundled edits, evidence preservation, conditional inputs and chart empty states passed.');
+
+storage.clear();const partial=C.clone(seed);partial.boardId='partial-chart';partial.records[0].cells.components.value[0].amount=null;a=app(partial);assert.doesNotMatch(a.node('#content').innerHTML,/class="stack"/);assert.match(a.node('#content').innerHTML,/固定现金<strong>待确认/);
+a.click({dataset:{edit:'calcSettings'}});assert.match(a.node('#editBody').innerHTML,/<input disabled name="trialFactor"/);
