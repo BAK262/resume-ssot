@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.19.0 (2026-11-10)
+
+- Consolidate Offer inputs into one complete editable comparison table; remove duplicate summary/detail views and per-field metadata forms.
+- Keep automatic shared salary totals, independent pay analysis, missing-value filtering and compatible historical data.
+
+
 ## 2.18.0 (2026-11-10)
 
 - Add a local Offer comparison board with shared dimensions, evidence fields, manual edits, quote history, hypothetical scenarios, and conflict-preserving JSON synchronization.

@@ -13,14 +13,14 @@ function app(data=seed){
   const click=b=>events.click({target:{closest:()=>({dataset:{},...b})}});
   return {node,click,events};
 }
-let a=app();assert.match(a.node('#content').innerHTML,/虚构示例/);assert.match(a.node('#content').innerHTML,/常用条件/);assert.match(a.node('#content').innerHTML,/完整维度与待问清单/);assert.equal((a.node('#content').innerHTML.match(/id="recordSelect"/g)||[]).length,1);
-a.click({dataset:{tab:'compare'}});assert.match(a.node('#content').innerHTML,/常用条件/);
+let a=app();assert.equal((a.node('#content').innerHTML.match(/data-key="city"/g)||[]).length,2);assert.equal(a.node('#content').innerHTML.includes('展开全部对比维度'),false);assert.match(a.node('#content').innerHTML,/虚构示例/);assert.match(a.node('#content').innerHTML,/对比项目/);assert.match(a.node('#content').innerHTML,/薪酬分析/);assert.equal((a.node('#content').innerHTML.match(/id="recordSelect"/g)||[]).length,1);
+a.click({dataset:{tab:'compare'}});assert.match(a.node('#content').innerHTML,/对比项目/);
 a.click({dataset:{calc:'fictional-a'}});assert.match(a.node('#content').innerHTML,/本年预计到账/);
 a.click({id:'startDraft'});assert.match(a.node('#content').innerHTML,/正在试算/);
 a.click({id:'discardDraft'});assert.match(a.node('#content').innerHTML,/当前真实报价/);
 a.click({dataset:{open:'fictional-a'}});a.click({id:'snapshot'});assert.match(a.node('#content').innerHTML,/测试版本/);
-a.click({dataset:{edit:'company'}});assert.equal(a.node('#editor').open,true);
-const form={elements:{namedItem:()=>({value:'手动公司'}),status:{value:'本人确认'},source:{value:'测试'},date:{value:'2026-11-10'},note:{value:''}}};
+a.click({dataset:{edit:'company'}});assert.equal(a.node('#editor').open,true);assert.equal(a.node('#editBody').innerHTML.includes('name="source"'),false);assert.equal(a.node('#editBody').innerHTML.includes('name="status"'),false);
+const form={elements:{namedItem:()=>({value:'手动公司'})}};
 a.node('#editForm').onsubmit({preventDefault(){},target:form});assert.match(a.node('#content').innerHTML,/手动公司/);
 a=app();assert.match(a.node('#content').innerHTML,/手动公司/);
 const updated=C.clone(seed);updated.records[0].cells.company=C.cell('AI公司');a=app(updated);assert.match(a.node('#conflicts').innerHTML,/手动公司/);assert.match(a.node('#conflicts').innerHTML,/AI公司/);
