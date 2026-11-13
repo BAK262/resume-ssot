@@ -37,7 +37,7 @@ python scripts/export_plain.py --from-html resumes/industry_<slug>.html --in sso
 python tests/test_scripts.py
 ```
 
-投递版 plain：**优先 `--from-html`**，与 PDF 一致；`--in ssot.json` 供 `term_registry` 过滤。
+通用版与投递版成品使用 **`--from-html`**，与 PDF 一致；同时传入的 `--in ssot.json` 供 `term_registry` 过滤。单独 `--in` 导出的是选材用事实清单，未经过叙事与栏目编排。
 
 ## Script reference
 

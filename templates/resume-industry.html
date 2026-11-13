@@ -37,7 +37,6 @@ h2 {
     font-size: 1.12em; font-weight: 700; letter-spacing: 0.06em;
     margin-bottom: 2px; padding-bottom: 2px; border-bottom: 1.5px solid var(--line);
 }
-.subh { font-weight: 600; font-size: 0.9em; margin: 2px 0 1px; }
 .item { margin-bottom: 4px; }
 .item:last-child { margin-bottom: 0; }
 .line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
@@ -88,7 +87,7 @@ h1, h2, .pubs li { page-break-inside: avoid; }
 
     <section class="section">
         <h2>工作经历</h2>
-        <!-- kind: internship | fulltime | parttime；无则整节删除 -->
+        <!-- Include independent employment duties; place academic research visits in Projects. Omit empty sections. -->
         <div class="item">
             <div class="line"><span><strong>{{WORK_TITLE}}</strong>　{{WORK_ORG}}</span><span class="date">{{WORK_DATES}}</span></div>
             <ul>
@@ -100,19 +99,20 @@ h1, h2, .pubs li { page-break-inside: avoid; }
 
     <section class="section">
         <h2>项目</h2>
-        <!-- Repeat project items and bullets to fit the narrative; two bullets are placeholders, not a limit. -->
+        <!-- Use as many substantive bullets as needed: problem, method/decision, contribution, finding/delivery, JD relevance. -->
         <div class="item">
             <div class="line"><span><strong>{{PROJECT_TITLE}}</strong>　{{PROJECT_SUBTITLE}}｜{{PROJECT_ROLE}}</span><span class="date">{{PROJECT_DATES}}</span></div>
             <ul>
                 <li><strong>{{PROJECT_LABEL_1}}：</strong>{{PROJECT_BULLET_1}}</li>
                 <li><strong>{{PROJECT_LABEL_2}}：</strong>{{PROJECT_BULLET_2}}</li>
+                <li><strong>{{PROJECT_LABEL_3}}：</strong>{{PROJECT_BULLET_3}}</li>
             </ul>
         </div>
     </section>
 
     <section class="section">
         <h2>代表作</h2>
-        <!-- JD 版可整节压缩或并入「其他」 -->
+        <!-- Select by JD relevance and contribution; keep status inline in one publication list. -->
         <ol class="pubs">
             <li>{{PUBLICATION_1}}</li>
         </ol>

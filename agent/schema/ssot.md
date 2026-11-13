@@ -34,7 +34,7 @@
 }
 ```
 
-`kind: internship | fulltime` → 产业简历优先进「工作经历」区块（见 [rules/resume.md](../rules/resume.md)）。
+`kind` 记录经历类型，不直接决定简历栏目；按实际职责与成果执行[栏目规则](../rules/resume.md#模块顺序产业)。
 
 ## output
 

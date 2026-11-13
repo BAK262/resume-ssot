@@ -59,10 +59,17 @@ li { margin: 2px 0; }
     </section>
 
     <section class="section">
-        <h2>项目与报告</h2>
+        <h2>项目</h2>
+        <div class="line"><span><strong>{{PROJECT_TITLE}}</strong>　{{PROJECT_SUBTITLE}}｜{{PROJECT_ROLE}}</span><span class="date">{{PROJECT_DATES}}</span></div>
+        <!-- Expand the substantive narrative using the shared resume rules. -->
         <ul>
-            <li>{{PROJECT_OR_TALK_1}}</li>
+            <li><strong>{{PROJECT_LABEL_1}}：</strong>{{PROJECT_BULLET_1}}</li>
         </ul>
+    </section>
+
+    <section class="section">
+        <h2>学术报告</h2>
+        <ul><li>{{TALK_1}}</li></ul>
     </section>
 
     <section class="section">

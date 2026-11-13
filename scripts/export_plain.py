@@ -78,6 +78,9 @@ class _ResumeHTMLParser(HTMLParser):
             return
         if self._ignore_depth:
             return
+        # Header flex gaps are visual only; preserve separation in plain text.
+        if self._in_header and tag in {"span", "a"}:
+            self._buffer.append(" ")
         if tag == "header":
             self._in_header = True
         elif tag == "section":

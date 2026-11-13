@@ -5,50 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>林小航 - 简历示例</title>
     <style>
-:root { --text: #111827; --line: #d1d5db; --base: 14.5px; }
+:root { --text: #111827; --line: #9ca3af; --base: 13.3px; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-@page { size: A4; margin: 8mm 12mm; }
+@page { size: A4; margin: 9mm 12mm 9mm; }
 body {
     font-family: "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
-    color: var(--text); font-size: var(--base); line-height: 1.4;
+    color: var(--text); font-size: var(--base); line-height: 1.37;
     width: 100%;
 }
-.header { margin-bottom: 10px; }
-h1 { font-size: 1.42em; font-weight: 700; letter-spacing: 0.04em; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
-.name-en { font-weight: 500; font-size: 0.62em; opacity: 0.7; margin-left: 8px; }
-.interest { margin: 4px 0 5px; opacity: 0.82; font-size: 0.94em; line-height: 1.38; }
-.contact-info { display: flex; flex-direction: column; gap: 2px; }
+.header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 5px; }
+.header-photo img {
+    width: 72px; height: 90px; object-fit: cover; object-position: center 18%;
+    border: 1px solid var(--line);
+}
+.header-content { flex: 1; min-width: 0; }
+h1 { font-size: 1.38em; font-weight: 700; letter-spacing: 0.04em; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.name-en { font-weight: 500; font-size: 0.7em; opacity: 0.85; margin-left: 8px; }
+.interest {
+    margin: 3px 0 2px; font-size: 0.9em; font-weight: 500; line-height: 1.32; color: var(--text);
+}
+.interest-sub { font-weight: 400; font-size: 0.86em; opacity: 0.8; margin-top: 1px; }
+.contact-info { display: flex; flex-direction: column; gap: 1px; margin-top: 2px; }
 .contact-links { display: flex; flex-wrap: wrap; gap: 4px 1.25em; }
 .contact-links > * { white-space: nowrap; }
-a { color: inherit; text-decoration: underline; }
-.section { margin-bottom: 10px; }
-.section:last-of-type { margin-bottom: 0; }
-h2 { font-size: 1.05em; font-weight: 600; margin-bottom: 2px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
-.subh { font-weight: 600; font-size: 0.92em; margin: 3px 0 1px; opacity: 0.85; }
-.item { margin-bottom: 7px; }
+.contact-links a { text-decoration: none; }
+a { color: inherit; text-decoration: underline; text-decoration-thickness: 0.6px; text-underline-offset: 2px; }
+.section { margin-bottom: 5px; }
+.section:last-child { margin-bottom: 0; }
+h2 {
+    font-size: 1.12em; font-weight: 700; letter-spacing: 0.06em;
+    margin-bottom: 2px; padding-bottom: 2px; border-bottom: 1.5px solid var(--line);
+}
+.item { margin-bottom: 4px; }
+.item:last-child { margin-bottom: 0; }
 .line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.date { opacity: 0.7; font-size: 0.86em; white-space: nowrap; }
-ul, .pubs { padding-left: 18px; }
-li { margin: 1px 0; }
+.section .line + .line { margin-top: 2px; }
+.date { opacity: 0.88; font-size: 0.88em; white-space: nowrap; color: var(--text); }
+ul { padding-left: 18px; }
+.pubs { padding-left: 18px; }
+.pubs li { margin: 1px 0; }
+li { margin: 1.5px 0; }
 .highlight { font-weight: 600; }
-.skills { font-size: 0.94em; margin: 1px 0; }
+.skills { font-size: 0.95em; margin: 1px 0; padding-top: 1px; }
 * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-h1 { page-break-after: avoid; }
-@media screen { body { max-width: 186mm; margin: 16px auto; padding: 0 2px; } }
+h1, h2, .pubs li { page-break-inside: avoid; }
+@media screen {
+    body { max-width: 186mm; margin: 24px auto; padding: 0 2px; }
+}
     </style>
 </head>
 <body>
     <header class="header">
+        <div class="header-content">
         <h1>林小航 <span class="name-en">Xiaohang Lin</span></h1>
         <p class="interest">应聘：平台工程师</p>
         <div class="contact-info">
-            <div>示例理工大学 · 计算机学院 · 博士生（导师：陈示例）</div>
+            <div>示例理工大学 · 计算机学院 · 博士生</div>
             <div class="contact-links">
                 <span>+86-139-0000-0000</span>
                 <a href="mailto:xiaohang.lin@example.edu">xiaohang.lin@example.edu</a>
                 <a href="https://github.com/example-dev" target="_blank">github.com/example-dev</a>
                 <a href="https://orcid.org/0000-0000-0000-0001" target="_blank">ORCID</a>
             </div>
+        </div>
         </div>
     </header>
 
@@ -61,30 +80,31 @@ h1 { page-break-after: avoid; }
     <section class="section">
         <h2>项目</h2>
         <div class="item">
-            <div class="line"><span><strong>省部级重点研发计划子课题</strong>　城市物联网数据汇聚与实时告警平台</span><span class="date">2024.07 – 2026.06</span></div>
+            <div class="line"><span><strong>省部级重点研发计划子课题</strong>　城市物联网数据汇聚与实时告警平台｜后端组技术总负责</span><span class="date">2024.07 – 2026.06</span></div>
             <ul>
-                <li><strong>任务设计与联调：</strong>面向城域边缘节点上报，负责对照实验设计、核心告警规则筛选、采集 Agent 与网关联调；三人后端组<span class="highlight">技术总负责</span>兼委托方对接，统筹验收材料与第三方测评。</li>
-                <li><strong>识别效果与交付：</strong>六类设备告警，跨站点识别。融合规则引擎准确率 <span class="highlight">94.2%</span>（结题口径）；完成多站点联调与离线验收包交付，时钟同步由第三方复核通过。</li>
+                <li><strong>任务与验证：</strong>面向城市物联网的数据汇聚和实时告警，负责批量回放与实时流的对照实验设计，将两种处理方式纳入告警效果验证。</li>
+                <li><strong>技术协作与联调：</strong>作为三人后端组技术总负责，承担采集 Agent 与网关联调，兼任委托方对接，组织第三方测评与离线验收包封装。</li>
+                <li><strong>效果与交付：</strong>融合规则引擎准确率达到 <span class="highlight">94.2%</span>（结题口径），完成多站点联调和离线验收包交付；时钟同步通过第三方复核，形成覆盖联调、效果验证与验收的交付经验。</li>
             </ul>
         </div>
         <div class="item">
-            <div class="line"><span><strong>OpenMesh</strong>　开源边缘网关配置同步与灰度发布工具（博士课题）</span><span class="date">2023.12 – 至今</span></div>
+            <div class="line"><span><strong>OpenMesh</strong>　博士课题 · 边缘网关配置治理｜架构与实现</span><span class="date">2023.12 – 至今</span></div>
             <ul>
-                <li><strong>配置治理与回滚：</strong>实现三环境配置漂移检测与一键回滚。搭建 Go 控制面 + etcd（配置版本、审计日志、节点心跳）；完成试点节点接入与现场运维培训。</li>
-                <li><strong>协议支持与开源：</strong>支持 HTTP/gRPC 双协议下发；配置 diff 与灰度批次可审计。数据与代码已开源（<a href="https://doi.org/10.5281/zenodo.00000001" target="_blank">Zenodo</a> · <a href="https://github.com/example-dev/openmesh" target="_blank">GitHub</a>）。工具论文第一作者投稿 <em>IEEE Transactions on Network and Service Management</em>。</li>
+                <li><strong>架构与治理：</strong>围绕边缘网关配置同步与灰度发布，负责架构、实现和数据采集；使用 Go 控制面与 etcd 管理配置版本和审计记录，使配置 diff 与灰度批次可追溯。</li>
+                <li><strong>接入与发布：</strong>实现 HTTP/gRPC 双协议下发，完成试点节点接入和运维培训；在 GitHub / Zenodo 开源发布，支持从配置管理到节点运维的流程复用。工具论文以第一作者投稿 <em>IEEE Transactions on Network and Service Management</em>。</li>
             </ul>
         </div>
         <div class="item">
-            <div class="line"><span><strong>大模型推理服务成本优化</strong>（示例理工 × 示例 AI Lab 跨组合作）</span><span class="date">2021.11 – 2024.11</span></div>
+            <div class="line"><span><strong>大模型推理服务成本优化</strong>　跨组合作｜实验设计与统计分析</span><span class="date">2021.11 – 2024.11</span></div>
             <ul>
-                <li><strong>调度策略与评估：</strong>发起跨组合作，设计线上 A/B 评估 batch 调度与 KV-cache 复用；提出动态批大小与队列优先级策略；合作方在 vLLM 分支完成推理侧实现，本人完成压测、成本建模与初稿共笔。</li>
-                <li><strong>成本验证与成果：</strong><span class="highlight">共同一作 · 示例系统顶会短文</span>（2024）。在同等 SLA 约束下验证 GPU 成本下降，结果与离线 trace 预测方向一致。</li>
+                <li><strong>调度策略与评估：</strong>发起跨组合作，为验证调度策略在同等 SLA 下的成本收益，将动态批大小与队列优先级策略纳入线上 A/B 实验；本人负责实验与统计，完成压测、成本建模与论文共笔。</li>
+                <li><strong>成本验证与成果：</strong>在同等 SLA 约束下验证 GPU 成本下降，结果与离线 trace 预测方向一致，为使用离线预测辅助线上资源决策提供验证依据；以<span class="highlight">共同一作</span>发表于 <em>Example Systems Letters</em>（2024）。</li>
             </ul>
         </div>
         <div class="item">
-            <div class="line"><span><strong>校园网异常流量检测</strong>（本科科创 · 行为日志分析系统）</span><span class="date">2018.11 – 2020.03</span></div>
+            <div class="line"><span><strong>校园网异常流量检测</strong>　本科科创｜项目负责人</span><span class="date">2018.11 – 2020.03</span></div>
             <ul>
-                <li><strong>原型开发与部署：</strong>主持校级本科生科研资助，Python / Scapy 实现流量特征抽取守护进程；两校区机房兼容部署与网管培训代采；校内对照采集后完成异常会话检测原型。获软件著作权（虚构编号）。</li>
+                <li><strong>采集与部署：</strong>主持校级本科生科研资助，使用 Python / Scapy 实现 12 维流量特征抽取守护进程；完成 CentOS 6 兼容部署、网管培训及校内对照采集，支撑异常流量研究的数据获取。</li>
             </ul>
         </div>
     </section>
@@ -93,23 +113,21 @@ h1 { page-break-after: avoid; }
         <h2>代表作</h2>
         <ol class="pubs">
             <li><strong>Lin, X.</strong>, Chen, Y., Wang, H., et al. (2024). Batch-aware scheduling causally reduces LLM inference cost under fixed SLA. <em>Example Systems Letters, 8</em>(2), 45–52. <span class="highlight">共同一作</span></li>
-            <li><strong>Lin, X.</strong>, Zhao, L., Chen, S., &amp; Example, A. (2023). Edge gateway config drift detection in multi-tenant IoT deployments. <em>IEEE ICNSC</em>, 112–118. 第一作者（示例大学访问学期）。<a href="https://github.com/example-dev/edge-drift-demo" target="_blank">GitHub</a></li>
-            <li><strong>Lin, X.</strong>, Example, D., Example, E., Example, F., &amp; Chen, S. OpenMesh: A reproducible toolkit for edge configuration sync and staged rollout. <em>IEEE Transactions on Network and Service Management</em>. 第一作者 · 投稿中</li>
+            <li><strong>Lin, X.</strong>, Zhao, L., Chen, S., &amp; Example, A. (2023). Edge gateway config drift detection in multi-tenant IoT deployments. <em>IEEE ICNSC</em>, 112–118. 第一作者</li>
+            <li><strong>Lin, X.</strong>, et al. OpenMesh: A reproducible toolkit for edge configuration sync and staged rollout. <em>IEEE Transactions on Network and Service Management</em>. 第一作者 · 投稿中</li>
         </ol>
     </section>
 
     <section class="section">
         <h2>技能</h2>
-        <p class="skills">系统与后端：Go · gRPC · Kafka · Kubernetes · Linux 联调与部署。</p>
-        <p class="skills">数据与可观测：PostgreSQL · Redis · Prometheus / Grafana · OpenTelemetry。</p>
-        <p class="skills">工程交付：GitHub Actions · 委托方/测评对接 · 离线验收包 · GitHub / Zenodo 开源发布。</p>
+        <p class="skills">系统与部署：Go · etcd · gRPC · Kafka · Docker · Kubernetes。</p>
+        <p class="skills">实验与可观测：Python · Prometheus · OpenTelemetry · A/B 实验 · 压测与成本建模。</p>
     </section>
 
     <section class="section">
         <h2>其他</h2>
         <ul>
-            <li>助教：《分布式系统原理》（2022 秋、2023 春、2023 秋）；《云计算工程实践》（2022 春）</li>
-            <li>2020 全国大学生系统能力大赛三等奖（团队）；示例理工大学开源软件节展位讲解（2022、2023）</li>
+            <li>助教：《分布式系统原理》（2022 秋–2023 秋）；《云计算工程实践》（2022 春）</li>
         </ul>
     </section>
 </body>
