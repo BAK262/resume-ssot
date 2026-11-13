@@ -8,7 +8,7 @@ Offer comparison includes a local editable board, source-backed shared dimension
 
 **Build resumes in Cursor, Claude Code, or Codex without starting from scratch every time.** Chat through education, internships, and projects; the assistant first saves everything in a **career archive** (stored in your folder—you don’t need to open those files). For each company you apply to, paste the **job posting** (the role description and requirements from the hiring page), pick highlights from your real experience, and get a **one-page** resume exported as **HTML · PDF · plain text you can paste into application forms**.
 
-> **Facts in the archive → current job requirements drive selection and narrative → past final resumes guide expression and layout.** The assistant reads confirmed personal preferences, rewrites projects for the role, checks the actual PDF for page count and readability, and synchronizes application text. Switch companies without losing history; if a number is unclear, the assistant asks first—**it won’t invent one for you**.
+> **Facts in the archive → current job requirements drive selection and narrative → past final resumes guide expression and layout.** The assistant applies the skill’s narrative and layout standards, rewrites projects for the role, checks the actual PDF for page count and readability, and synchronizes application text. Switch companies without losing history; if a number is unclear, the assistant asks first—**it won’t invent one for you**.
 
 **Good for:** internship / campus / job seekers; people with many projects, many different roles to apply to, or anyone worried an AI might fabricate numbers.
 

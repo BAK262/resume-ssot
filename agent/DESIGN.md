@@ -8,7 +8,7 @@
 | **经历档案** | `ssot.json` | 全量事实、边界、冲突、术语表 |
 | **脚本** | `scripts/` | 校验、HTML→PDF、HTML→plain |
 
-**刻意不提供** SSOT→HTML 全自动渲染。HTML 由 Agent 按 `templates/` + `agent/rules/resume.md` 生成；`{{PLACEHOLDER}}` 是结构骨架。当前 JD 决定投递版的选材、叙事与篇幅；历史定稿提供可迁移的表达与版式经验，事实以经历档案及已核实来源为准。工作区保存个人偏好与私人参照，技能维护通用的读取、适配和验收流程。
+**刻意不提供** SSOT→HTML 全自动渲染。HTML 由 Agent 按 `templates/` + `agent/rules/resume.md` 生成；`{{PLACEHOLDER}}` 是结构骨架。当前 JD 决定投递版的选材、叙事与篇幅；历史定稿提供可迁移的表达与版式经验，事实以经历档案及已核实来源为准。技能自身维护已确认的叙事、排版标准及适配、验收流程；工作区保存事实、私人材料和具体简历。规则在新工作区同样生效，历史定稿按需参考。
 
 **可投岗位表**须多渠道实搜三步（脑暴 → 按企检索 → 人-岗审计），见 [workflows/job-match.md](workflows/job-match.md)；官网与 Boss/猎聘/智联等第三方地位相同；禁止用聚合新闻/「听说有岗」直接入库。
 
