@@ -71,7 +71,7 @@
     .button.ghost { color: #5a667a; background: transparent; border-color: #d9e1ee; }
     .button.danger { color: #b42318; background: #fff3f2; border-color: #f2c6c1; }
     .stats {
-      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px;
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px;
     }
     .stat {
       padding: 18px 20px; background: rgba(255,255,255,.9); border: 1px solid var(--line);
@@ -207,12 +207,11 @@
     <header class="hero">
       <p class="eyebrow">APPLICATION TRACKER</p>
       <h1>投递进度表</h1>
-      <p>记录投递、面试与反馈；同进度满 7 天提醒，已结束或满 10 天自动归档。与可投岗位表联动（简历定稿后由助手写入）。</p>
+      <p>记录投递、面试与反馈；同进度满 7 个工作日提醒；Offer 阶段持续保留，其他记录已结束或满 10 个工作日自动归档。与可投岗位表联动（简历定稿后由助手写入）。</p>
     </header>
 
     <section class="stats" aria-label="投递统计">
       <div class="stat"><div class="stat-label">进行中</div><div class="stat-value" id="activeCount">0</div></div>
-      <div class="stat"><div class="stat-label">待跟进</div><div class="stat-value" id="staleCount">0</div></div>
       <div class="stat"><div class="stat-label">已获 Offer</div><div class="stat-value" id="offerCount">0</div></div>
       <div class="stat"><div class="stat-label">已归档</div><div class="stat-value" id="archivedCount">0</div></div>
       <div class="stat"><div class="stat-label">本月投递</div><div class="stat-value" id="monthCount">0</div></div>
@@ -259,7 +258,7 @@
     </section>
 
     <details class="archive-panel" id="archivePanel">
-      <summary><span id="archiveSummary">已归档（0）</span><span class="panel-hint">已结束或同进度满 10 天自动收入此处</span></summary>
+      <summary><span id="archiveSummary">已归档（0）</span><span class="panel-hint">已结束或非 Offer 阶段停留满 10 个工作日自动归档</span></summary>
       <div class="table-wrap">
         <table>
           <thead><tr><th>时间</th><th>公司</th><th>岗位</th><th>进度</th><th>停留</th><th>归档原因</th><th>备注</th><th>操作</th></tr></thead>
@@ -529,6 +528,11 @@
         const stamp = now.toISOString();
         let changed = false;
         const next = list.map((item) => {
+          if (item.status === 'Offer') {
+            if (!item.archived && !item.archivedAt && !item.archiveReason) return item;
+            changed = true;
+            return { ...item, archived: false, archivedAt: '', archiveReason: '' };
+          }
           if (item.archived) return item;
           if (item.status === '已结束') {
             changed = true;
@@ -765,7 +769,6 @@
         const month = today().slice(0, 7);
         const active = records.filter((item) => !item.archived);
         $('#activeCount').textContent = active.filter((item) => !['Offer', '已结束'].includes(item.status)).length;
-        $('#staleCount').textContent = active.filter((item) => daysInStatus(item) >= WARN_DAYS).length;
         $('#offerCount').textContent = active.filter((item) => item.status === 'Offer').length;
         $('#archivedCount').textContent = records.filter((item) => item.archived).length;
         $('#monthCount').textContent = records.filter((item) => (item.date || '').startsWith(month)).length;
