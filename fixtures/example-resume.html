@@ -21,11 +21,11 @@ h1 { font-size: 1.42em; font-weight: 700; letter-spacing: 0.04em; padding-bottom
 .contact-links { display: flex; flex-wrap: wrap; gap: 4px 1.25em; }
 .contact-links > * { white-space: nowrap; }
 a { color: inherit; text-decoration: underline; }
-.section { margin-bottom: 7px; }
+.section { margin-bottom: 10px; }
 .section:last-of-type { margin-bottom: 0; }
 h2 { font-size: 1.05em; font-weight: 600; margin-bottom: 2px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
 .subh { font-weight: 600; font-size: 0.92em; margin: 3px 0 1px; opacity: 0.85; }
-.item { margin-bottom: 5px; }
+.item { margin-bottom: 7px; }
 .line { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .date { opacity: 0.7; font-size: 0.86em; white-space: nowrap; }
 ul, .pubs { padding-left: 18px; }
@@ -40,7 +40,7 @@ h1 { page-break-after: avoid; }
 <body>
     <header class="header">
         <h1>林小航 <span class="name-en">Xiaohang Lin</span></h1>
-        <p class="interest">分布式系统与平台工程 · 高可用后端 · 开源基础设施与交付验收</p>
+        <p class="interest">应聘：平台工程师</p>
         <div class="contact-info">
             <div>示例理工大学 · 计算机学院 · 博士生（导师：陈示例）</div>
             <div class="contact-links">
@@ -55,14 +55,7 @@ h1 { page-break-after: avoid; }
     <section class="section">
         <h2>教育</h2>
         <div class="line"><span><strong>示例理工大学</strong>　计算机学院　计算机科学直博　预计 2027 年 6 月答辩，2027 夏/秋可入职</span><span class="date">2020.09 – 至今</span></div>
-        <div class="line"><span><strong>示例理工大学</strong>　软件学院 · 软件工程　工学学士（毕业论文：校园网边缘节点异常流量检测）</span><span class="date">2016.09 – 2020.06</span></div>
-    </section>
-
-    <section class="section">
-        <h2>技能</h2>
-        <p class="skills">系统与后端：Go · gRPC · Kafka · Kubernetes · Linux 联调与部署。</p>
-        <p class="skills">数据与可观测：PostgreSQL · Redis · Prometheus / Grafana · OpenTelemetry。</p>
-        <p class="skills">工程交付：GitHub Actions · 委托方/测评对接 · 离线验收包 · GitHub / Zenodo 开源发布。</p>
+        <div class="line"><span><strong>示例理工大学</strong>　软件学院 · 软件工程　工学学士</span><span class="date">2016.09 – 2020.06</span></div>
     </section>
 
     <section class="section">
@@ -70,45 +63,46 @@ h1 { page-break-after: avoid; }
         <div class="item">
             <div class="line"><span><strong>省部级重点研发计划子课题</strong>　城市物联网数据汇聚与实时告警平台</span><span class="date">2024.07 – 2026.06</span></div>
             <ul>
-                <li>面向城域边缘节点上报：负责对照实验设计、核心告警规则筛选、采集 Agent 与网关联调；三人后端组<span class="highlight">技术总负责</span>兼委托方对接，统筹验收材料与第三方测评。</li>
-                <li>结题验收：六类设备告警，跨站点识别。融合规则引擎准确率 <span class="highlight">94.2%</span>（结题口径）；完成多站点联调与离线验收包交付，时钟同步由第三方复核通过。</li>
+                <li><strong>任务设计与联调：</strong>面向城域边缘节点上报，负责对照实验设计、核心告警规则筛选、采集 Agent 与网关联调；三人后端组<span class="highlight">技术总负责</span>兼委托方对接，统筹验收材料与第三方测评。</li>
+                <li><strong>识别效果与交付：</strong>六类设备告警，跨站点识别。融合规则引擎准确率 <span class="highlight">94.2%</span>（结题口径）；完成多站点联调与离线验收包交付，时钟同步由第三方复核通过。</li>
             </ul>
         </div>
         <div class="item">
-            <div class="line"><span><strong>OpenMesh</strong>　开源边缘网关配置同步与灰度发布工具（博士课题主仓库，独立于上述子课题）</span><span class="date">2023.12 – 至今</span></div>
+            <div class="line"><span><strong>OpenMesh</strong>　开源边缘网关配置同步与灰度发布工具（博士课题）</span><span class="date">2023.12 – 至今</span></div>
             <ul>
-                <li>三环境配置漂移检测与一键回滚。搭建 Go 控制面 + etcd（配置版本、审计日志、节点心跳）；完成试点节点接入与现场运维培训。</li>
-                <li>支持 HTTP/gRPC 双协议下发；配置 diff 与灰度批次可审计。数据与代码已开源（<a href="https://doi.org/10.5281/zenodo.00000001" target="_blank">Zenodo</a> · <a href="https://github.com/example-dev/openmesh" target="_blank">GitHub</a>）。工具论文第一作者投稿 <em>IEEE Transactions on Network and Service Management</em>。</li>
+                <li><strong>配置治理与回滚：</strong>实现三环境配置漂移检测与一键回滚。搭建 Go 控制面 + etcd（配置版本、审计日志、节点心跳）；完成试点节点接入与现场运维培训。</li>
+                <li><strong>协议支持与开源：</strong>支持 HTTP/gRPC 双协议下发；配置 diff 与灰度批次可审计。数据与代码已开源（<a href="https://doi.org/10.5281/zenodo.00000001" target="_blank">Zenodo</a> · <a href="https://github.com/example-dev/openmesh" target="_blank">GitHub</a>）。工具论文第一作者投稿 <em>IEEE Transactions on Network and Service Management</em>。</li>
             </ul>
         </div>
         <div class="item">
             <div class="line"><span><strong>大模型推理服务成本优化</strong>（示例理工 × 示例 AI Lab 跨组合作）</span><span class="date">2021.11 – 2024.11</span></div>
             <ul>
-                <li>发起跨组合作：设计线上 A/B 评估 batch 调度与 KV-cache 复用；提出动态批大小与队列优先级策略；合作方在 vLLM 分支完成推理侧实现，本人完成压测、成本建模与初稿共笔。</li>
-                <li><span class="highlight">共同一作 · 示例系统顶会短文</span>（2024）。在同等 SLA 约束下验证 GPU 成本下降，结果与离线 trace 预测方向一致。</li>
+                <li><strong>调度策略与评估：</strong>发起跨组合作，设计线上 A/B 评估 batch 调度与 KV-cache 复用；提出动态批大小与队列优先级策略；合作方在 vLLM 分支完成推理侧实现，本人完成压测、成本建模与初稿共笔。</li>
+                <li><strong>成本验证与成果：</strong><span class="highlight">共同一作 · 示例系统顶会短文</span>（2024）。在同等 SLA 约束下验证 GPU 成本下降，结果与离线 trace 预测方向一致。</li>
             </ul>
         </div>
         <div class="item">
             <div class="line"><span><strong>校园网异常流量检测</strong>（本科科创 · 行为日志分析系统）</span><span class="date">2018.11 – 2020.03</span></div>
             <ul>
-                <li>主持校级本科生科研资助：Python / Scapy 实现流量特征抽取守护进程；两校区机房兼容部署与网管培训代采；校内对照采集后完成异常会话检测原型。获软件著作权（虚构编号）。</li>
+                <li><strong>原型开发与部署：</strong>主持校级本科生科研资助，Python / Scapy 实现流量特征抽取守护进程；两校区机房兼容部署与网管培训代采；校内对照采集后完成异常会话检测原型。获软件著作权（虚构编号）。</li>
             </ul>
         </div>
     </section>
 
     <section class="section">
-        <h2>发表</h2>
-        <p class="subh">已发表</p>
+        <h2>代表作</h2>
         <ol class="pubs">
             <li><strong>Lin, X.</strong>, Chen, Y., Wang, H., et al. (2024). Batch-aware scheduling causally reduces LLM inference cost under fixed SLA. <em>Example Systems Letters, 8</em>(2), 45–52. <span class="highlight">共同一作</span></li>
             <li><strong>Lin, X.</strong>, Zhao, L., Chen, S., &amp; Example, A. (2023). Edge gateway config drift detection in multi-tenant IoT deployments. <em>IEEE ICNSC</em>, 112–118. 第一作者（示例大学访问学期）。<a href="https://github.com/example-dev/edge-drift-demo" target="_blank">GitHub</a></li>
-            <li>Example, B., Example, C., <strong>Lin, X.</strong>, &amp; Chen, S. (2025). Utilizing eBPF probes for zero-instrument latency profiling. <em>Example Journal of Systems, 12</em>(3), 301–315. 参与作者</li>
+            <li><strong>Lin, X.</strong>, Example, D., Example, E., Example, F., &amp; Chen, S. OpenMesh: A reproducible toolkit for edge configuration sync and staged rollout. <em>IEEE Transactions on Network and Service Management</em>. 第一作者 · 投稿中</li>
         </ol>
-        <p class="subh">投稿中</p>
-        <ol class="pubs" start="4">
-            <li><strong>Lin, X.</strong>, Example, D., Example, E., Example, F., &amp; Chen, S. OpenMesh: A reproducible toolkit for edge configuration sync and staged rollout. <em>IEEE Transactions on Network and Service Management</em>. 第一作者</li>
-            <li><strong>Lin, X.</strong>#（共一第二）, Example, G.#, Chen, S., &amp; Example, H. Hierarchical alerting under partial observability in city-scale IoT. 跨校合作 · 流式告警 · 工作论文</li>
-        </ol>
+    </section>
+
+    <section class="section">
+        <h2>技能</h2>
+        <p class="skills">系统与后端：Go · gRPC · Kafka · Kubernetes · Linux 联调与部署。</p>
+        <p class="skills">数据与可观测：PostgreSQL · Redis · Prometheus / Grafana · OpenTelemetry。</p>
+        <p class="skills">工程交付：GitHub Actions · 委托方/测评对接 · 离线验收包 · GitHub / Zenodo 开源发布。</p>
     </section>
 
     <section class="section">

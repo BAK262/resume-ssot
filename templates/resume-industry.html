@@ -66,7 +66,7 @@ h1, h2, .pubs li { page-break-inside: avoid; }
         -->
         <div class="header-content">
             <h1>{{NAME_ZH}} <span class="name-en">{{NAME_EN}}</span></h1>
-            <p class="interest">{{TAGLINE_LINE1}} · {{TAGLINE_LINE2}} · {{TAGLINE_LINE3}}</p>
+            <p class="interest">{{APPLICATION_TARGET}}</p>
             <p class="interest-sub">{{AFFILIATION}}</p>
             <div class="contact-info">
                 <div class="contact-links">
@@ -103,16 +103,15 @@ h1, h2, .pubs li { page-break-inside: avoid; }
         <div class="item">
             <div class="line"><span><strong>{{PROJECT_TITLE}}</strong>　{{PROJECT_SUBTITLE}}｜{{PROJECT_ROLE}}</span><span class="date">{{PROJECT_DATES}}</span></div>
             <ul>
-                <li>针对…：{{PROJECT_BULLET_1}}</li>
-                <li>为…：{{PROJECT_BULLET_2}}</li>
+                <li><strong>{{PROJECT_LABEL_1}}：</strong>{{PROJECT_BULLET_1}}</li>
+                <li><strong>{{PROJECT_LABEL_2}}：</strong>{{PROJECT_BULLET_2}}</li>
             </ul>
         </div>
     </section>
 
     <section class="section">
-        <h2>发表</h2>
+        <h2>代表作</h2>
         <!-- JD 版可整节压缩或并入「其他」 -->
-        <p class="subh">已发表</p>
         <ol class="pubs">
             <li>{{PUBLICATION_1}}</li>
         </ol>

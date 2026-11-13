@@ -58,7 +58,7 @@ flowchart LR
 | 给了旧简历路径 | scan → 若要 JD 则直接 jd（lazy base） |
 | 只口述 | walkthrough，3 轮，第 1 轮后出草稿 |
 | 新缩写 ≤5 | 内联翻译，跳过 audit-terms |
-| 投递版交付 | HTML + 尝试 PDF + `export_plain.py --from-html`；短审计 + 必答追问；有 offers/ 则看板联动（第三方定稿留可投表，实投后进进度表） |
+| 给 JD 制作投递版 | [resume.md](workflows/resume.md) Mode · jd：读工作区偏好与相关定稿，以当前 JD 决定选材和叙事；完成内容审阅、实际 PDF 视觉验收及文本同步后首次交付；有 offers/ 则看板联动 |
 | 第三方岗感兴趣 / 已打招呼 | [job-match.md](workflows/job-match.md) 投递通道：入库 `待确认` → 平台沟通 → `待投递` → 出投递版 → 发简历后进进度表 |
 | 只改一句 | [workflows/patch.md](workflows/patch.md)：改 HTML → 最小 ssot 回写 → validate |
 | 学术版简历 | `academic` 轨 + `templates/resume-academic.html` |
@@ -124,9 +124,9 @@ flowchart LR
 ## 输出
 
 - 自然语言短报；选材表用人话  
-- jd 版：[HR 自检](rules/resume.md#hr-自检) + 短审计 + 必答追问 2–3  
+- jd 版：[HR 自检](rules/resume.md#hr-自检) + 参照/岗位取舍短报 + 必答追问 2–3
 - 排版/叙事对照（公开虚构）：[fixtures/example-ssot.json](../fixtures/example-ssot.json) + [example-resume.html](../fixtures/example-resume.html)
-- 作者本机私人定稿对照放在**求职工作区**私有目录（如 `_private/`）；**包内不引用、不索取上传**
+- 工作区 `_private/resume-preferences.md` 保存私人偏好与参照索引；制作简历时自动读取（存在时）。私人定稿保留在工作区，**包内不嵌入、不索取上传**。
 
 ## 校验命令
 
