@@ -1,5 +1,7 @@
 # offer：投递进度表
 
+更新前执行 [当前信息复核](../ROUTER.md#当前信息复核)，同步当前名称、备注、关联资料与链接。
+
 > 路由 → [ROUTER.md](../ROUTER.md)。邮件巡检细节 → [references/email-monitoring.md](../references/email-monitoring.md)。
 
 > 与可投岗位表联动 → 本节「看板联动」+ [job-match.md](job-match.md) + [resume.md](resume.md) Mode · jd。
